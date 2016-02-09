@@ -2,14 +2,16 @@
 <rdf:RDF xmlns="http://corp.dbpedia.org/ontology#"
      xml:base="http://corp.dbpedia.org/ontology"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
-     xmlns:org="http://www.w3.org/ns/org#"
      xmlns:ns="http://creativecommons.org/ns#"
+     xmlns:org="http://www.w3.org/ns/org#"
+     xmlns:powder-s="http://www.w3.org/2007/05/powder-s#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:skos="http://www.w3.org/2004/02/skos/core#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:terms="http://purl.org/dc/terms/"
      xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:terms1="http://open.vocab.org/terms/"
      xmlns:vann="http://purl.org/vocab/vann/"
      xmlns:prov="http://www.w3.org/ns/prov#"
      xmlns:ontology="http://dbpedia.org/ontology/"
@@ -18,6 +20,42 @@
         <owl:imports rdf:resource="http://dbpedia.org/ontology/"/>
         <owl:imports rdf:resource="http://www.w3.org/ns/org#"/>
     </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://dbpedia.org/ontology/codeStockExchange -->
+
+    <owl:AnnotationProperty rdf:about="http://dbpedia.org/ontology/codeStockExchange">
+        <rdfs:label xml:lang="en">stock exchange code</rdfs:label>
+        <rdfs:domain rdf:resource="http://corp.dbpedia.org/ontology#Company"/>
+    </owl:AnnotationProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/dissolutionDate -->
+
+    <owl:AnnotationProperty rdf:about="http://dbpedia.org/ontology/dissolutionDate">
+        <rdfs:domain rdf:resource="http://corp.dbpedia.org/ontology#Company"/>
+    </owl:AnnotationProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/previousName -->
+
+    <owl:AnnotationProperty rdf:about="http://dbpedia.org/ontology/previousName">
+        <rdfs:domain rdf:resource="http://corp.dbpedia.org/ontology#Company"/>
+    </owl:AnnotationProperty>
     
 
 
@@ -76,6 +114,7 @@
     <!-- http://corp.dbpedia.org/ontology#involvedIn -->
 
     <owl:ObjectProperty rdf:about="http://corp.dbpedia.org/ontology#involvedIn">
+        <rdfs:domain rdf:resource="http://corp.dbpedia.org/ontology#Company"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Event"/>
         <rdfs:comment xml:lang="en">A general relation of involvement in some event</rdfs:comment>
         <rdfs:label xml:lang="en">involved in</rdfs:label>
@@ -85,11 +124,11 @@
 
     <!-- http://dbpedia.org/ontology/industry -->
 
-    <rdf:Description rdf:about="http://dbpedia.org/ontology/industry">
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/industry">
         <rdfs:domain rdf:resource="http://corp.dbpedia.org/ontology#Company"/>
         <rdfs:range rdf:resource="http://corp.dbpedia.org/ontology#IndustryClass"/>
         <rdfs:label xml:lang="en">company status</rdfs:label>
-    </rdf:Description>
+    </owl:ObjectProperty>
     
 
 
@@ -163,6 +202,14 @@
     
 
 
+    <!-- http://corp.dbpedia.org/ontology#date -->
+
+    <owl:DatatypeProperty rdf:about="http://corp.dbpedia.org/ontology#date">
+        <rdfs:label xml:lang="en">date</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- http://corp.dbpedia.org/ontology#dunsNumber -->
 
     <owl:DatatypeProperty rdf:about="http://corp.dbpedia.org/ontology#dunsNumber">
@@ -182,12 +229,12 @@
     
 
 
-    <!-- http://corp.dbpedia.org/ontology#incorporationDate -->
+    <!-- http://corp.dbpedia.org/ontology#isActive -->
 
-    <owl:DatatypeProperty rdf:about="http://corp.dbpedia.org/ontology#incorporationDate">
-        <rdfs:domain rdf:resource="http://corp.dbpedia.org/ontology#Company"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
-        <rdfs:label xml:lang="en">incorporation date</rdfs:label>
+    <owl:DatatypeProperty rdf:about="http://corp.dbpedia.org/ontology#isActive">
+        <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Organization"/>
+        <rdfs:comment xml:lang="en">Activity status of an organisation</rdfs:comment>
+        <rdfs:label xml:lang="en">is active</rdfs:label>
     </owl:DatatypeProperty>
     
 
@@ -231,31 +278,6 @@
     
 
 
-    <!-- http://dbpedia.org/ontology/codeStockExchange -->
-
-    <rdf:Description rdf:about="http://dbpedia.org/ontology/codeStockExchange">
-        <rdfs:domain rdf:resource="http://corp.dbpedia.org/ontology#Company"/>
-        <rdfs:label xml:lang="en">stock exchange code</rdfs:label>
-    </rdf:Description>
-    
-
-
-    <!-- http://dbpedia.org/ontology/dissolutionDate -->
-
-    <rdf:Description rdf:about="http://dbpedia.org/ontology/dissolutionDate">
-        <rdfs:domain rdf:resource="http://corp.dbpedia.org/ontology#Company"/>
-    </rdf:Description>
-    
-
-
-    <!-- http://dbpedia.org/ontology/previousName -->
-
-    <rdf:Description rdf:about="http://dbpedia.org/ontology/previousName">
-        <rdfs:domain rdf:resource="http://corp.dbpedia.org/ontology#Company"/>
-    </rdf:Description>
-    
-
-
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
@@ -277,6 +299,15 @@
     
 
 
+    <!-- http://corp.dbpedia.org/ontology#CompanyFoundation -->
+
+    <owl:Class rdf:about="http://corp.dbpedia.org/ontology#CompanyFoundation">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/org#ChangeEvent"/>
+        <rdfs:label xml:lang="en">Company foundation</rdfs:label>
+    </owl:Class>
+    
+
+
     <!-- http://corp.dbpedia.org/ontology#CompanyStatus -->
 
     <owl:Class rdf:about="http://corp.dbpedia.org/ontology#CompanyStatus">
@@ -290,6 +321,7 @@
 
     <owl:Class rdf:about="http://corp.dbpedia.org/ontology#IPO">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/org#ChangeEvent"/>
+        <rdfs:comment xml:lang="en">initial public offering</rdfs:comment>
         <rdfs:label xml:lang="en">IPO</rdfs:label>
     </owl:Class>
     
@@ -299,6 +331,15 @@
 
     <owl:Class rdf:about="http://corp.dbpedia.org/ontology#ImmaterialResource">
         <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#Resource"/>
+    </owl:Class>
+    
+
+
+    <!-- http://corp.dbpedia.org/ontology#Incorporation -->
+
+    <owl:Class rdf:about="http://corp.dbpedia.org/ontology#Incorporation">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/org#ChangeEvent"/>
+        <rdfs:label xml:lang="en">Incorporation</rdfs:label>
     </owl:Class>
     
 
@@ -338,15 +379,27 @@
 
     <!-- http://dbpedia.org/ontology/Company -->
 
-    <rdf:Description rdf:about="http://dbpedia.org/ontology/Company"/>
+    <owl:Class rdf:about="http://dbpedia.org/ontology/Company"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Event -->
+
+    <owl:Class rdf:about="http://dbpedia.org/ontology/Event"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/PopulatedPlace -->
+
+    <owl:Class rdf:about="http://dbpedia.org/ontology/PopulatedPlace"/>
     
 
 
     <!-- http://schema.org/Organization -->
 
-    <rdf:Description rdf:about="http://schema.org/Organization">
+    <owl:Class rdf:about="http://schema.org/Organization">
         <owl:equivalentClass rdf:resource="http://xmlns.com/foaf/0.1/Organization"/>
-    </rdf:Description>
+    </owl:Class>
     
 
 
