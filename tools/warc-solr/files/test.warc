@@ -1,0 +1,267 @@
+
+WARC/1.0
+WARC-Type: response
+WARC-Date: 2012-02-12T08:32:52Z
+WARC-TREC-ID: clueweb12-0013wb-88-00032
+WARC-IP-Address: 97.79.163.213
+WARC-Payload-Digest: sha1:EQF6HLVANCGPUEV26FFZL4XUAM64EBSA
+WARC-Target-URI: http://www.architecturaltraditions.com/doors-about-our-doors.shtml
+WARC-Record-ID: <urn:uuid:60d36912-b870-43a4-80dc-db8757f5b05d>
+Content-Type: application/http; msgtype=response
+Content-Length: 12013
+
+HTTP/1.1 200 OK
+Date: Sun, 12 Feb 2012 08:35:17 GMT
+Server: Apache/2.2.14 (Ubuntu)
+Accept-Ranges: bytes
+Vary: Accept-Encoding
+Connection: close
+Content-Type: text/html
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<!-- begin: top.shtml -->
+<title>About Architectural Traditions Doors | Architectural Traditions | Crafted Doors Windows and Hardware</title>
+<base href="http://www.architecturaltraditions.com/" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="Content-Language" content="en-us"/>
+<meta name="language" content="english"/>
+<meta name="robots" content="index,follow"/>
+<meta name="revisit-after" content="1 days"/>
+<meta name="distribution" content="Global"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<meta name="MSSmartTagsPreventParsing" content="true"/>
+<meta name="copyright" content="(c) 2009 Architectural Traditions"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="expires" content="0"/>
+<meta name="google-site-verification" content="bcfZHaXEGl4itsdzXEaErCLnYAaizWgld63zDI43oAM" />
+
+
+
+
+<link href="/styles/reset.css" rel="stylesheet" type="text/css"/>
+<link href="/styles/main.css" rel="stylesheet" type="text/css"/>
+<link href="/styles/nav.css" rel="stylesheet" type="text/css"/>
+
+<!--[if IE 8]>
+<link rel="stylesheet" href="/styles/ie8.css" type="text/css" media="screen, projection"/>
+<![endif]-->
+
+<!--[if IE 7]>
+<link rel="stylesheet" href="/styles/ie7.css" type="text/css" media="screen, projection"/>
+<![endif]-->
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/jslib/jquery.maskedinput-1.1.2.js"></script>
+
+<script type="text/javascript" src="/js/jquery.lightbox-0.5.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/jquery.lightbox-0.5.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="/jslib/css/ui-lightness/jquery-ui-1.8.7.custom.css" media="screen" />
+<script type="text/javascript" src="/js/main.js"></script>
+<script type="text/javascript" src="/js/util.js"></script>
+<script type="text/javascript" src="/js/switchmenu.js"></script>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-5285008-12']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+<!-- end: top.shtml -->
+
+
+<style type="text/css">
+.menutitle { cursor:pointer; }
+</style>
+
+</head>
+
+<body>
+
+<div id="wrap">
+
+	<div id="header">
+		<a href="/"><h1>Architectural Traditions</h1></a>
+		<div class="tagline"><h2>crafted doors, windows and hardware</h2></div>
+        
+       <!-- <div class="search">
+        <form method="get" action="/search_results.shtml"><input type=hidden name=config value="htdig">
+        <table height="22" cellspacing="0" cellpadding="0" border="0">
+        <tr>
+        <td valign="middle" align="right"><input name="words" class="field-ss" value="search this site"  onFocus=" if (this.value == 'search this site') {this.value='';}; return true;" maxlength="50"></td>
+        <td valign="middle" align="right">&nbsp;<input type=image name="submit" src="/img/bt-go.gif"></td>
+        </tr>
+        </table>
+        </form>
+        </div>-->
+        
+		<div class="tel">
+        <p><span>(520) 574-7374</span></p>
+        </div>
+
+		<div class="links">
+        <p><a href="/warranty.shtml">Warranty</a>&nbsp;&nbsp;/&nbsp;&nbsp;<a href="/maintenance.shtml">Maintenance</a>&nbsp;&nbsp;/&nbsp;&nbsp;<!-- <a href="/installation.shtml">Installation</a>&nbsp;&nbsp;/&nbsp;&nbsp; --><a href="/faq.shtml">FAQ</a>&nbsp;&nbsp;/&nbsp;&nbsp;<a href="/sitemap.shtml">Sitemap</a></p>
+        </div>
+	</div>
+
+
+<div id="navcontainer">
+	<ul id="navlist">
+		<li><a href="/">Home</a></li>
+		<li><a href="/about.shtml">About Us</a></li>
+		<li><a href="/products.shtml">Products</a></li>
+		<li><a href="/news-media.shtml">News & Media</a></li>
+		<li><a href="/gallery.shtml">Photo Gallery</a></li>
+		<li><a href="/mobile-showroom.shtml">Mobile Design Center</a></li>
+		<!-- li><a href="/green.shtml">Green/Sustainability</a></li -->
+		<li><a href="/technicalinfo.shtml">Technical Info</a></li>
+		<li><a href="/contact.shtml">Contact Us</a></li>
+	</ul>
+</div>
+<div class="undernav"></div>
+
+
+	<div id="sidebar">
+	<div id="sidebar-in">
+		
+		<ul id="sidebar-login">
+		<li><a href="/find-dealer.shtml">Find a Dealer</a></li>
+		<li><a href="/architect/index.shtml">Architect Log-In</a></li>
+		<li><a href="/dealers/">Authorized Dealer Log-In</a></li>
+		</ul>        
+
+	
+		<h2 class="itemtitle sidebar-title">news &amp; media</h2>
+		<p class="home-news-date"></p>
+		<p class="home-news-txt"><span class="newsmedia-img"><a href="/newsmedia/media/pdf/2009-Fall-Beautiful-Homes.pdf"><img src="/newsmedia/media/thumbnail/2009-Fall-Beautiful-homes.jpg" alt="News &amp; Media" /></a></span>To achieve a home that exudes weathered character and strong, earthy style, employ natural materials such as wood, stone, and metal. Hand-wrought textures add a sense of age and artisan style.<br /><a href="/newsmedia/media/pdf/2009-Fall-Beautiful-Homes.pdf">Learn more</a></p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        
+		<p class="home-news-date">November 20, 2009</p>
+		<p class="home-news-txt">Sikkens Cetol 1 & Cetol 23 Plus, Premium Alkyd System - Translucent Satin Finish: features and benefits.<br /><a href="/newsmedia/news/pdf/Sikkens_features_benefits.pdf">Learn more</a></p>
+        <p>&nbsp;</p>
+
+        <p>&nbsp;</p>
+        <p><a href="/whychoosewood.shtml"><img src="/img/banner-woodchoice.gif" alt="Wood, the right choice!" /></a></p>
+
+	
+	</div><!-- /sidebar-in -->
+	</div><!-- /sidebar -->
+	
+	<div id="main">
+    <img src="/img/header/entry3.jpg" alt="Architectural Traditions" title="Architectural Traditions" />
+	<div id="main-in">
+<!-- START content -->	
+		<h2 class="pagetitle">About Our Doors</h2>
+        <p>&nbsp;</p>
+		<img src="img/aboutdoors1.jpg" alt="Door form meets function" style="float:left; margin:4px 20px 5px 0;" />
+		<h2 class="itemtitle">Door form meets function</h2>
+        <p>Exterior doors and entry systems can make a bold and
+impactful first impression that reflects your tastes and
+compliments your architectural environment. What's more,
+these doors fulfill an important functional role by protecting
+your home from the environment, providing privacy and
+insuring security. Whether it's an entrance door and a transom,
+or paired with sidelites, French or ‘patio' doors offer wonderful
+flexibility and versatility as well.</p>
+        <p>&nbsp;</p>
+<p>Feature door systems, such as Operating Sidelite Systems,
+Surround Systems and Sliding Door Systems allow you to tailor
+the door configurations dependent upon your practical needs
+and design preferences.</p>
+        <p>&nbsp;</p>
+<p>Because they're not exposed to the elements, interior doors
+are available in virtually every species, texture and finish&mdash;in
+a variety of styles&mdash;to compliment your exterior doors and color
+palette as well as the architecture of your interior space.</p>
+        <p>&nbsp;</p>
+<p>All-Panel and All-Glass Combinations allow you to experiment
+with various glass and panel combinations to create a more
+open or more private feeling door. Door tops allow you to create
+the door shape that suits your unique style and compliments
+your environment, whether you prefer the simple lines of
+a square top, or the graceful elegance of an arch. Our custom
+door top shapes such as flat arch, true arch, and elliptical arch,
+invite you to play with possibilities and lines of your space.
+Many of our doors feature a wide spectrum of glass options
+to create a more refreshing, bright feel.</p>
+        <p>&nbsp;</p><div class="clearfix"></div>
+
+		<img src="img/aboutdoors2.jpg" alt="You draw the lines" style="float:left; margin:4px 20px 5px 0;" />
+		<h2 class="itemtitle">You draw the lines</h2>
+        <p>Choose the panel profile and sticking option that suits your style by determining
+the lines and dimensions of your door, and giving it a truly customized look.
+A Mission sticking with a raised panel offers a more elegant Southwest feel;
+while a classic sticking with a plank panel can exude a more rustic, simple
+tone; glass, in place of wood panels, or a combination of wood and glass creates
+a completely different feel that invites the outside in, while still insuring privacy.</p>
+        <p>&nbsp;</p><div class="clearfix"></div>
+
+		<img src="img/aboutdoors3.jpg" alt="The wood that works" style="float:left; margin:4px 20px 5px 0;" />
+		<h2 class="itemtitle">The wood that works</h2>
+        <p>At Architectural Traditions, we offer a selection of more than nine spectacular
+wood species from around the world. Each one is individual, with no other
+one like it on earth, able to capture an equally distinctive look: from the
+refined Classic elegance of a deep mahogany, or a more rustic Country feel of
+a knotty Alder. Extreme heat, constant moisture, fluctuations in snow and
+sun, and ocean breezes will impact your wood choice as well. While virtually
+all wood species are appropriate for interior applications, we recommend
+our ‘exposure protected’ application for long-term durability and minimal
+maintenance of all our exterior doors. Cedar and Mahogany are some lovely
+wood species that are most appropriate in the most severe climates.</p>
+        <p>&nbsp;</p><div class="clearfix"></div>
+
+		<img src="img/aboutdoors4.jpg" alt="Finish with style" style="float:left; margin:4px 20px 5px 0;" />
+		<h2 class="itemtitle">Finish with style</h2>
+        <p>At Architectural Traditions, we offer a spectrum of standard and
+customized finishes to enhance the patina and grain patterns, and bring
+your door to life. Using traditional Old World methods, our skilled
+artisans can also create a rubbed oil finish that unleashes the radiant
+luster of the wood, creating a wonderfully authentic look and protecting
+it from long-term environmental effects. Unique to Architectural
+Traditions, any of our finishes can have a "glaze" added to add
+dimension and highlights to your door. Create a weathered, rugged,
+antique or refined look with our selection of 14 distress textures.</p>
+        <p>&nbsp;</p><div class="clearfix"></div>
+
+		<img src="img/aboutdoors5.jpg" alt="A tasteful touch" style="float:left; margin:4px 20px 5px 0;" />
+		<h2 class="itemtitle">A tasteful touch</h2>
+        <p>A charming speakeasy, a sparkling glass inset or an
+Old World wood inlay can emphasize the rich character
+and history of your door. They are the accents that
+make your statement truly unique.</p>
+        <p>&nbsp;</p><div class="clearfix"></div>
+
+
+<!-- END content -->	
+		<div id="footer"><p style="float:left;">&copy; 2010 Architectural Traditions | All Rights Reserved | <a href="http://www.architecturaltraditions.com/rep/index.php" title="Architectural Traditions Sales Representative Form Repository">Representative Forms</a></p><!-- p style="float:left;"><a href="#"><img src="/img/digital-media-facebook.gif" alt="Find us on Facebook" /></a><a href="#"><img src="/img/digital-media-twitter.gif" alt="Follow us on Twitter" /></a></p --></div>
+		
+	</div><!-- /main -->
+	</div><!-- /main-in -->
+	
+	<div class="clearfix"></div>
+
+</div>
+
+</body>
+</html>
+
+
