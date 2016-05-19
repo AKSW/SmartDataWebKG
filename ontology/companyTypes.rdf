@@ -23,9 +23,10 @@
 
     <!-- http://corp.dbpedia.org/ontology#Association -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#Association">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#Association">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
         <rdfs:comment xml:lang="de">Ein eingetragener Verein ist ein Verein, der in das Vereinsregister des jeweils zuständigen Amtsgerichts eingetragen ist. Eingetragene Vereine verfolgen keinen wirtschaftlichen Zweck, sind somit Idealvereine. Für die Zuständigkeit des Amtsgerichts ist der Vereinssitz maßgeblich.</rdfs:comment>
+        <rdfs:label xml:lang="de">e. V.</rdfs:label>
         <rdfs:label xml:lang="de">Eingetragener Verein</rdfs:label>
         <rdfs:label xml:lang="da">Forening</rdfs:label>
         <rdfs:label xml:lang="kk">OO</rdfs:label>
@@ -40,37 +41,37 @@
         <rdfs:label xml:lang="sv">rf</rdfs:label>
         <rdfs:label xml:lang="fi">ry</rdfs:label>
         <rdfs:label xml:lang="kk">Общественное объединение</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#AöR -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#AöR">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#AöR">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
         <rdfs:comment xml:lang="de">Eine Anstalt des öffentlichen Rechts (AdöR, AöR) ist eine mit einer öffentlichen Aufgabe betraute Institution, deren Aufgabe ihr gesetzlich oder satzungsmäßig zugewiesen worden ist. Ihre meist staatlichen oder kommunalen Aufgaben werden in ihrer Satzung festgelegt. Sie bündelt sachliche Mittel (Gebäude, Einrichtung, Fahrzeuge usw.) und Personal (Planstellen für Beamte und Arbeitnehmer) in einer Organisationseinheit. Überwiegend ist die Anstalt öffentlichen Rechts rechtlich selbständig, mithin eine juristische Person des öffentlichen Rechts.</rdfs:comment>
         <rdfs:label xml:lang="de">AdöR</rdfs:label>
         <rdfs:label xml:lang="de">Anstalt des öffentlichen Rechts</rdfs:label>
         <rdfs:label xml:lang="de">AöR</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#CoOperative -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#CoOperative">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#CoOperative">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
         <rdfs:comment xml:lang="en">A co-operative (also known as co-op, cooperative or coop) is an autonomous association of persons united voluntary to meet their common economic, social, and cultural needs and aspirations through a jointly owned and democratically controlled business.</rdfs:comment>
         <rdfs:comment xml:lang="de">Eine Genossenschaft ist ein Zusammenschluss von natürlichen beziehungsweise juristischen Personen, deren Ziel der Erwerb oder die wirtschaftliche beziehungsweise soziale Förderung ihrer Mitglieder durch einen gemeinschaftlichen Geschäftsbetrieb ist.</rdfs:comment>
         <rdfs:label xml:lang="da">A.M.B.A.</rdfs:label>
         <rdfs:label xml:lang="da">AMBA</rdfs:label>
-        <rdfs:label xml:lang="sv">Anl.</rdfs:label>
         <rdfs:label xml:lang="sv">Anl</rdfs:label>
+        <rdfs:label xml:lang="sv">Anl.</rdfs:label>
+        <rdfs:label xml:lang="pt">C.R.L.</rdfs:label>
         <rdfs:label xml:lang="pt">CRL</rdfs:label>
         <rdfs:label xml:lang="pt">CRL.</rdfs:label>
-        <rdfs:label xml:lang="pt">C.R.L.</rdfs:label>
-        <rdfs:label xml:lang="es">Coop.</rdfs:label>
         <rdfs:label xml:lang="es">Coop</rdfs:label>
+        <rdfs:label xml:lang="es">Coop.</rdfs:label>
         <rdfs:label xml:lang="es">Cooperativa</rdfs:label>
         <rdfs:label xml:lang="pt">Cooperativa</rdfs:label>
         <rdfs:label xml:lang="pt">Cooperativa de Responsabilidade Limitada</rdfs:label>
@@ -112,46 +113,46 @@
         <rdfs:label xml:lang="hr">zadruga</rdfs:label>
         <rdfs:label xml:lang="ru">кооператив</rdfs:label>
         <rdfs:label xml:lang="fa">شرکت تعاونی تولید و مصرف</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#EEIG -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#EEIG">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#EEIG">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
         <rdfs:comment xml:lang="en">a European private limited company, corresponding to Ltd., GmbH, etc. This form of company is currently being proposed by the European Commission.</rdfs:comment>
         <rdfs:label xml:lang="en">EEIG</rdfs:label>
         <rdfs:label xml:lang="en">European Economic Interest Grouping</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#EWIV -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#EWIV">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#EWIV">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
         <rdfs:comment xml:lang="de">Eine Europäische Wirtschaftliche Interessenvereinigung (EWIV) ist eine auf dem Recht der Europäischen Union basierende Gesellschaft, die z. B. in Deutschland und Österreich als Personengesellschaft betrachtet wird. Ihr Zweck ist die Erleichterung und Förderung der grenzüberschreitenden Zusammenarbeit der Mitgliedsstaaten. Sie wurde am 25. Juli 1985 als erste europäische Unternehmensform von der damals noch existenten EWG eingeführt und gilt in Deutschland als Handelsgesellschaft im Sinne des Handelsgesetzbuchs.</rdfs:comment>
         <rdfs:label xml:lang="de">EWIV</rdfs:label>
         <rdfs:label xml:lang="de">Europäische wirtschaftliche Interessenvereinigung</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#Eigenbetrieb -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#Eigenbetrieb">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#Eigenbetrieb">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
         <rdfs:comment xml:lang="de">Der Eigenbetrieb gehört zu den öffentlichen Betrieben und Verwaltungen und stellt eine Gestaltungsmöglichkeit eines kommunalen Unternehmens dar. Er ist eine besondere öffentlich-rechtliche Unternehmensform auf der Grundlage der Gemeindeordnungen bzw. der Kreisordnungen der Bundesländer. Das entsprechende Pendant bei Bundesländern ist der Landesbetrieb.</rdfs:comment>
         <rdfs:label xml:lang="de">Eigenbetrieb</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#ForeignCompany -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#ForeignCompany">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#ForeignCompany">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
         <rdfs:label xml:lang="vi">DTNN</rdfs:label>
         <rdfs:label xml:lang="vi">Doanh nghiệp có vốn đầu tư nước ngoài</rdfs:label>
         <rdfs:label xml:lang="nb">NUF</rdfs:label>
@@ -161,14 +162,14 @@
         <rdfs:label xml:lang="lv">ĀKF</rdfs:label>
         <rdfs:label xml:lang="lv">Ārzemju komersanta filiāle</rdfs:label>
         <rdfs:label xml:lang="ar">شركة أجنبية</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#Foundation -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#Foundation">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#Foundation">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
         <rdfs:comment xml:lang="de">Eine Stiftung ist in Deutschland eine Einrichtung, die mit Hilfe eines Vermögens einen vom Stifter festgelegten Zweck verfolgt. Dabei wird in der Regel das Vermögen auf Dauer erhalten und die Destinatäre können nur in den Genuss der Erträge kommen. Stiftungen können in verschiedenen rechtlichen Formen und zu jedem legalen Zweck errichtet werden. Die meisten Stiftungen werden in privatrechtlicher Form errichtet und dienen gemeinnützigen Zwecken.</rdfs:comment>
         <rdfs:label xml:lang="nb">Stiftelse</rdfs:label>
         <rdfs:label xml:lang="sv">Stiftelse</rdfs:label>
@@ -188,23 +189,23 @@
         <rdfs:label xml:lang="sv">stiftelse</rdfs:label>
         <rdfs:label xml:lang="fi">säätiö</rdfs:label>
         <rdfs:label xml:lang="id">yayasan</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#GbR -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#GbR">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#GbR">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
         <rdfs:label xml:lang="de">GbR</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#GeneralPartnership -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#GeneralPartnership">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#GeneralPartnership">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
         <rdfs:comment xml:lang="de">Eine offene Handelsgesellschaft (Abkürzung: OHG oder oHG) ist in Deutschland eine Personenhandelsgesellschaft, in der sich zwei oder mehr natürliche und/oder juristische Personen zusammengeschlossen haben, um unter einer gemeinsamen Firma ein Handelsgewerbe zu betreiben.</rdfs:comment>
         <rdfs:comment xml:lang="en">It is a partnership in which partners share equally in both responsibility and liability.</rdfs:comment>
         <rdfs:label xml:lang="nb">ANS</rdfs:label>
@@ -224,24 +225,21 @@
         <rdfs:label xml:lang="mk">Javno Trgovsko Društvo</rdfs:label>
         <rdfs:label xml:lang="ja">NK</rdfs:label>
         <rdfs:label xml:lang="el">O.E.</rdfs:label>
-        <rdfs:label xml:lang="el">OE</rdfs:label>
         <rdfs:label xml:lang="el">O.V.E.E.</rdfs:label>
-        <rdfs:label xml:lang="el">OVEE</rdfs:label>
+        <rdfs:label xml:lang="el">OE</rdfs:label>
         <rdfs:label xml:lang="de">OG</rdfs:label>
         <rdfs:label xml:lang="de">OHG</rdfs:label>
+        <rdfs:label xml:lang="el">OVEE</rdfs:label>
         <rdfs:label xml:lang="de">Offene Gesellschaft</rdfs:label>
         <rdfs:label xml:lang="de">Offene Handelsgesellschaft</rdfs:label>
         <rdfs:label xml:lang="el">Omórithmi Etería</rdfs:label>
         <rdfs:label xml:lang="el">Omórithmi Viomihanikí Emborikí Etería</rdfs:label>
         <rdfs:label xml:lang="uk">PT</rdfs:label>
         <rdfs:label xml:lang="es">S.C.</rdfs:label>
-        <rdfs:label xml:lang="es">SC</rdfs:label>
         <rdfs:label xml:lang="ro">S.N.C.</rdfs:label>
-        <rdfs:label xml:lang="ro">SNC</rdfs:label>
         <rdfs:label xml:lang="it">S.n.c.</rdfs:label>
-        <rdfs:label xml:lang="it">Snc</rdfs:label>
         <rdfs:label xml:lang="it">S.s.</rdfs:label>
-        <rdfs:label xml:lang="it">Ss</rdfs:label>
+        <rdfs:label xml:lang="es">SC</rdfs:label>
         <rdfs:label xml:lang="fr">SCS</rdfs:label>
         <rdfs:label xml:lang="bg">SD</rdfs:label>
         <rdfs:label xml:lang="fr">SNC</rdfs:label>
@@ -249,12 +247,14 @@
         <rdfs:label xml:lang="nb">Selskap med delt ansvar</rdfs:label>
         <rdfs:label xml:lang="ar">Sharikat Tadamun</rdfs:label>
         <rdfs:label xml:lang="fa">Sherkat Tazamoni</rdfs:label>
+        <rdfs:label xml:lang="it">Snc</rdfs:label>
         <rdfs:label xml:lang="es">Soc.Col.</rdfs:label>
         <rdfs:label xml:lang="es">Sociedad Colectiva</rdfs:label>
         <rdfs:label xml:lang="es">Sociedad en Nombre Colectivo</rdfs:label>
         <rdfs:label xml:lang="ro">Societatea în nume colectiv</rdfs:label>
         <rdfs:label xml:lang="it">Società in nome collettivo</rdfs:label>
         <rdfs:label xml:lang="it">Società semplice</rdfs:label>
+        <rdfs:label xml:lang="it">Ss</rdfs:label>
         <rdfs:label xml:lang="nl">VOF</rdfs:label>
         <rdfs:label xml:lang="nl">Vennootschap onder firma</rdfs:label>
         <rdfs:label xml:lang="sk">Verejná obchodná spoločnosť</rdfs:label>
@@ -267,19 +267,19 @@
         <rdfs:label xml:lang="ja">gōmei-kaisha</rdfs:label>
         <rdfs:label xml:lang="ko">hapmyeong hoesa</rdfs:label>
         <rdfs:label xml:lang="hr">j.t.d.</rdfs:label>
-        <rdfs:label xml:lang="hr">jtd</rdfs:label>
         <rdfs:label xml:lang="hr">javno trgovačko društvo</rdfs:label>
+        <rdfs:label xml:lang="hr">jtd</rdfs:label>
         <rdfs:label xml:lang="hu">kkt.</rdfs:label>
         <rdfs:label xml:lang="hu">közkereseti társaság</rdfs:label>
         <rdfs:label xml:lang="ja">nin&apos;i kumiai</rdfs:label>
         <rdfs:label xml:lang="sr">o.d.</rdfs:label>
-        <rdfs:label xml:lang="sr">od</rdfs:label>
         <rdfs:label xml:lang="de">oHG</rdfs:label>
+        <rdfs:label xml:lang="sr">od</rdfs:label>
         <rdfs:label xml:lang="sr">ortačko društvo</rdfs:label>
         <rdfs:label xml:lang="ru">rostoye Tovarishestvo</rdfs:label>
         <rdfs:label xml:lang="is">sameignarfélag</rdfs:label>
-        <rdfs:label xml:lang="is">sf.</rdfs:label>
         <rdfs:label xml:lang="is">sf</rdfs:label>
+        <rdfs:label xml:lang="is">sf.</rdfs:label>
         <rdfs:label xml:lang="pt">sociedade em comum</rdfs:label>
         <rdfs:label xml:lang="pt">sociedade em conta de participação</rdfs:label>
         <rdfs:label xml:lang="pt">sociedade em nome coletivo</rdfs:label>
@@ -289,12 +289,12 @@
         <rdfs:label xml:lang="pl">spółka jawna</rdfs:label>
         <rdfs:label xml:lang="bg">subiratelno druzhestvo</rdfs:label>
         <rdfs:label xml:lang="cs">v.o.s.</rdfs:label>
-        <rdfs:label xml:lang="cs">vos</rdfs:label>
         <rdfs:label xml:lang="sk">v.o.s.</rdfs:label>
-        <rdfs:label xml:lang="sk">vos</rdfs:label>
         <rdfs:label xml:lang="nl">vennootschap onder firma</rdfs:label>
         <rdfs:label xml:lang="cs">veřejná obchodní společnost</rdfs:label>
         <rdfs:label xml:lang="nl">vof</rdfs:label>
+        <rdfs:label xml:lang="cs">vos</rdfs:label>
+        <rdfs:label xml:lang="sk">vos</rdfs:label>
         <rdfs:label xml:lang="es">y compañía</rdfs:label>
         <rdfs:label xml:lang="es">y sucesores</rdfs:label>
         <rdfs:label xml:lang="sv">öppet bolag</rdfs:label>
@@ -319,14 +319,14 @@
         <rdfs:label xml:lang="ja">合名会社</rdfs:label>
         <rdfs:label xml:lang="ko">合名會社</rdfs:label>
         <rdfs:label xml:lang="ko">합명회사</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#GovernmentOwnedEnterprise -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#GovernmentOwnedEnterprise">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#GovernmentOwnedEnterprise">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
         <rdfs:label xml:lang="vi">DNNN</rdfs:label>
         <rdfs:label xml:lang="vi">Doanh nghiệp nhà nước</rdfs:label>
         <rdfs:label xml:lang="pt">Empresa pública</rdfs:label>
@@ -355,8 +355,8 @@
         <rdfs:label xml:lang="en">government owned corporation</rdfs:label>
         <rdfs:label xml:lang="en">government owned enterprise</rdfs:label>
         <rdfs:label xml:lang="pl">jednoosobowa działalność gospodarcza</rdfs:label>
-        <rdfs:label xml:lang="is">ohf.</rdfs:label>
         <rdfs:label xml:lang="is">ohf</rdfs:label>
+        <rdfs:label xml:lang="is">ohf.</rdfs:label>
         <rdfs:label xml:lang="is">opinbert hlutafélag</rdfs:label>
         <rdfs:label xml:lang="fr">société d&apos;économie mixte</rdfs:label>
         <rdfs:label xml:lang="en">state enterprise</rdfs:label>
@@ -364,14 +364,14 @@
         <rdfs:label xml:lang="de">Öffentliches Unternehmen</rdfs:label>
         <rdfs:label xml:lang="kk">ГП</rdfs:label>
         <rdfs:label xml:lang="kk">Государственное предприятие</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#IndividualEntrepreneur -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#IndividualEntrepreneur">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#IndividualEntrepreneur">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
         <rdfs:comment xml:lang="en">A sole proprietorship, also known as the sole trader or simply a proprietorship, is a type of business entity that is owned and run by one natural person and in which there is no legal distinction between the owner and the business. The owner is in direct control of all elements and is legally accountable for the finances of such business and this may include debts, loans, loss etc.</rdfs:comment>
         <rdfs:comment xml:lang="de">Ein Einzelunternehmen ist
 
@@ -380,11 +380,11 @@
         <rdfs:label xml:lang="vi">DNTN</rdfs:label>
         <rdfs:label xml:lang="vi">Doanh nghiệp tư nhân</rdfs:label>
         <rdfs:label xml:lang="es">E.U.</rdfs:label>
-        <rdfs:label xml:lang="es">EU</rdfs:label>
         <rdfs:label xml:lang="fr">EI</rdfs:label>
         <rdfs:label xml:lang="es">EIRL</rdfs:label>
         <rdfs:label xml:lang="es">EIRL.</rdfs:label>
         <rdfs:label xml:lang="bg">ET</rdfs:label>
+        <rdfs:label xml:lang="es">EU</rdfs:label>
         <rdfs:label xml:lang="nl">Eenmanszaak</rdfs:label>
         <rdfs:label xml:lang="de">Einzelunternehmen</rdfs:label>
         <rdfs:label xml:lang="es">Empresa Individual de Responsabilidad Limitada</rdfs:label>
@@ -416,8 +416,8 @@
         <rdfs:label xml:lang="lt">Tikroji ūkinė bendrija</rdfs:label>
         <rdfs:label xml:lang="lt">TŪB</rdfs:label>
         <rdfs:label xml:lang="id">UD</rdfs:label>
-        <rdfs:label xml:lang="pt">Unipessoal Lda.</rdfs:label>
         <rdfs:label xml:lang="pt">Unipessoal Lda</rdfs:label>
+        <rdfs:label xml:lang="pt">Unipessoal Lda.</rdfs:label>
         <rdfs:label xml:lang="id">Usaha Dagang</rdfs:label>
         <rdfs:label xml:lang="uz">XT</rdfs:label>
         <rdfs:label xml:lang="uz">Xususiy tadbirkorlik</rdfs:label>
@@ -425,15 +425,14 @@
         <rdfs:label xml:lang="it">ditta indivduale</rdfs:label>
         <rdfs:label xml:lang="hr">domaća radinost</rdfs:label>
         <rdfs:label xml:lang="de">e.K.</rdfs:label>
-        <rdfs:label xml:lang="de">eK</rdfs:label>
         <rdfs:label xml:lang="de">e.Kfm.</rdfs:label>
         <rdfs:label xml:lang="de">e.Kfr.</rdfs:label>
         <rdfs:label xml:lang="de">e.U.</rdfs:label>
-        <rdfs:label xml:lang="de">eU</rdfs:label>
         <rdfs:label xml:lang="hu">e.c.</rdfs:label>
-        <rdfs:label xml:lang="hu">ec</rdfs:label>
         <rdfs:label xml:lang="hu">e.v.</rdfs:label>
-        <rdfs:label xml:lang="hu">ev</rdfs:label>
+        <rdfs:label xml:lang="de">eK</rdfs:label>
+        <rdfs:label xml:lang="de">eU</rdfs:label>
+        <rdfs:label xml:lang="hu">ec</rdfs:label>
         <rdfs:label xml:lang="bg">ednolichen turgovetz</rdfs:label>
         <rdfs:label xml:lang="nl">eenmanszaak</rdfs:label>
         <rdfs:label xml:lang="hu">egyéni cég</rdfs:label>
@@ -445,6 +444,7 @@
         <rdfs:label xml:lang="sv">enskild näringsidkare</rdfs:label>
         <rdfs:label xml:lang="fr">entreprise en nom personnel</rdfs:label>
         <rdfs:label xml:lang="fr">entreprise individuelle</rdfs:label>
+        <rdfs:label xml:lang="hu">ev</rdfs:label>
         <rdfs:label xml:lang="sv">firma</rdfs:label>
         <rdfs:label xml:lang="pt">firma individual</rdfs:label>
         <rdfs:label xml:lang="it">imprenditore</rdfs:label>
@@ -462,9 +462,7 @@
         <rdfs:label xml:lang="fr">profession libérale</rdfs:label>
         <rdfs:label xml:lang="fr">raison individuelle</rdfs:label>
         <rdfs:label xml:lang="hr">s.p.</rdfs:label>
-        <rdfs:label xml:lang="hr">sp</rdfs:label>
         <rdfs:label xml:lang="sl">s.p.</rdfs:label>
-        <rdfs:label xml:lang="sl">sp</rdfs:label>
         <rdfs:label xml:lang="hr">samostalni preduzetnik</rdfs:label>
         <rdfs:label xml:lang="hr">sezonski obrt</rdfs:label>
         <rdfs:label xml:lang="hr">slobodna djelatnost</rdfs:label>
@@ -472,6 +470,8 @@
         <rdfs:label xml:lang="fr">sociétés d&apos;exercice libéral</rdfs:label>
         <rdfs:label xml:lang="en">sole proprietorship</rdfs:label>
         <rdfs:label xml:lang="en">sole trader</rdfs:label>
+        <rdfs:label xml:lang="hr">sp</rdfs:label>
+        <rdfs:label xml:lang="sl">sp</rdfs:label>
         <rdfs:label xml:lang="hr">sporedno zanimanje</rdfs:label>
         <rdfs:label xml:lang="fi">toiminimi</rdfs:label>
         <rdfs:label xml:lang="hr">vezani obrt</rdfs:label>
@@ -484,54 +484,54 @@
         <rdfs:label xml:lang="uz">Хусусий тадбиркорлик</rdfs:label>
         <rdfs:label xml:lang="bg">едноличен търговец</rdfs:label>
         <rdfs:label xml:lang="uk">фізична особа підприємець</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#InvAG -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#InvAG">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#InvAG">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
         <rdfs:comment xml:lang="de">Eine Investmentaktiengesellschaft (InvAG) bezeichnet eine nach deutschem Kapitalanlagegesetzbuch (KAGB) gegründete Kapitalanlagegesellschaft mit variablem Grundkapital (§§ 17 ff. KAGB). Das Anfangskapital muss mindestens 125.000 EUR (externe Kapitalverwaltungsgesellschaft) oder 300.000 EUR (interne Kapitalverwaltungsgesellschaft) (§ 25 Abs. 1 Nr. 1 KAGB) betragen.</rdfs:comment>
         <rdfs:label xml:lang="de">InvAG</rdfs:label>
         <rdfs:label xml:lang="de">Investmentaktiengesellschaft</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#KöR -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#KöR">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#KöR">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
         <rdfs:comment xml:lang="de">Eine Körperschaft des öffentlichen Rechts (K. d. ö. R., auch mit KdöR, KöR oder K. ö. R. abgekürzt) ist eine mit öffentlichen Aufgaben betraute juristische Person des öffentlichen Rechts, deren Aufgaben ihr gesetzlich oder satzungsmäßig zugewiesen worden sind. Ihre hoheitlichen Aufgaben werden in ihrer Satzung festgelegt. Die Körperschaft bündelt sachliche Mittel (wie Gebäude, Einrichtung, Fahrzeuge) und Personal (Planstellen für Beamte und Arbeitnehmer) in einer rechtlich selbständigen Organisationseinheit und unterliegt dem öffentlichen Recht.</rdfs:comment>
         <rdfs:label xml:lang="de">K.d.ö.R.</rdfs:label>
-        <rdfs:label xml:lang="de">KdöR</rdfs:label>
         <rdfs:label xml:lang="de">K.ö.R.</rdfs:label>
-        <rdfs:label xml:lang="de">KöR</rdfs:label>
         <rdfs:label xml:lang="de">KdöR</rdfs:label>
         <rdfs:label xml:lang="de">KöR</rdfs:label>
         <rdfs:label xml:lang="de">Körperschaft des öffentlichen Rechts</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#LimitedCompany -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#LimitedCompany"/>
+    <Class rdf:about="http://corp.dbpedia.org/ontology#LimitedCompany">
+	<rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#OrgType"/>
+    </Class>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#LimitedLiabilityCompany -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#LimitedLiabilityCompany">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#LimitedLiabilityCompany">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
         <rdfs:comment xml:lang="en">A limited liability company (LLC) is the United States-specific form of a private limited company. It is a business structure that combines the pass-through taxation of a partnership or sole proprietorship with the limited liability of a corporation. An LLC is not a corporation; it is a legal form of a company that provides limited liability to its owners in many jurisdictions. LLCs do not need to be organized for profit. In certain U.S. states (for example, Texas), businesses that provide professional services requiring a state professional license, such as legal or medical services, may not be allowed to form an LLC but may be required to form a very similar entity called a professional limited liability company (PLLC).</rdfs:comment>
         <rdfs:label xml:lang="nl">Besloten vennootschap</rdfs:label>
         <rdfs:label xml:lang="es">Compañía Limitada</rdfs:label>
         <rdfs:label xml:lang="vi">Cty TNHH</rdfs:label>
         <rdfs:label xml:lang="vi">Cty TNHH MTV</rdfs:label>
-        <rdfs:label xml:lang="es">Cía. Ltda.</rdfs:label>
         <rdfs:label xml:lang="es">Cía Ltda</rdfs:label>
+        <rdfs:label xml:lang="es">Cía. Ltda.</rdfs:label>
         <rdfs:label xml:lang="vi">Công ty trách nhiệm hữu hạn</rdfs:label>
         <rdfs:label xml:lang="vi">Công ty trách nhiệm hữu hạn một thành viên</rdfs:label>
         <rdfs:label xml:lang="ja">G.K.</rdfs:label>
@@ -554,10 +554,10 @@
         <rdfs:label xml:lang="ja">gōdō-kaisha</rdfs:label>
         <rdfs:label xml:lang="hu">kft.</rdfs:label>
         <rdfs:label xml:lang="hu">korlátolt felelősségű társaság</rdfs:label>
+        <rdfs:label xml:lang="en">l.l.c.</rdfs:label>
         <rdfs:label xml:lang="en">limited liability company</rdfs:label>
         <rdfs:label xml:lang="en">llc</rdfs:label>
         <rdfs:label xml:lang="en">llc.</rdfs:label>
-        <rdfs:label xml:lang="en">l.l.c.</rdfs:label>
         <rdfs:label xml:lang="en">ltd. co.</rdfs:label>
         <rdfs:label xml:lang="ru">Общество с ограниченной ответственностью</rdfs:label>
         <rdfs:label xml:lang="kk">ТОО</rdfs:label>
@@ -565,27 +565,27 @@
         <rdfs:label xml:lang="mn">ХХК</rdfs:label>
         <rdfs:label xml:lang="mn">Хязгаарлагдмал Хариуцлагатай Компани</rdfs:label>
         <rdfs:label xml:lang="ja">合同会社</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#LimitedLiabilityLimitedPartnership -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#LimitedLiabilityLimitedPartnership">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#LimitedLiabilityLimitedPartnership">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
         <rdfs:comment xml:lang="en">The limited liability limited partnership (LLLP) is a relatively new modification of the limited partnership, a form of business entity recognized under United States commercial law. An LLLP is a limited partnership and as such consists of one or more general partners and one or more limited partners. Typically, while the general partners manage the LLLP, the limited partners&apos; interest is purely financial.</rdfs:comment>
+        <rdfs:label xml:lang="en">L.L.L.P.</rdfs:label>
         <rdfs:label xml:lang="en">LLLP</rdfs:label>
         <rdfs:label xml:lang="en">LLLP.</rdfs:label>
-        <rdfs:label xml:lang="en">L.L.L.P.</rdfs:label>
         <rdfs:label xml:lang="en">limited liability limited partnership</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#LimitedLiabilityPartnership -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#LimitedLiabilityPartnership">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#LimitedLiabilityPartnership">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
         <rdfs:comment xml:lang="en">A limited liability partnership (LLP) is a partnership in which some or all partners (depending on the jurisdiction) have limited liabilities.</rdfs:comment>
         <rdfs:comment xml:lang="en">A limited partnership (LP) is a form of partnership similar to a general partnership, except that where a general partnership must have at least two general partners (GPs), a limited partnership must have at least one GP and at least one limited partner.</rdfs:comment>
         <rdfs:label xml:lang="nl">Commanditaire vennootschap</rdfs:label>
@@ -594,22 +594,22 @@
         <rdfs:label xml:lang="en">LP</rdfs:label>
         <rdfs:label xml:lang="ar">Sharikat Tawssiyah Belashom</rdfs:label>
         <rdfs:label xml:lang="nl">cv</rdfs:label>
-        <rdfs:label xml:lang="sk">ks</rdfs:label>
         <rdfs:label xml:lang="sk">k.s.</rdfs:label>
+        <rdfs:label xml:lang="sk">ks</rdfs:label>
         <rdfs:label xml:lang="en">limited liability partnership</rdfs:label>
         <rdfs:label xml:lang="en">limited partnership</rdfs:label>
         <rdfs:label xml:lang="pl">sp.p.</rdfs:label>
         <rdfs:label xml:lang="pl">spółka partnerska</rdfs:label>
         <rdfs:label xml:lang="ja">yūgen sekinin jigyō kumiai</rdfs:label>
         <rdfs:label xml:lang="ja">有限責任事業組合</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#LimitedPartnership -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#LimitedPartnership">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#LimitedPartnership">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
         <rdfs:comment xml:lang="en">A limited partnership (LP) is a form of partnership similar to a general partnership, except that where a general partnership must have at least two general partners (GPs), a limited partnership must have at least one GP and at least one limited partner.</rdfs:comment>
         <rdfs:comment xml:lang="de">Eine Kommanditgesellschaft (KG) ist
     - ein Zusammenschluss von natürlichen Personen und/oder juristischen Personen, um unter einer gemeinsamen Firma ein Handelsgewerbe zu betreiben,
@@ -626,10 +626,10 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="el">Eterórithmi Etería</rdfs:label>
         <rdfs:label xml:lang="ja">GSK</rdfs:label>
         <rdfs:label xml:lang="mk">K.D.</rdfs:label>
-        <rdfs:label xml:lang="mk">KD</rdfs:label>
         <rdfs:label xml:lang="da">K/S</rdfs:label>
         <rdfs:label xml:lang="sv">KB</rdfs:label>
         <rdfs:label xml:lang="bg">KD</rdfs:label>
+        <rdfs:label xml:lang="mk">KD</rdfs:label>
         <rdfs:label xml:lang="de">KG</rdfs:label>
         <rdfs:label xml:lang="lv">KS</rdfs:label>
         <rdfs:label xml:lang="nb">KS</rdfs:label>
@@ -655,7 +655,6 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="id">Persekutuan Komanditer</rdfs:label>
         <rdfs:label xml:lang="es">S. en C.</rdfs:label>
         <rdfs:label xml:lang="es">S. en C. por A.</rdfs:label>
-        <rdfs:label xml:lang="ro">SCS</rdfs:label>
         <rdfs:label xml:lang="ro">S.C.S.</rdfs:label>
         <rdfs:label xml:lang="es">S.Cra.</rdfs:label>
         <rdfs:label xml:lang="it">S.a.s</rdfs:label>
@@ -676,26 +675,26 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="et">Usaldusühing</rdfs:label>
         <rdfs:label xml:lang="et">UÜ</rdfs:label>
         <rdfs:label xml:lang="hu">betéti társaság</rdfs:label>
-        <rdfs:label xml:lang="hu">bt.</rdfs:label>
         <rdfs:label xml:lang="hu">bt</rdfs:label>
+        <rdfs:label xml:lang="hu">bt.</rdfs:label>
         <rdfs:label xml:lang="nl">gewone commanditaire vennootschap</rdfs:label>
         <rdfs:label xml:lang="ja">gōshi-gaisha</rdfs:label>
         <rdfs:label xml:lang="ja">gōshi-kaisha</rdfs:label>
         <rdfs:label xml:lang="ko">hapja hoesa</rdfs:label>
-        <rdfs:label xml:lang="hr">kd</rdfs:label>
         <rdfs:label xml:lang="hr">k.d.</rdfs:label>
-        <rdfs:label xml:lang="sl">kd</rdfs:label>
         <rdfs:label xml:lang="sl">k.d.</rdfs:label>
-        <rdfs:label xml:lang="sr">kd</rdfs:label>
         <rdfs:label xml:lang="sr">k.d.</rdfs:label>
-        <rdfs:label xml:lang="cs">ks</rdfs:label>
         <rdfs:label xml:lang="cs">k.s.</rdfs:label>
+        <rdfs:label xml:lang="hr">kd</rdfs:label>
+        <rdfs:label xml:lang="sl">kd</rdfs:label>
+        <rdfs:label xml:lang="sr">kd</rdfs:label>
         <rdfs:label xml:lang="bg">komanditno druzhestvo</rdfs:label>
         <rdfs:label xml:lang="hr">komanditno društvo</rdfs:label>
         <rdfs:label xml:lang="sr">komanditno društvo</rdfs:label>
         <rdfs:label xml:lang="cs">komanditní společnost</rdfs:label>
         <rdfs:label xml:lang="fi">kommandiittiyhtiö</rdfs:label>
         <rdfs:label xml:lang="sv">kommanditbolag</rdfs:label>
+        <rdfs:label xml:lang="cs">ks</rdfs:label>
         <rdfs:label xml:lang="en">limited partnership</rdfs:label>
         <rdfs:label xml:lang="is">samlagsfélag</rdfs:label>
         <rdfs:label xml:lang="es">sociedad por acciones</rdfs:label>
@@ -705,13 +704,13 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="pl">spółka komandytowa</rdfs:label>
         <rdfs:label xml:lang="ja">tōshi jigyō yūgen sekinin kumiai</rdfs:label>
         <rdfs:label xml:lang="el">Ετερόρρυθμη Εταιρία</rdfs:label>
-        <rdfs:label xml:lang="mk">КД</rdfs:label>
         <rdfs:label xml:lang="mk">К.Д.</rdfs:label>
         <rdfs:label xml:lang="bg">КД</rdfs:label>
+        <rdfs:label xml:lang="mk">КД</rdfs:label>
         <rdfs:label xml:lang="uk">Командитне товариство Comanditne Tovaristvo</rdfs:label>
         <rdfs:label xml:lang="mk">Командитно друштво</rdfs:label>
-        <rdfs:label xml:lang="sr">кд</rdfs:label>
         <rdfs:label xml:lang="sr">к.д.</rdfs:label>
+        <rdfs:label xml:lang="sr">кд</rdfs:label>
         <rdfs:label xml:lang="bg">командитно дружество</rdfs:label>
         <rdfs:label xml:lang="sr">командитно друштво</rdfs:label>
         <rdfs:label xml:lang="ar">شركات توصية بسيطة</rdfs:label>
@@ -724,37 +723,36 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="ko">合資會社</rdfs:label>
         <rdfs:label xml:lang="ja">投資事業有限責任組合</rdfs:label>
         <rdfs:label xml:lang="ko">합자회사</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#LimitedPartnershipByShares -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#LimitedPartnershipByShares">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#LimitedPartnershipByShares">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
         <rdfs:comment xml:lang="de">Die Kommanditgesellschaft auf Aktien, oder kurz KGaA, ist in einigen Rechtsordnungen eine Rechtsform für Unternehmen. Sie vereint Elemente von Aktiengesellschaft (AG) und Kommanditgesellschaft (KG). Bei der KGaA handelt es sich um eine Aktiengesellschaft, die an Stelle eines Vorstandes über persönlich haftende Gesellschafter (Komplementäre) verfügt.</rdfs:comment>
         <rdfs:label xml:lang="es">Comandita por Acciones</rdfs:label>
         <rdfs:label xml:lang="nl">Comm.VA</rdfs:label>
-        <rdfs:label xml:lang="mk">KDA</rdfs:label>
         <rdfs:label xml:lang="mk">K.D.A.</rdfs:label>
         <rdfs:label xml:lang="bg">KDA</rdfs:label>
+        <rdfs:label xml:lang="mk">KDA</rdfs:label>
         <rdfs:label xml:lang="de">KGaA</rdfs:label>
         <rdfs:label xml:lang="mk">Komanditno Društvo so Akcie</rdfs:label>
         <rdfs:label xml:lang="de">Kommanditgesellschaft auf Aktien</rdfs:label>
         <rdfs:label xml:lang="da">P/S</rdfs:label>
         <rdfs:label xml:lang="da">Partnerselskab or Kommanditaktieselskab</rdfs:label>
-        <rdfs:label xml:lang="es">SCA</rdfs:label>
         <rdfs:label xml:lang="es">S.C.A.</rdfs:label>
-        <rdfs:label xml:lang="ro">SCA</rdfs:label>
         <rdfs:label xml:lang="ro">S.C.A.</rdfs:label>
-        <rdfs:label xml:lang="es">SCpA</rdfs:label>
-        <rdfs:label xml:lang="es">SCpA.</rdfs:label>
         <rdfs:label xml:lang="es">S.C.p.A.</rdfs:label>
-        <rdfs:label xml:lang="it">Sapa</rdfs:label>
         <rdfs:label xml:lang="it">S.a.p.a</rdfs:label>
         <rdfs:label xml:lang="it">S.a.p.a.</rdfs:label>
+        <rdfs:label xml:lang="es">SCA</rdfs:label>
         <rdfs:label xml:lang="fr">SCA</rdfs:label>
         <rdfs:label xml:lang="ro">SCA</rdfs:label>
+        <rdfs:label xml:lang="es">SCpA</rdfs:label>
+        <rdfs:label xml:lang="es">SCpA.</rdfs:label>
+        <rdfs:label xml:lang="it">Sapa</rdfs:label>
         <rdfs:label xml:lang="tr">Sermayesi paylara bölünmüş komandit şirket</rdfs:label>
         <rdfs:label xml:lang="es">Sociedad en Comandita por Acciones</rdfs:label>
         <rdfs:label xml:lang="ro">Societatea în comandită pe acțiuni</rdfs:label>
@@ -770,31 +768,31 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="bg">КДА</rdfs:label>
         <rdfs:label xml:lang="mk">Командитно друштво со акции</rdfs:label>
         <rdfs:label xml:lang="bg">командитно дружество с акции</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#NoLiability -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#NoLiability">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#NoLiability">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
         <rdfs:comment xml:lang="en">A type of mining, speculative, or research company with no right to call up the unpaid issue price of shares.</rdfs:comment>
         <rdfs:label xml:lang="en">NL</rdfs:label>
         <rdfs:label xml:lang="en">no liability</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#NonProfitOrganization -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#NonProfitOrganization">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#NonProfitOrganization">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
         <rdfs:label xml:lang="fr">ASBL</rdfs:label>
         <rdfs:label xml:lang="pt">Associação em sentido estrito</rdfs:label>
         <rdfs:label xml:lang="lv">BO</rdfs:label>
         <rdfs:label xml:lang="lv">Bezpeļņas organizācija</rdfs:label>
-        <rdfs:label xml:lang="da">FMBA</rdfs:label>
         <rdfs:label xml:lang="da">F.M.B.A.</rdfs:label>
+        <rdfs:label xml:lang="da">FMBA</rdfs:label>
         <rdfs:label xml:lang="en">NPO</rdfs:label>
         <rdfs:label xml:lang="ru">Nekommercheskaya organizatsiya</rdfs:label>
         <rdfs:label xml:lang="nl">VZW</rdfs:label>
@@ -812,9 +810,9 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="en">nonprofit association</rdfs:label>
         <rdfs:label xml:lang="en">nonprofit organisation</rdfs:label>
         <rdfs:label xml:lang="en">nonprofit organization</rdfs:label>
-        <rdfs:label xml:lang="cs">ops</rdfs:label>
         <rdfs:label xml:lang="cs">o.p.s.</rdfs:label>
         <rdfs:label xml:lang="cs">obecně prospěšná společnost</rdfs:label>
+        <rdfs:label xml:lang="cs">ops</rdfs:label>
         <rdfs:label xml:lang="pt">organização da sociedade civil de interesse público</rdfs:label>
         <rdfs:label xml:lang="pt">organização não governamental</rdfs:label>
         <rdfs:label xml:lang="pt">organização social</rdfs:label>
@@ -825,72 +823,76 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="is">sjálfseignarstofnun</rdfs:label>
         <rdfs:label xml:lang="nl">vereniging zonder winstoogmerk</rdfs:label>
         <rdfs:label xml:lang="ru">некоммерческая организация</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#OtherBusinessEntityType -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
+    <Class rdf:about="http://corp.dbpedia.org/ontology#OtherBusinessEntityType">
+	<rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#OrgType"/>
+    </Class>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#PartG -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#PartG">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#PartG">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
         <rdfs:comment xml:lang="de">Die Partnerschaft ist nach § 1 Partnerschaftsgesellschaftsgesetz (PartGG) eine Personengesellschaft, in der sich Angehörige freier Berufe zur Ausübung ihrer Berufe zusammenschließen. Sie übt wegen ihrer Bindung an freiberufliche Tätigkeiten im Gegensatz zu den Personenhandelsgesellschaften kein Handelsgewerbe aus. Angehörige einer Partnerschaft können nur natürliche Personen sein. Bloße Kapitalbeteiligung ist nicht zulässig.</rdfs:comment>
         <rdfs:label xml:lang="de">PartG</rdfs:label>
         <rdfs:label xml:lang="de">Partnerschaftsgesellschaft</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#PartG_mbB -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#PartG_mbB">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#PartG_mbB">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
         <rdfs:comment xml:lang="de">Partnerschaftsgesellschaft mit beschränkter Berufshaftung</rdfs:comment>
         <rdfs:label xml:lang="de">Part mbB</rdfs:label>
         <rdfs:label xml:lang="de">PartG mbB</rdfs:label>
         <rdfs:label xml:lang="de">PartGmbB</rdfs:label>
         <rdfs:label xml:lang="de">PartmbB</rdfs:label>
         <rdfs:label xml:lang="de">Partnerschaftsgesellschaft mit beschränkter Berufshaftung</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#Partenreederei -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#Partenreederei">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#Partenreederei">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
         <rdfs:comment xml:lang="de">Die Partenreederei ist eine Gesellschaftsform des deutschen Seehandelsrechts. Seit Inkrafttreten des Gesetzes zur Reform des Seehandelsrechts am 25. April 2013 können keine neuen Partenreedereien mehr gegründet werden. Für Partenreedereien, die bis zum 24. April 2013 gegründet wurden, gelten die alten HGB-Bestimmungen weiter.</rdfs:comment>
         <rdfs:label xml:lang="de">Partenreederei</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#Partnership -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#Partnership"/>
+    <Class rdf:about="http://corp.dbpedia.org/ontology#Partnership">
+	<rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#OrgType"/>
+    </Class>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#PrivateCompanyLimitedByGuarantee -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#PrivateCompanyLimitedByGuarantee">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#PrivateCompanyLimitedByGuarantee">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
         <rdfs:comment xml:lang="en">In British and Irish company law, a private company limited by guarantee (LBG) is an alternative type of corporation used primarily for non-profit organisations that require legal personality. A company limited by guarantee does not usually have a share capital or shareholders, but instead has members who act as guarantors. The guarantors give an undertaking to contribute a nominal amount (typically very small) in the event of the winding up of the company. It is often believed that such a company cannot distribute its profits to its members but (depending on the provisions of the articles) this is not actually true. Converting a limited company to a Community Interest Company (CIC) removes this doubt entirely, as CICs feature an asset lock which prevents the extraction of profits. However, a company limited by guarantee that distributes its profits to members (nor CICs) would not be eligible for charitable status.</rdfs:comment>
         <rdfs:label xml:lang="en">LBG</rdfs:label>
         <rdfs:label xml:lang="en">private company limited by guarantee</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#PrivateLimitedCompany -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#PrivateLimitedCompany">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#PrivateLimitedCompany">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
         <rdfs:comment xml:lang="de">Die Gesellschaft mit beschränkter Haftung (abgekürzt GmbH) ist nach deutschem Recht eine Rechtsform für eine juristische Person des Privatrechts, die zu den Kapitalgesellschaften gehört. Die deutsche GmbH war die weltweit erste Form einer haftungsbeschränkten Kapitalgesellschaft. Ihr sind inzwischen in vielen Ländern vergleichbare Gesellschaftsformen gefolgt.</rdfs:comment>
         <rdfs:label xml:lang="sv">AB</rdfs:label>
         <rdfs:label xml:lang="nb">AS</rdfs:label>
@@ -899,25 +901,24 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="sv">Aktiebolag</rdfs:label>
         <rdfs:label xml:lang="da">Anpartsselskab</rdfs:label>
         <rdfs:label xml:lang="da">ApS</rdfs:label>
-        <rdfs:label xml:lang="he">BM</rdfs:label>
         <rdfs:label xml:lang="he">B.M.</rdfs:label>
         <rdfs:label xml:lang="he">BM</rdfs:label>
         <rdfs:label xml:lang="nl">BVBA</rdfs:label>
         <rdfs:label xml:lang="he">Be&apos;eravon Mugbal</rdfs:label>
         <rdfs:label xml:lang="cy">Cyf</rdfs:label>
         <rdfs:label xml:lang="cy">Cyfyngedig</rdfs:label>
-        <rdfs:label xml:lang="mk">DOO</rdfs:label>
         <rdfs:label xml:lang="mk">D.O.O.</rdfs:label>
-        <rdfs:label xml:lang="mk">DOOEL</rdfs:label>
         <rdfs:label xml:lang="mk">D.O.O.E.L.</rdfs:label>
+        <rdfs:label xml:lang="mk">DOO</rdfs:label>
+        <rdfs:label xml:lang="mk">DOOEL</rdfs:label>
         <rdfs:label xml:lang="mk">Društvo so Ograničena Odgovornost</rdfs:label>
         <rdfs:label xml:lang="mk">Društvo so Ograničena Odgovornost od Edno Lice</rdfs:label>
         <rdfs:label xml:lang="sl">Družba z omejeno odgovornostjo</rdfs:label>
-        <rdfs:label xml:lang="el">EPE</rdfs:label>
         <rdfs:label xml:lang="el">E.P.E.</rdfs:label>
         <rdfs:label xml:lang="nl">EBVBA</rdfs:label>
         <rdfs:label xml:lang="pt">EIRELI</rdfs:label>
         <rdfs:label xml:lang="bg">EOOD</rdfs:label>
+        <rdfs:label xml:lang="el">EPE</rdfs:label>
         <rdfs:label xml:lang="fr">EURL</rdfs:label>
         <rdfs:label xml:lang="pt">Empresa Individual de Responsabilidade Limitada</rdfs:label>
         <rdfs:label xml:lang="el">Etería Periorisménis Euthínis</rdfs:label>
@@ -934,12 +935,11 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="pt">Limitada</rdfs:label>
         <rdfs:label xml:lang="pt">Ltda</rdfs:label>
         <rdfs:label xml:lang="pt">Ltda.</rdfs:label>
-        <rdfs:label xml:lang="el">MEPE</rdfs:label>
         <rdfs:label xml:lang="el">M.E.P.E.</rdfs:label>
         <rdfs:label xml:lang="el">MEPE</rdfs:label>
         <rdfs:label xml:lang="el">Monoprósopi Etería Periorisménis Euthínis</rdfs:label>
-        <rdfs:label xml:lang="el">Mονοπρόσωπη ΕΠΕ</rdfs:label>
         <rdfs:label xml:lang="el">Mονοπρόσωπη Ε.Π.Ε.</rdfs:label>
+        <rdfs:label xml:lang="el">Mονοπρόσωπη ΕΠΕ</rdfs:label>
         <rdfs:label xml:lang="bg">OOD</rdfs:label>
         <rdfs:label xml:lang="fi">Oy</rdfs:label>
         <rdfs:label xml:lang="uk">PP</rdfs:label>
@@ -955,23 +955,21 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="en">Pvt. Ltd.</rdfs:label>
         <rdfs:label xml:lang="es">S de RL</rdfs:label>
         <rdfs:label xml:lang="es">S. de R.L.</rdfs:label>
-        <rdfs:label xml:lang="fr">SARL</rdfs:label>
         <rdfs:label xml:lang="fr">S.A.R.L.</rdfs:label>
         <rdfs:label xml:lang="es">S.L.</rdfs:label>
-        <rdfs:label xml:lang="es">SL</rdfs:label>
-        <rdfs:label xml:lang="es">SLNE</rdfs:label>
         <rdfs:label xml:lang="es">S.L.N.E.</rdfs:label>
-        <rdfs:label xml:lang="ro">SRL</rdfs:label>
         <rdfs:label xml:lang="ro">S.R.L.</rdfs:label>
-        <rdfs:label xml:lang="it">Srl</rdfs:label>
         <rdfs:label xml:lang="it">S.r.l.</rdfs:label>
         <rdfs:label xml:lang="fr">SARL</rdfs:label>
         <rdfs:label xml:lang="fr">SASU</rdfs:label>
         <rdfs:label xml:lang="lv">SIA</rdfs:label>
+        <rdfs:label xml:lang="es">SL</rdfs:label>
+        <rdfs:label xml:lang="es">SLNE</rdfs:label>
         <rdfs:label xml:lang="km">SM Pte Ltd</rdfs:label>
         <rdfs:label xml:lang="km">SM Pte Ltd.</rdfs:label>
         <rdfs:label xml:lang="fr">SPRL</rdfs:label>
         <rdfs:label xml:lang="fr">SPRLU</rdfs:label>
+        <rdfs:label xml:lang="ro">SRL</rdfs:label>
         <rdfs:label xml:lang="lv">Sabiedrība ar ierobežotu atbildību</rdfs:label>
         <rdfs:label xml:lang="it">Sagl</rdfs:label>
         <rdfs:label xml:lang="ms">Sdn Bhd</rdfs:label>
@@ -988,6 +986,7 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="pl">Sp. z o.o.</rdfs:label>
         <rdfs:label xml:lang="cs">Společnost s ručením omezeným</rdfs:label>
         <rdfs:label xml:lang="sk">Spoločnosť s ručením obmedzeným</rdfs:label>
+        <rdfs:label xml:lang="it">Srl</rdfs:label>
         <rdfs:label xml:lang="fr">SàRL</rdfs:label>
         <rdfs:label xml:lang="uk">TOB</rdfs:label>
         <rdfs:label xml:lang="uk">TOV</rdfs:label>
@@ -999,12 +998,12 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="ru">Zakrytoe aktsionernoye obshchestvo</rdfs:label>
         <rdfs:label xml:lang="sv">aktiebolag</rdfs:label>
         <rdfs:label xml:lang="nl">besloten vennootschap met beperkte aansprakelijkheid</rdfs:label>
-        <rdfs:label xml:lang="hr">doo</rdfs:label>
         <rdfs:label xml:lang="hr">d.o.o.</rdfs:label>
-        <rdfs:label xml:lang="sl">doo</rdfs:label>
         <rdfs:label xml:lang="sl">d.o.o.</rdfs:label>
-        <rdfs:label xml:lang="sr">doo</rdfs:label>
         <rdfs:label xml:lang="sr">d.o.o.</rdfs:label>
+        <rdfs:label xml:lang="hr">doo</rdfs:label>
+        <rdfs:label xml:lang="sl">doo</rdfs:label>
+        <rdfs:label xml:lang="sr">doo</rdfs:label>
         <rdfs:label xml:lang="bg">drujestvo s ogranichena otgovornost</rdfs:label>
         <rdfs:label xml:lang="hr">društvo s ograničenom odgovornošću</rdfs:label>
         <rdfs:label xml:lang="sr">društvo sa ograničenom odgovornošću</rdfs:label>
@@ -1013,8 +1012,8 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="is">ehf</rdfs:label>
         <rdfs:label xml:lang="is">ehf.</rdfs:label>
         <rdfs:label xml:lang="is">einkahlutafélag</rdfs:label>
-        <rdfs:label xml:lang="hr">jdoo</rdfs:label>
         <rdfs:label xml:lang="hr">j.d.o.o.</rdfs:label>
+        <rdfs:label xml:lang="hr">jdoo</rdfs:label>
         <rdfs:label xml:lang="hr">jednostavno društvo s ograničenom odgovornošću</rdfs:label>
         <rdfs:label xml:lang="en">ltd</rdfs:label>
         <rdfs:label xml:lang="en">ltd.</rdfs:label>
@@ -1022,11 +1021,9 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="fi">osakeyhtiö</rdfs:label>
         <rdfs:label xml:lang="en">private company limited by guarantee</rdfs:label>
         <rdfs:label xml:lang="en">private limited company</rdfs:label>
-        <rdfs:label xml:lang="sk">s ro</rdfs:label>
         <rdfs:label xml:lang="sk">s r.o.</rdfs:label>
-        <rdfs:label xml:lang="cs">sro</rdfs:label>
+        <rdfs:label xml:lang="sk">s ro</rdfs:label>
         <rdfs:label xml:lang="cs">s.r.o.</rdfs:label>
-        <rdfs:label xml:lang="sk">sro</rdfs:label>
         <rdfs:label xml:lang="sk">s.r.o.</rdfs:label>
         <rdfs:label xml:lang="es">sociedad de responsabilidad limitada</rdfs:label>
         <rdfs:label xml:lang="ro">societate cu răspundere limitată</rdfs:label>
@@ -1038,19 +1035,21 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="sk">spol.</rdfs:label>
         <rdfs:label xml:lang="cs">spol. s r.o.</rdfs:label>
         <rdfs:label xml:lang="pl">spółka z ograniczoną odpowiedzialnością</rdfs:label>
+        <rdfs:label xml:lang="cs">sro</rdfs:label>
+        <rdfs:label xml:lang="sk">sro</rdfs:label>
         <rdfs:label xml:lang="fr">sàrl</rdfs:label>
         <rdfs:label xml:lang="gd">teo</rdfs:label>
         <rdfs:label xml:lang="gd">teoranta</rdfs:label>
         <rdfs:label xml:lang="ko">yuhan hoesa</rdfs:label>
-        <rdfs:label xml:lang="el">ΕΠΕ</rdfs:label>
         <rdfs:label xml:lang="el">Ε.Π.Ε.</rdfs:label>
+        <rdfs:label xml:lang="el">ΕΠΕ</rdfs:label>
         <rdfs:label xml:lang="el">Εταιρεία Περιορισμένης Ευθύνης</rdfs:label>
-        <rdfs:label xml:lang="el">ΜΕΠΕ</rdfs:label>
         <rdfs:label xml:lang="el">Μ.Ε.Π.Ε.</rdfs:label>
-        <rdfs:label xml:lang="mk">ДОО</rdfs:label>
+        <rdfs:label xml:lang="el">ΜΕΠΕ</rdfs:label>
         <rdfs:label xml:lang="mk">Д.О.О.</rdfs:label>
-        <rdfs:label xml:lang="mk">ДООЕЛ</rdfs:label>
         <rdfs:label xml:lang="mk">Д.О.О.Е.Л.</rdfs:label>
+        <rdfs:label xml:lang="mk">ДОО</rdfs:label>
+        <rdfs:label xml:lang="mk">ДООЕЛ</rdfs:label>
         <rdfs:label xml:lang="mk">Друштво со ограничена одговорност</rdfs:label>
         <rdfs:label xml:lang="mk">Друштво со ограничена одговорност основано од едно лице</rdfs:label>
         <rdfs:label xml:lang="bg">ЕООД</rdfs:label>
@@ -1062,8 +1061,8 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="be">ТАА</rdfs:label>
         <rdfs:label xml:lang="be">Таварыства з абмежаванай адказнасцю Tavaristva z Abmezhavanaj Adkaznastsiu</rdfs:label>
         <rdfs:label xml:lang="uk">Товариство з обмеженою відповідальністю Tovaristvo z Obmezhenoyu Vidpovividalnistyu</rdfs:label>
-        <rdfs:label xml:lang="sr">доо</rdfs:label>
         <rdfs:label xml:lang="sr">д.о.о.</rdfs:label>
+        <rdfs:label xml:lang="sr">доо</rdfs:label>
         <rdfs:label xml:lang="bg">дружество с ограничена отговорност</rdfs:label>
         <rdfs:label xml:lang="sr">друштво сa ограниченом одговорношћу</rdfs:label>
         <rdfs:label xml:lang="bg">еднолично дружество с ограничена отговорност</rdfs:label>
@@ -1076,58 +1075,58 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="ko">有限會社</rdfs:label>
         <rdfs:label xml:lang="zh">無限公司</rdfs:label>
         <rdfs:label xml:lang="ko">유한회사</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#ProfessionalCorporation -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#ProfessionalCorporation">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#ProfessionalCorporation">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
         <rdfs:comment xml:lang="en">Professional corporations (abbreviated as PC or P.C.) are those corporate entities for which many corporation statutes make special provision, regulating the use of the corporate form by licensed professionals such as attorneys, architects, engineers, public accountants and physicians. Legal regulations applying to professional corporations typically differ in important ways from those applying to other corporations. Professional corporations, which may have a single director or multiple directors, do not usually afford that person or persons the same degree of limitation of liability as ordinary business corporations (cf. LLP). Such corporations must identify themselves as professional corporations by including &quot;PC&quot; or &quot;P.C.&quot; after the firm&apos;s name. Professional corporations often exist as part of a larger, more complicated, legal entity; for example, a law firm or medical practice might be organized as a partnership of several or many professional corporations.</rdfs:comment>
         <rdfs:label xml:lang="en">p.c.</rdfs:label>
         <rdfs:label xml:lang="en">pc</rdfs:label>
         <rdfs:label xml:lang="en">professional corporation</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#ProfessionalLimitedCompany -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#ProfessionalLimitedCompany">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#ProfessionalLimitedCompany">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
         <rdfs:comment xml:lang="en">A Professional Limited Liability Company (PLLC, P.L.L.C., or P.L.) is a limited liability company organized for the purpose of providing professional services. Usually, professions where the state requires a license to provide services, such as a doctor, chiropractor, lawyer, accountant, architect, landscape architect, or engineer, require the formation of a PLLC.[15] However, some states, such as California, do not permit LLCs to engage in the practice of a licensed profession. Exact requirements of PLLCs vary from state to state. Typically, a PLLC&apos;s members must all be professionals practicing the same profession. In addition, the limitation of personal liability of members does not extend to professional malpractice claims.</rdfs:comment>
         <rdfs:label xml:lang="pt">Sociedade simples</rdfs:label>
-        <rdfs:label xml:lang="en">pl</rdfs:label>
         <rdfs:label xml:lang="en">p.l.</rdfs:label>
         <rdfs:label xml:lang="en">p.l.l.c.</rdfs:label>
+        <rdfs:label xml:lang="en">pl</rdfs:label>
         <rdfs:label xml:lang="en">pllc</rdfs:label>
         <rdfs:label xml:lang="en">professional limited liability company</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#PublicLimitedCompany -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#PublicLimitedCompany">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#PublicLimitedCompany">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
         <rdfs:comment xml:lang="en">A corporation is a company or group of people authorized to act as a single entity (legally a person) and recognized as such in law. Early incorporated entities were established by charter (i.e. by an ad hoc act granted by a monarch or passed by a parliament or legislature).</rdfs:comment>
         <rdfs:comment xml:lang="en">A public limited company (legally abbreviated to plc) is a type of public company (publicly held company) under United Kingdom company law, some Commonwealth jurisdictions, and the Republic of Ireland. It is a limited (liability) company whose shares may be freely sold and traded to the public (although a plc may also be privately held, often by another plc), with a minimum share capital of £50,000 and the letters PLC after its name.[1] Similar companies in the United States are called publicly traded companies.</rdfs:comment>
         <rdfs:comment xml:lang="de">Die Aktiengesellschaft (AG) nach deutschem Recht ist neben der GmbH, der UG (haftungsbeschränkt), der SE und der KGaA eine von fünf Formen der Kapitalgesellschaft. Die rechtlichen Grundlagen finden sich im Ersten Buch des Aktiengesetzes (AktG).</rdfs:comment>
-        <rdfs:label xml:lang="mk">AD</rdfs:label>
         <rdfs:label xml:lang="mk">A.D.</rdfs:label>
         <rdfs:label xml:lang="el">A.E.</rdfs:label>
-        <rdfs:label xml:lang="el">AE</rdfs:label>
         <rdfs:label xml:lang="el">A.V.E.E.</rdfs:label>
-        <rdfs:label xml:lang="el">AVEE</rdfs:label>
         <rdfs:label xml:lang="da">A/S</rdfs:label>
         <rdfs:label xml:lang="lt">AB</rdfs:label>
         <rdfs:label xml:lang="sv">AB (publ)</rdfs:label>
         <rdfs:label xml:lang="bg">AD</rdfs:label>
+        <rdfs:label xml:lang="mk">AD</rdfs:label>
+        <rdfs:label xml:lang="el">AE</rdfs:label>
         <rdfs:label xml:lang="de">AG</rdfs:label>
         <rdfs:label xml:lang="uz">AJ</rdfs:label>
         <rdfs:label xml:lang="lv">AS</rdfs:label>
         <rdfs:label xml:lang="nb">ASA</rdfs:label>
+        <rdfs:label xml:lang="el">AVEE</rdfs:label>
         <rdfs:label xml:lang="sv">Abp</rdfs:label>
         <rdfs:label xml:lang="lv">Akciju sabiedrība</rdfs:label>
         <rdfs:label xml:lang="lt">Akcinė bendrovė</rdfs:label>
@@ -1141,16 +1140,16 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="el">Anónimi Etería</rdfs:label>
         <rdfs:label xml:lang="el">Anónimi Viomihanikí Emborikí Etería</rdfs:label>
         <rdfs:label xml:lang="ms">Berhad</rdfs:label>
-        <rdfs:label xml:lang="ms">Bhd.</rdfs:label>
         <rdfs:label xml:lang="ms">Bhd</rdfs:label>
+        <rdfs:label xml:lang="ms">Bhd.</rdfs:label>
         <rdfs:label xml:lang="vi">Cty CP</rdfs:label>
         <rdfs:label xml:lang="cy">Cwmni Cyfyngedig Cyhoeddus</rdfs:label>
         <rdfs:label xml:lang="vi">Công ty cổ phần</rdfs:label>
         <rdfs:label xml:lang="uk">DAT</rdfs:label>
         <rdfs:label xml:lang="sl">Delniška družba</rdfs:label>
         <rdfs:label xml:lang="bg">EAD</rdfs:label>
-        <rdfs:label xml:lang="km">Import Export Co.</rdfs:label>
         <rdfs:label xml:lang="km">Import Export Co</rdfs:label>
+        <rdfs:label xml:lang="km">Import Export Co.</rdfs:label>
         <rdfs:label xml:lang="ja">K.K.</rdfs:label>
         <rdfs:label xml:lang="ja">KK</rdfs:label>
         <rdfs:label xml:lang="mn">Khuvitsaat Kompani</rdfs:label>
@@ -1158,8 +1157,8 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="uz">Mas&apos;uliyati Cheklangan Jamiyat</rdfs:label>
         <rdfs:label xml:lang="nl">NV</rdfs:label>
         <rdfs:label xml:lang="nl">Naamloze vennootschap</rdfs:label>
-        <rdfs:label xml:lang="hu">Nyrt.</rdfs:label>
         <rdfs:label xml:lang="hu">Nyrt</rdfs:label>
+        <rdfs:label xml:lang="hu">Nyrt.</rdfs:label>
         <rdfs:label xml:lang="uz">OAJ</rdfs:label>
         <rdfs:label xml:lang="ru">OAO</rdfs:label>
         <rdfs:label xml:lang="uz">Ochiq aksiyadorlik jamiyati</rdfs:label>
@@ -1169,32 +1168,30 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="id">PT Tbk</rdfs:label>
         <rdfs:label xml:lang="id">Perseroan Terbatas Terbuka</rdfs:label>
         <rdfs:label xml:lang="id">Perseroan Terbuka</rdfs:label>
-        <rdfs:label xml:lang="km">Plc Ltd.</rdfs:label>
         <rdfs:label xml:lang="km">Plc Ltd</rdfs:label>
+        <rdfs:label xml:lang="km">Plc Ltd.</rdfs:label>
         <rdfs:label xml:lang="uk">PrAT</rdfs:label>
         <rdfs:label xml:lang="en">Public Limited Company</rdfs:label>
         <rdfs:label xml:lang="km">Public Limited Company</rdfs:label>
         <rdfs:label xml:lang="sv">Publikt aktiebolag</rdfs:label>
         <rdfs:label xml:lang="es">S.A.</rdfs:label>
-        <rdfs:label xml:lang="es">SA</rdfs:label>
         <rdfs:label xml:lang="fr">S.A.</rdfs:label>
-        <rdfs:label xml:lang="fr">SA</rdfs:label>
         <rdfs:label xml:lang="pt">S.A.</rdfs:label>
-        <rdfs:label xml:lang="pt">SA</rdfs:label>
         <rdfs:label xml:lang="ro">S.A.</rdfs:label>
-        <rdfs:label xml:lang="ro">SA</rdfs:label>
         <rdfs:label xml:lang="es">S.A.S</rdfs:label>
-        <rdfs:label xml:lang="es">SAS</rdfs:label>
         <rdfs:label xml:lang="pt">S.F.</rdfs:label>
-        <rdfs:label xml:lang="pt">SF</rdfs:label>
         <rdfs:label xml:lang="it">S.p.A.</rdfs:label>
         <rdfs:label xml:lang="it">S.p.a.</rdfs:label>
+        <rdfs:label xml:lang="es">SA</rdfs:label>
         <rdfs:label xml:lang="fr">SA</rdfs:label>
         <rdfs:label xml:lang="it">SA</rdfs:label>
+        <rdfs:label xml:lang="pt">SA</rdfs:label>
         <rdfs:label xml:lang="ro">SA</rdfs:label>
         <rdfs:label xml:lang="ar">SAE</rdfs:label>
         <rdfs:label xml:lang="ar">SAOC</rdfs:label>
         <rdfs:label xml:lang="ar">SAOG</rdfs:label>
+        <rdfs:label xml:lang="es">SAS</rdfs:label>
+        <rdfs:label xml:lang="pt">SF</rdfs:label>
         <rdfs:label xml:lang="ar">Sharikat al-Mossahamah</rdfs:label>
         <rdfs:label xml:lang="fa">Sherkat Sahami Am</rdfs:label>
         <rdfs:label xml:lang="fa">Sherkat Sahami Khas</rdfs:label>
@@ -1216,20 +1213,20 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="uz">Yopiq aksiyadorlik jamiyati</rdfs:label>
         <rdfs:label xml:lang="uk">ZAT</rdfs:label>
         <rdfs:label xml:lang="hr">a.d.</rdfs:label>
-        <rdfs:label xml:lang="hr">ad</rdfs:label>
         <rdfs:label xml:lang="sr">a.d.</rdfs:label>
-        <rdfs:label xml:lang="sr">ad</rdfs:label>
         <rdfs:label xml:lang="cs">a.s.</rdfs:label>
-        <rdfs:label xml:lang="cs">as</rdfs:label>
         <rdfs:label xml:lang="sk">a.s.</rdfs:label>
-        <rdfs:label xml:lang="sk">as</rdfs:label>
         <rdfs:label xml:lang="sr">a.д.</rdfs:label>
-        <rdfs:label xml:lang="sr">aд</rdfs:label>
-        <rdfs:label xml:lang="cs">akc. spol.</rdfs:label>
+        <rdfs:label xml:lang="hr">ad</rdfs:label>
+        <rdfs:label xml:lang="sr">ad</rdfs:label>
         <rdfs:label xml:lang="cs">akc spol</rdfs:label>
+        <rdfs:label xml:lang="cs">akc. spol.</rdfs:label>
         <rdfs:label xml:lang="hr">akcionarsko društvo</rdfs:label>
         <rdfs:label xml:lang="sr">akcionarsko društvo</rdfs:label>
         <rdfs:label xml:lang="bg">aktsionerno drujestvo</rdfs:label>
+        <rdfs:label xml:lang="cs">as</rdfs:label>
+        <rdfs:label xml:lang="sk">as</rdfs:label>
+        <rdfs:label xml:lang="sr">aд</rdfs:label>
         <rdfs:label xml:lang="sr">aкционарско друштво</rdfs:label>
         <rdfs:label xml:lang="cy">ccc</rdfs:label>
         <rdfs:label xml:lang="en">corp</rdfs:label>
@@ -1238,13 +1235,13 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="gd">cpt</rdfs:label>
         <rdfs:label xml:lang="gd">cuideachta phoibli theoranta</rdfs:label>
         <rdfs:label xml:lang="hr">d.d.</rdfs:label>
-        <rdfs:label xml:lang="hr">dd</rdfs:label>
         <rdfs:label xml:lang="sl">d.d.</rdfs:label>
+        <rdfs:label xml:lang="hr">dd</rdfs:label>
         <rdfs:label xml:lang="sl">dd</rdfs:label>
         <rdfs:label xml:lang="hr">dioničko društvo</rdfs:label>
         <rdfs:label xml:lang="bg">ednolichno aktsionerno druzhestvo</rdfs:label>
-        <rdfs:label xml:lang="is">hf.</rdfs:label>
         <rdfs:label xml:lang="is">hf</rdfs:label>
+        <rdfs:label xml:lang="is">hf.</rdfs:label>
         <rdfs:label xml:lang="is">hlutafélag</rdfs:label>
         <rdfs:label xml:lang="en">inc</rdfs:label>
         <rdfs:label xml:lang="en">inc.</rdfs:label>
@@ -1268,9 +1265,9 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="el">Ανώνυμη Εταιρεία</rdfs:label>
         <rdfs:label xml:lang="uz">Ёпиқ акциядорлик жамияти</rdfs:label>
         <rdfs:label xml:lang="mk">А.Д.</rdfs:label>
-        <rdfs:label xml:lang="mk">АД</rdfs:label>
         <rdfs:label xml:lang="be">ААТ</rdfs:label>
         <rdfs:label xml:lang="bg">АД</rdfs:label>
+        <rdfs:label xml:lang="mk">АД</rdfs:label>
         <rdfs:label xml:lang="be">Адкрытае акцыянернае таварыства Adkritaye Aktsiyanernaye Tavaristva</rdfs:label>
         <rdfs:label xml:lang="mk">Акционерско друштво</rdfs:label>
         <rdfs:label xml:lang="uz">Акциядорлик жамияти</rdfs:label>
@@ -1303,14 +1300,14 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="ko">株式會社</rdfs:label>
         <rdfs:label xml:lang="zh">股份有限公司</rdfs:label>
         <rdfs:label xml:lang="ko">주식회사</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#REIT -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#REIT">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#REIT">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
         <rdfs:comment xml:lang="de">In Deutschland hat sich die indirekte Immobilienanlage bis Ende der neunziger Jahre vor allem in Form der offenen und geschlossenen Immobilienfonds vollzogen. Das Segment börsennotierter Immobilien-Aktiengesellschaften spielt erst seit Anfang des neuen Jahrtausends eine allerdings zunehmend bedeutsame Rolle, was sich u. a. in der Notierung einer ganzen Anzahl von Gesellschaften in MDAX und SDAX widerspiegelt.</rdfs:comment>
         <rdfs:label xml:lang="bg">ADSITz</rdfs:label>
         <rdfs:label xml:lang="de">REIT</rdfs:label>
@@ -1321,35 +1318,35 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="bg">aktsionerno druzhestvo sus spetsialna investitsionna tsel</rdfs:label>
         <rdfs:label xml:lang="bg">АДСИЦ</rdfs:label>
         <rdfs:label xml:lang="bg">акционерно дружество със специална инвестиционна цел</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#REIT-AG -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#REIT-AG">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#REIT-AG">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
         <rdfs:comment xml:lang="de">In Deutschland hat sich die indirekte Immobilienanlage bis Ende der neunziger Jahre vor allem in Form der offenen und geschlossenen Immobilienfonds vollzogen. Das Segment börsennotierter Immobilien-Aktiengesellschaften spielt erst seit Anfang des neuen Jahrtausends eine allerdings zunehmend bedeutsame Rolle, was sich u. a. in der Notierung einer ganzen Anzahl von Gesellschaften in MDAX und SDAX widerspiegelt.</rdfs:comment>
         <rdfs:label xml:lang="de">REIT-AG</rdfs:label>
         <rdfs:label xml:lang="de">Real-Estate-Investment-Trust-AG</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#Regiebetrieb -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#Regiebetrieb">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#Regiebetrieb">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
         <rdfs:comment xml:lang="de">Der Regiebetrieb gehört zu den öffentlichen Betrieben und Verwaltungen von Gebietskörperschaften (Gemeinden, Ländern, Bund). Er ist die älteste Organisationsform kommunaler Unternehmerschaft in Deutschland und Österreich. Regiebetriebe sind vollständig Teil der öffentlichen Verwaltung.</rdfs:comment>
         <rdfs:label xml:lang="de">Regiebetrieb</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#SCE -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#SCE">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#SCE">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
         <rdfs:comment xml:lang="en">An SE or SCE may be created by registration in any of the EU/EEA Member States, and is subject to the European Company Statute. It may relocate its registered office to any other EU/EEA Member State with minimal formalities.</rdfs:comment>
         <rdfs:comment xml:lang="de">Die Europäische Genossenschaft, auch lateinisch Societas Cooperativa Europaea, kurz SCE, ist eine rechtsfähige Gesellschaft. Die Möglichkeit zur Gründung der SCE besteht seit dem 18. August 2006.</rdfs:comment>
         <rdfs:comment xml:lang="en">The European Cooperative Society (SCE, for Latin societas cooperativa Europaea) is, in company law, a European co-operative type of company, established in 2006 and related to the European Company. European Cooperative Societies may be established, and may operate, throughout the European Economic Area (including the European Community). The legal form was created to remove the need for co-operatives to establish a subsidiary in each Member State in which they operate, and to allow them to move their registered office and head office freely from one Member State to another, keeping their legal identity and without having to register or wind up any legal persons. No matter where they are established, SCEs are governed by a single EEA-wide set of rules and principles which are supplemented by the laws on co-operatives in each Member State, and other areas of law.</rdfs:comment>
@@ -1357,14 +1354,14 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="de">SCE</rdfs:label>
         <rdfs:label xml:lang="de">Societas cooperativa Europaea</rdfs:label>
         <rdfs:label xml:lang="en">Societas cooperativa Europaea</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#SE -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#SE">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#SE">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
         <rdfs:comment xml:lang="en">A societas Europaea (Latin pronunciation: [/soˈki.e.taːs/ /ew.roːˈpaea/] SE; Latin: European society or company; plural: societates Europaeae) is a public company registered in accordance with the corporate law of the European Union (EU), introduced in 2004 with the Council Regulation on the Statute for a European Company.[2] Such a company may more easily transfer to, or merge with companies in, other member states.</rdfs:comment>
         <rdfs:comment xml:lang="en">An SE or SCE may be created by registration in any of the EU/EEA Member States, and is subject to the European Company Statute. It may relocate its registered office to any other EU/EEA Member State with minimal formalities.</rdfs:comment>
         <rdfs:comment xml:lang="de">Die Europäische Gesellschaft (international auch auf lateinisch Societas Europaea, kurz SE) ist eine Rechtsform für Aktiengesellschaften in der Europäischen Union und im Europäischen Wirtschaftsraum. Mit ihr ermöglicht die EU seit dem Jahresende 2004 die Gründung von Gesellschaften nach weitgehend einheitlichen Rechtsprinzipien.</rdfs:comment>
@@ -1375,39 +1372,39 @@ Mindestens ein Gesellschafter einer KG haftet mit seinem gesamten Vermögen (Kom
         <rdfs:label xml:lang="de">Societas Europaea</rdfs:label>
         <rdfs:label xml:lang="en">Societas Europaea</rdfs:label>
         <rdfs:label xml:lang="en">Societas Privata Europaea</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#SUP -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#SUP">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#SUP">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
         <rdfs:comment xml:lang="en">A societas unius personae (SUP; single-person company) is a legal form for a single-member private limited liability company proposed by the European Commission.</rdfs:comment>
         <rdfs:comment xml:lang="de">Die europäische Einpersonengesellschaft (SUP[1]), lateinisch Societas Unius Personae, ist eine in Planung befindliche Rechtsform in der Europäischen Union und im Europäischen Wirtschaftsraum. Es handelt sich dabei um eine Gesellschaft mit einem einzigen Gesellschafter (Einpersonengesellschaft), bei der die Haftung auf das Gesellschaftsvermögen beschränkt ist, wie beispielsweise bei der Gesellschaft mit beschränkter Haftung.</rdfs:comment>
         <rdfs:label xml:lang="de">Einpersonengesellschaft</rdfs:label>
         <rdfs:label xml:lang="de">SUP</rdfs:label>
         <rdfs:label xml:lang="en">Societas unius personae</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#Stille_Gesellschaft -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#Stille_Gesellschaft">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#Stille_Gesellschaft">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
         <rdfs:comment xml:lang="de">Die stille Gesellschaft ist im österreichischen und im deutschen Gesellschaftsrecht eine Sonderform einer Personenvereinigung. Sie gehört zu den Personengesellschaften, ist jedoch keine Handelsgesellschaft. Ohne weitere Vereinbarung hat die stille Gesellschaft nach der gesetzlichen Konzeption eher den Charakter eines Schuldverhältnisses und weniger den eines Gesellschaftsverhältnisses im engeren Sinne.
 
 Das schweizerische Gesellschaftsrecht kennt hingegen das Institut der Stillen Gesellschaft nicht. Es ist jedoch möglich, eine Einfache Gesellschaft so auszugestalten, dass es sich um eine Stille Gesellschaft handelt, die mit dem gleichnamigen Institut anderer Rechtssysteme weitgehend identisch ist.</rdfs:comment>
         <rdfs:label xml:lang="de">Stille Gesellschaft</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#UnlimitedCompany -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#UnlimitedCompany">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#UnlimitedCompany">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
         <rdfs:comment xml:lang="en">An unlimited company or private unlimited company is a hybrid company (corporation) incorporated with or without a share capital (and similar to its limited company counterpart) but where the legal liability of the members or shareholders is not limited: that is, its members or shareholders have a joint, several and non-limited obligation to meet any insufficiency in the assets of the company to enable settlement of any outstanding financial liability in the event of the company&apos;s formal liquidation. The joint, several and non-limited liability of the members or shareholders of the company to meet any insufficiency in the assets of the company (to settle its outstanding liabilities if any exist) applies only upon the formal liquidation of the company. Therefore, prior to any such formal liquidation of the company, any creditors or security holders of the company may have recourse only to the assets of the company, not those of its members or shareholders.</rdfs:comment>
         <rdfs:label xml:lang="cy">Anghyfyngedig</rdfs:label>
         <rdfs:label xml:lang="en">ultd</rdfs:label>
@@ -1415,210 +1412,210 @@ Das schweizerische Gesellschaftsrecht kennt hingegen das Institut der Stillen Ge
         <rdfs:label xml:lang="en">unlimited company</rdfs:label>
         <rdfs:label xml:lang="en">unltd</rdfs:label>
         <rdfs:label xml:lang="en">unltd.</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#UnlistedPublicCompany -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#UnlistedPublicCompany">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#UnlistedPublicCompany">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
         <rdfs:comment xml:lang="en">private corporation (Can); often used for subsidiaries; minimum of one director and two members/shareholders; no limit on share capital; liability can be restricted to director; no &quot;one share - one vote&quot; principle</rdfs:comment>
         <rdfs:label xml:lang="en">CC</rdfs:label>
-        <rdfs:label xml:lang="fr">S.A.S.</rdfs:label>
-        <rdfs:label xml:lang="fr">SAS</rdfs:label>
         <rdfs:label xml:lang="fr">S.A.S</rdfs:label>
         <rdfs:label xml:lang="fr">S.A.S.</rdfs:label>
+        <rdfs:label xml:lang="fr">SAS</rdfs:label>
         <rdfs:label xml:lang="en">UPC</rdfs:label>
         <rdfs:label xml:lang="en">Unlisted Public Company</rdfs:label>
         <rdfs:label xml:lang="en">close corporation</rdfs:label>
         <rdfs:label xml:lang="fr">société par actions simplifiée</rdfs:label>
         <rdfs:label xml:lang="de">vereinfachte Aktiengesellschaft</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#VVaG -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#VVaG">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#VVaG">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
         <rdfs:comment xml:lang="de">Ein Versicherungsverein auf Gegenseitigkeit (VVaG) ist eine der rechtlich zulässigen Rechtsformen für einen Versicherer. Die „Versicherungsnehmer“ sind Mitglieder und Träger des Vereins. In Ausnahmefällen können VVaG auch einzelne Verträge abschließen, deren Versicherungsnehmer nicht Mitglieder werden (Nichtmitgliederversicherung).</rdfs:comment>
         <rdfs:label xml:lang="de">VVaG</rdfs:label>
         <rdfs:label xml:lang="de">Versicherungsverein auf Gegenseitigkeit</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#eG -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#eG">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#eG">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#OtherBusinessEntityType"/>
         <rdfs:comment xml:lang="de">Eine Genossenschaft ist ein Zusammenschluss von natürlichen beziehungsweise juristischen Personen, deren Ziel der Erwerb oder die wirtschaftliche beziehungsweise soziale Förderung ihrer Mitglieder durch einen gemeinschaftlichen Geschäftsbetrieb ist.</rdfs:comment>
         <rdfs:label xml:lang="de">Genossenschaft</rdfs:label>
         <rdfs:label xml:lang="de">eG</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#gAG -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#gAG">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#gAG">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
         <rdfs:comment xml:lang="de">Die Bezeichnung „gemeinnützige“ AG ist eine steuerrechtliche Besonderheit, mit der auf eine gemeinnützige Ausrichtung der AG hingewiesen werden soll. Entsprechen Satzung und tatsächliche Geschäftsführung den Anforderungen des Gemeinnützigkeitsrechts der Abgabenordnung, wird die Gesellschaft von bestimmten Steuern ganz oder zum Teil befreit.</rdfs:comment>
         <rdfs:label xml:lang="de">gAG</rdfs:label>
         <rdfs:label xml:lang="de">gemeinnützige Aktiengesellschaft</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#gGmbH -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#gGmbH">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#gGmbH">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
         <rdfs:comment xml:lang="de">Die gemeinnützige GmbH (gGmbH) ist im deutschen Steuerrecht eine Gesellschaft mit beschränkter Haftung, deren Erträge für gemeinnützige Zwecke verwendet werden. Als Kapitalgesellschaft ist die gemeinnützige GmbH dadurch nach § 55 Abs. 1 Nr. 1 Satz 2 AO von Körperschaftsteuer und Gewerbesteuer befreit. Die Wahl dieser Rechtsform erfolgt häufig bei gemeinnützigen Unternehmen, die sich wirtschaftlich betätigen möchten (zum Beispiel Kindergärten), was der Rechtsform des eingetragenen Vereins untersagt ist.</rdfs:comment>
         <rdfs:label xml:lang="de">gGmbH</rdfs:label>
         <rdfs:label xml:lang="de">gemeinnützige GmbH</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#AG_&amp;_Co_KG -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#AG_&amp;_Co_KG">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#AG_&amp;_Co_KG">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
         <rdfs:comment xml:lang="de">Die AG &amp; Co. KG ist eine Kommanditgesellschaft (§ 161 Abs. 1 HGB), deren Komplementär eine Aktiengesellschaft ist.</rdfs:comment>
         <rdfs:label xml:lang="de">AG &amp; Co. KG</rdfs:label>
         <rdfs:label xml:lang="de">Aktiengesellschaft &amp; Compagnie Kommanditgesellschaft</rdfs:label>
         <rdfs:label xml:lang="de">Aktiengesellschaft und Compagnie Kommanditgesellschaft</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#AG_&amp;_Co_KGaA -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#AG_&amp;_Co_KGaA">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#AG_&amp;_Co_KGaA">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
         <rdfs:comment xml:lang="de">Die AG &amp; Co. KGaA ist eine Kommanditgesellschaft auf Aktien (KGaA), deren Komplementär eine Aktiengesellschaft (AG) ist. Durch die Wahl dieser Mischform lässt sich die Haftung der Kommanditgesellschaft auf Aktien beschränken, ohne die Rechtsform der Kommanditgesellschaft auf Aktien aufgeben zu müssen. Die Kommanditisten dieser Gesellschaft sind weiterhin die Kommanditaktionäre der KGaA. Diese Rechtsform wird häufig bei börsennotierten Familiengesellschaften oder Firmen mit einem einflussreichen Großaktionär gewählt, deren Familien- bzw. Großaktionäre Anteile ihrer Firma verkaufen wollen, jedoch die Kontrolle über die Firma behalten wollen.</rdfs:comment>
         <rdfs:label xml:lang="de">AG &amp; Co. KGaA</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#AG_&amp;_Co_OHG -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#AG_&amp;_Co_OHG">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#AG_&amp;_Co_OHG">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
         <rdfs:comment xml:lang="de">Die Firma einer OHG muss die Bezeichnung offene Handelsgesellschaft oder eine allgemein verständliche Abkürzung hierfür (OHG oder oHG) enthalten (§ 19 Abs. 1 Nr. 2 HGB). Wenn kein persönlich haftender Gesellschafter eine natürliche Person ist, dann muss die Firma eine Bezeichnung erhalten, welche die Haftungsbeschränkung bezeichnet (§ 19 Abs. 2 HGB). Dabei ist es ähnlich der GmbH &amp; Co. KG gebräuchlich, den Rechtsformzusatz der juristischen Person zu nennen, z. B. GmbH &amp; Co. OHG oder AG &amp; Co. OHG. Ebenfalls möglich ist der Rechtsformzusatz OHGmbH.</rdfs:comment>
         <rdfs:label xml:lang="de">AG &amp; Co. OHG</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#GmbH_&amp;_Co_KG -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#GmbH_&amp;_Co_KG">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#GmbH_&amp;_Co_KG">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
         <rdfs:comment xml:lang="de">Die Gesellschaft mit beschränkter Haftung &amp; Compagnie Kommanditgesellschaft (GmbH &amp; Co. KG) ist im deutschen und österreichischen Recht eine Sonderform der Kommanditgesellschaft (KG) und somit eine Personengesellschaft. In der Schweiz ist diese Rechtsform bisher nicht möglich.
 
 Anders als bei einer typischen Kommanditgesellschaft ist der persönlich und unbegrenzt haftende Gesellschafter (Komplementär) keine natürliche Person, sondern eine Gesellschaft mit beschränkter Haftung (GmbH). Ziel dieser gesellschaftsrechtlichen Konstruktion ist es, Haftungsrisiken für die hinter der Gesellschaft stehenden Personen auszuschließen oder zu begrenzen.</rdfs:comment>
+        <rdfs:label xml:lang="de">GmbH &amp; Co. KG.</rdfs:label>
         <rdfs:label xml:lang="de">Gesellschaft mit beschränkter Haftung &amp; Compagnie Kommanditgesellschaft</rdfs:label>
         <rdfs:label xml:lang="de">Gesellschaft mit beschränkter Haftung und Compagnie Kommanditgesellschaft</rdfs:label>
         <rdfs:label xml:lang="de">GmbH &amp; Co. KG</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#GmbH_&amp;_Co_KGaA -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#GmbH_&amp;_Co_KGaA">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#GmbH_&amp;_Co_KGaA">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
         <rdfs:comment xml:lang="de">Die GmbH &amp; Co. KGaA ist eine Kommanditgesellschaft auf Aktien (KGaA), deren Komplementär eine Gesellschaft mit beschränkter Haftung (GmbH) ist. Durch die Wahl dieser Mischform lässt sich die Haftung der Kommanditgesellschaft auf das Vermögen der GmbH beschränken, ohne die Rechtsform der Kommanditgesellschaft auf Aktien aufgeben zu müssen. Die Kommanditisten dieser Gesellschaft sind weiterhin die Kommanditaktionäre der KGaA.</rdfs:comment>
         <rdfs:label xml:lang="de">GmbH &amp; Co. KGaA</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#GmbH_&amp;_Co_OHG -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#GmbH_&amp;_Co_OHG">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#GmbH_&amp;_Co_OHG">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
         <rdfs:comment xml:lang="de">Die Firma einer OHG muss die Bezeichnung offene Handelsgesellschaft oder eine allgemein verständliche Abkürzung hierfür (OHG oder oHG) enthalten (§ 19 Abs. 1 Nr. 2 HGB). Wenn kein persönlich haftender Gesellschafter eine natürliche Person ist, dann muss die Firma eine Bezeichnung erhalten, welche die Haftungsbeschränkung bezeichnet (§ 19 Abs. 2 HGB). Dabei ist es ähnlich der GmbH &amp; Co. KG gebräuchlich, den Rechtsformzusatz der juristischen Person zu nennen, z. B. GmbH &amp; Co. OHG oder AG &amp; Co. OHG. Ebenfalls möglich ist der Rechtsformzusatz OHGmbH.</rdfs:comment>
         <rdfs:label xml:lang="de">GmbH &amp; Co. OHG</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#Limited_&amp;_Co_KG -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#Limited_&amp;_Co_KG">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#Limited_&amp;_Co_KG">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
         <rdfs:comment xml:lang="de">Die Limited &amp; Co. KG ist im deutschen Recht eine Sonderform der Kommanditgesellschaft (KG) und somit eine Personengesellschaft. Anders als bei einer typischen Kommanditgesellschaft ist der persönlich haftende Gesellschafter (Komplementär) keine natürliche Person, sondern meist eine britische Private Company Limited by Shares (Ltd.), seltener eine Public Limited Company (PLC). Ziel dieser gesellschaftsrechtlichen Konstruktion ist es, Haftungsrisiken für die hinter der Gesellschaft stehenden Personen auszuschließen oder zu begrenzen. Es handelt sich um eine Mischform analog zur GmbH &amp; Co. KG oder AG &amp; Co. KG.</rdfs:comment>
         <rdfs:label xml:lang="de">Limited &amp; Co. KG</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#SE_&amp;_Co_KGaA -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#SE_&amp;_Co_KGaA">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#SE_&amp;_Co_KGaA">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
         <rdfs:comment xml:lang="de">Die SE &amp; Co. KGaA ist eine Kommanditgesellschaft auf Aktien (KGaA), deren Komplementär eine Europäische Gesellschaft (SE) ist. Durch die Wahl dieser Mischform kann Haftung der Kommanditgesellschaft auf Aktien beschränkt werden, ohne das die Rechtsform der Kommanditgesellschaft auf Aktien aufgegeben werden muss. Die Kommanditisten dieser Gesellschaft sind weiterhin die Kommanditaktionäre bzw. die Aktionäre der KGaA. Diese Rechtsform wird häufig bei börsennotierten Familiengesellschaften oder Firmen mit einem einflussreichen Großaktionär gewählt, deren Familien- bzw. Großaktionäre Anteile ihrer Firma verkaufen wollen, jedoch die Kontrolle über die Firma behalten wollen.</rdfs:comment>
         <rdfs:label xml:lang="de">SE &amp; Co. KGaA</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#Stiftung_&amp;_Co_KG -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#Stiftung_&amp;_Co_KG">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#Stiftung_&amp;_Co_KG">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
         <rdfs:comment xml:lang="de">Die Stiftung &amp; Co. KG ist im deutschen Recht eine Sonderform der Kommanditgesellschaft (KG) und somit eine Personengesellschaft. Sie ist vor allem ein Instrument, um die Unternehmensnachfolge zu regeln. Die Gesellschafterinteressen werden gebündelt und damit das Unternehmen und sein Kapital erhalten sowie die Kontinuität gewährleistet. Der persönlich haftende Gesellschafter (Komplementär) ist dabei keine natürliche Person, sondern eine Stiftung, und zwar in der Regel eine unternehmensverbundene Stiftung.</rdfs:comment>
         <rdfs:label xml:lang="de">Stiftung &amp; Co. KG</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#Stiftung_&amp;_Co_KGaA -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#Stiftung_&amp;_Co_KGaA">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#Stiftung_&amp;_Co_KGaA">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
         <rdfs:comment xml:lang="de">Die Stiftung &amp; Co. KGaA ist eine Kommanditgesellschaft auf Aktien (KGaA), deren Komplementär eine Stiftung ist. Durch die Wahl dieser Mischform lässt sich die Haftung der Kommanditgesellschaft auf Aktien beschränken, ohne deren Rechtsform aufgeben zu müssen. Die Kommanditisten dieser Gesellschaft werden auch Kommanditaktionäre genannt.</rdfs:comment>
         <rdfs:label xml:lang="de">Stiftung &amp; Co. KGaA</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#Stiftung_GmbH_&amp;_Co_KG -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#Stiftung_GmbH_&amp;_Co_KG">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#Stiftung_GmbH_&amp;_Co_KG">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
         <rdfs:comment xml:lang="de">Die Stiftung GmbH &amp; Co. KG ist im deutschen Recht eine Sonderform der Kommanditgesellschaft (KG), konkret der GmbH &amp; Co. KG, und somit eine Personengesellschaft. Sie dient dazu, die Unternehmensnachfolge zu regeln. Der persönlich haftende Gesellschafter (Komplementär) ist dabei keine natürliche Person, sondern eine GmbH. Die Stiftung fungiert dabei als Kommanditist.
 
 Die Rechtsform kann zu verschiedenen Zwecken eingesetzt werden (s. u).</rdfs:comment>
         <rdfs:label xml:lang="de">Stiftung GmbH &amp; Co. KG</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#UG_(haftungsbeschränkt) -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#UG_(haftungsbeschränkt)">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#UG_(haftungsbeschränkt)">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#LimitedCompany"/>
         <rdfs:label xml:lang="de">UG (haftungsbeschränkt)</rdfs:label>
-    </Class>
+    </NamedIndividual>
     
 
 
     <!-- http://corp.dbpedia.org/ontology#Unternehmergesellschaft_(haftungsbeschränkt)_&amp;_Co._KG -->
 
-    <Class rdf:about="http://corp.dbpedia.org/ontology#Unternehmergesellschaft_(haftungsbeschränkt)_&amp;_Co._KG">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
+    <NamedIndividual rdf:about="http://corp.dbpedia.org/ontology#Unternehmergesellschaft_(haftungsbeschränkt)_&amp;_Co._KG">
+        <rdf:type rdf:resource="http://corp.dbpedia.org/ontology#Partnership"/>
         <rdfs:comment xml:lang="de">Die Unternehmergesellschaft (haftungsbeschränkt) &amp; Co. KG oder UG (haftungsbeschränkt) &amp; Co. KG ist im deutschen Recht eine Sonderform der Kommanditgesellschaft (KG) und somit eine Personengesellschaft.
 
 Anders als bei einer typischen Kommanditgesellschaft ist der persönlich haftende Gesellschafter (Komplementär) keine natürliche Person, sondern eine Unternehmergesellschaft (haftungsbeschränkt). Ziel dieser gesellschaftsrechtlichen Konstruktion ist es, Haftungsrisiken für die hinter der Gesellschaft stehenden Personen auszuschließen oder zu begrenzen und ggf. die für die UG (haftungsbeschränkt) vorgeschriebene Rücklagenbildung faktisch leerlaufen zu lassen. Diese Rechtsform wird oft dann gewählt, wenn aus steuerlicher Sicht eine gewerbliche Prägung angestrebt wird, jedoch die Gesellschafter keine Liquidität zur Verfügung stellen möchten und dies aufgrund der Geschäftstätigkeit der Gesellschaft auch nicht müssen. Dies kann z. B. bei einer Familiengesellschaft zur Verwaltung von Grundbesitz der Fall sein.</rdfs:comment>
         <rdfs:label xml:lang="de">UG (haftungsbeschränkt) &amp; Co. KG</rdfs:label>
         <rdfs:label xml:lang="de">Unternehmergesellschaft (haftungsbeschränkt) &amp; Co. KG</rdfs:label>
-    </Class>
+    </NamedIndividual>
 </rdf:RDF>
 
 
