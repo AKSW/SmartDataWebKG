@@ -17,7 +17,11 @@ public class KgSolrGeonamesConfig extends KgSolrConfigBase {
 
 	protected String sparqlUrl;	
 	
-	private KgSolrGeonamesConfig() {
+	protected String graphNameGeonames;
+	
+	protected String graphNameDbpedia;
+	
+	protected KgSolrGeonamesConfig() {
 		
 	}
 	
@@ -28,7 +32,7 @@ public class KgSolrGeonamesConfig extends KgSolrConfigBase {
 	@Override
 	public void init(KgSolrConfigBase configInstanceBase, JsonReader jsonReader) throws KgSolrException {	
 		if (null == configInstanceBase ||
-			false == KgSolrConfig.class.isInstance(configInstanceBase) ||
+			false == KgSolrGeonamesConfig.class.isInstance(configInstanceBase) ||
 			null == jsonReader) {
 			return;
 		}
@@ -44,7 +48,9 @@ public class KgSolrGeonamesConfig extends KgSolrConfigBase {
 			if (element.isJsonObject()) {
 				JsonObject jsonObject = element.getAsJsonObject();
 				configInstance.solrUrl = JsonReader.getElementString(jsonObject, "solrUrl", true);
-				configInstance.sparqlUrl = JsonReader.getElementString(jsonObject, "sparqlUrl", true);				
+				configInstance.sparqlUrl = JsonReader.getElementString(jsonObject, "sparqlUrl", true);
+				configInstance.graphNameGeonames = JsonReader.getElementString(jsonObject, "graphNameGeonames", true);
+				configInstance.graphNameDbpedia = JsonReader.getElementString(jsonObject, "graphNameDbpedia", true);
 			}
 		} catch (Exception e) {
 			throw new KgSolrException("Was not able to init config", e);
@@ -52,10 +58,18 @@ public class KgSolrGeonamesConfig extends KgSolrConfigBase {
 	}
 	
 	public String getSolrUrl() {
-		return solrUrl;
+		return this.solrUrl;
 	}
 
 	public String getSparqlUrl() {
-		return sparqlUrl;
-	}	
+		return this.sparqlUrl;
+	}
+	
+	public String getGraphNameGeonames() {
+		return this.graphNameGeonames;
+	}
+	
+	public String getGraphDBpedia() {
+		return this.graphNameDbpedia;
+	}
 }

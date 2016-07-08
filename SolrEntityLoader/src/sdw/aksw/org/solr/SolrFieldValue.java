@@ -12,6 +12,7 @@ public interface SolrFieldValue<T> {
 	
 	public boolean isEmpty();
 	
+	@SuppressWarnings("unchecked")
 	public void addFieldValue(T ... values);
 	
 	public Collection<T> getFieldValues();

@@ -22,6 +22,8 @@ public abstract class KgSolrConfigBase {
 	
 	static protected Lock lock = new ReentrantLock(true); 
 	
+	protected boolean deleteAllSolrDocs;
+	
 	protected KgSolrConfigBase() {
 		
 	}
@@ -32,7 +34,7 @@ public abstract class KgSolrConfigBase {
 	 * @param configClass
 	 * @return
 	 */
-	static protected <T extends KgSolrConfigBase> T getInstance(Class<T> configClass) {
+	static public <T extends KgSolrConfigBase> T getInstance(Class<T> configClass) {
 		
 		lock.lock();		
 		try {
@@ -92,5 +94,13 @@ public abstract class KgSolrConfigBase {
 	 * @throws KgSolrException
 	 */
 	public abstract void init(final KgSolrConfigBase configInstance, final JsonReader jsonReader) throws KgSolrException;
+	
+	public void setDeleteAllSolrDocs(boolean deleteAll) {
+		this.deleteAllSolrDocs = deleteAll;
+	}
+	
+	public boolean deleteAllSolrDocs() {
+		return this.deleteAllSolrDocs;
+	}
 
 }

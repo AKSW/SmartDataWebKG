@@ -24,7 +24,6 @@ public class KgSolrConfig extends KgSolrConfigBase {
 	protected String sourceType;
 	protected List<KgSolrMapping> mappings;
 	protected List<String> restrictions;
-	protected boolean deleteAllSolrDocs;
 	
 	protected KgSolrConfig() {
 		
@@ -147,14 +146,6 @@ public class KgSolrConfig extends KgSolrConfigBase {
 	
 	public List<String> getRestrictions() {
 		return this.restrictions;
-	}	
-	
-	public void setDeleteAllSolrDocs(boolean deleteAll) {
-		this.deleteAllSolrDocs = deleteAll;
-	}
-	
-	public boolean deleteAllSolrDocs() {
-		return this.deleteAllSolrDocs;
 	}
 	
 	/**
