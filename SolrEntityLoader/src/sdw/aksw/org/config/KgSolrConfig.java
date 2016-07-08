@@ -13,13 +13,10 @@ import aksw.org.sdw.kg.handler.solr.KgSolrException;
 import sdw.aksw.org.sparql.DefaultMapping;
 import sdw.aksw.org.sparql.Solr2SparqlMappingInterface;
 
-public class KgSolrConfig {
+public class KgSolrConfig extends KgSolrConfigBase {
 	
 	/** config instance */
 	static KgSolrConfig config = null;
-	
-	/** path to config file */
-	static JsonReader jsonReader = null;
 	
 	protected String solrUrl;
 	protected String sparqlUrl;
@@ -29,42 +26,38 @@ public class KgSolrConfig {
 	protected List<String> restrictions;
 	protected boolean deleteAllSolrDocs;
 	
-	private KgSolrConfig() {
+	protected KgSolrConfig() {
 		
 	}
 	
 	static public KgSolrConfig getInstance() {
-		if (null == KgSolrConfig.config) {
-			KgSolrConfig.config = new KgSolrConfig();
-		}
-		
-		return KgSolrConfig.config;
+		return KgSolrConfigBase.getInstance(KgSolrConfig.class);
 	}
 	
-	@SuppressWarnings("static-access")
-	static public void init(final String filePath) throws KgSolrException {
-		if (null == filePath || null != KgSolrConfig.jsonReader) {
+	@Override
+	public void init(final KgSolrConfigBase configInstanceBase, final JsonReader jsonReader) throws KgSolrException {
+		if (null == configInstanceBase ||
+			false == KgSolrConfig.class.isInstance(configInstanceBase) ||
+			null == jsonReader) {
 			return;
 		}
 		
-		try {
-			KgSolrConfig.jsonReader = new JsonReader(filePath);
-			
-			JsonElement element = KgSolrConfig.jsonReader.getJson();
+		try {			
+			JsonElement element = jsonReader.getJson();
 			if (null == element || element.isJsonNull()) {
 				return;
 			}
 			
-			KgSolrConfig configInstance = getInstance();
+			KgSolrConfig configInstance = (KgSolrConfig) configInstanceBase;
 			
 			if (element.isJsonObject()) {
 				JsonObject jsonObject = element.getAsJsonObject();
-				configInstance.solrUrl = jsonReader.getElementString(jsonObject, "solrUrl", true);
-				configInstance.sparqlUrl = jsonReader.getElementString(jsonObject, "sparqlUrl", true);
-				configInstance.graphNames = jsonReader.getElementStringArray(jsonObject, "graphNames", true);
+				configInstance.solrUrl = JsonReader.getElementString(jsonObject, "solrUrl", true);
+				configInstance.sparqlUrl = JsonReader.getElementString(jsonObject, "sparqlUrl", true);
+				configInstance.graphNames = JsonReader.getElementStringArray(jsonObject, "graphNames", true);
 								
 				configInstance.mappings = configInstance.createMappings(jsonObject);	
-				configInstance.restrictions = jsonReader.getElementStringArray(jsonObject, "kgRestrictions", false);
+				configInstance.restrictions = JsonReader.getElementStringArray(jsonObject, "kgRestrictions", false);
 			}
 		} catch (Exception e) {
 			throw new KgSolrException("Was not able to init config", e);
@@ -78,7 +71,6 @@ public class KgSolrConfig {
 	 * @return
 	 * @throws KgSolrException
 	 */
-	@SuppressWarnings("static-access")
 	protected List<KgSolrMapping> createMappings(final JsonObject jsonObject) throws KgSolrException {
 		JsonArray mappingArray = jsonObject.get("mappings").getAsJsonArray();
 		
@@ -88,9 +80,9 @@ public class KgSolrConfig {
 			JsonObject mappingObject = mappingArray.get(i).getAsJsonObject();
 			
 			List<String> requiredPredicates =
-					jsonReader.getElementStringArray(mappingObject, "kgRequiredPredicateNames", false);
+					JsonReader.getElementStringArray(mappingObject, "kgRequiredPredicateNames", false);
 			List<String> kgOptionalPredicateNames =
-					jsonReader.getElementStringArray(mappingObject, "kgOptionalPredicateNames", false);
+					JsonReader.getElementStringArray(mappingObject, "kgOptionalPredicateNames", false);
 			
 			if ((null == requiredPredicates || requiredPredicates.isEmpty()) &&
 				(null == kgOptionalPredicateNames || kgOptionalPredicateNames.isEmpty())) {
@@ -99,7 +91,7 @@ public class KgSolrConfig {
 			
 		
 			// get variable name
-			String kgVariableName = jsonReader.getElementString(mappingObject, "kgVariableName", true);
+			String kgVariableName = JsonReader.getElementString(mappingObject, "kgVariableName", true);
 			
 			JsonArray solrMappingGroups = mappingObject.get("solrMappingGroups").getAsJsonArray();
 			
@@ -109,15 +101,15 @@ public class KgSolrConfig {
 			for (int ii = 0; ii < solrMappingGroups.size(); ++ii) {
 				JsonObject solrMappingInfoObject = solrMappingGroups.get(ii).getAsJsonObject();			
 				
-				String solrFieldName = jsonReader.getElementString(solrMappingInfoObject, "solrFieldName", true);
+				String solrFieldName = JsonReader.getElementString(solrMappingInfoObject, "solrFieldName", true);
 				solrFieldNames.add(solrFieldName);
 			
-				String matchPatternString = jsonReader.getElementString(solrMappingInfoObject, "matchPattern", false);
+				String matchPatternString = JsonReader.getElementString(solrMappingInfoObject, "matchPattern", false);
 				Pattern matchPattern = (null != matchPatternString) ? Pattern.compile(matchPatternString) : null;
 				matchPatterns.add(matchPattern);
 			}
 			
-			String mappingClass = jsonReader.getElementString(mappingObject, "sparql2SolrMappingClass", false);
+			String mappingClass = JsonReader.getElementString(mappingObject, "sparql2SolrMappingClass", false);
 			
 			KgSolrMapping mapping = new KgSolrMappingRegex(
 					requiredPredicates, kgOptionalPredicateNames,
@@ -127,7 +119,7 @@ public class KgSolrConfig {
 		}
 		
 		if (mappings.isEmpty()) {
-			throw new KgSolrException("No mappings found in config file: " + jsonReader.filePath);
+			throw new KgSolrException("No mappings found in config file");
 		}
 		
 		return mappings;
@@ -267,5 +259,5 @@ public class KgSolrConfig {
 			
 			return matchingPattern.matcher(literalString).matches();
 		}	
-	}
+	}	
 }
