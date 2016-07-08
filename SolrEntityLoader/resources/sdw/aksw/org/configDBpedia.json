@@ -1,0 +1,93 @@
+{
+  "solrUrl": "http://localhost:10083/solr/companies",
+  "sparqlUrl": "http://localhost:9890/sparql",
+  "graphNames": [
+    "http://dbpedia.org"
+  ],
+  "kgRestrictions": [
+  	"a <http://dbpedia.org/ontology/Company>"    	
+  ],
+  "mappings": [
+    {
+      "kgRequiredPredicateNames": [
+        "http://www.w3.org/2000/01/rdf-schema#label",
+        "http://dbpedia.org/property/acronym",
+        "http://dbpedia.org/property/acronyms",
+        "http://dbpedia.org/property/abbreviation",
+        "http://xmlns.com/foaf/0.1/name",
+        "http://dbpedia.org/property/name",
+        "http://dbpedia.org/property/companyName"
+      ],
+      "kgOptionalPredicateNames": [],
+      "kgVariableName": "label",      
+      "solrMappingGroups": [
+      	{
+      		"solrFieldName": "nameEn",
+      		"matchPattern": "(^\".*\"$)|(.*@en$)"
+      	},
+      	{
+      		"solrFieldName": "nameDe",
+      		"matchPattern": "(.*@de$)"
+      	}
+      ]
+    },
+    {
+      "kgRequiredPredicateNames": [
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+      ],
+      "kgOptionalPredicateNames": [],
+      "kgVariableName": "type",      
+      "solrMappingGroups": [
+      	{
+      		"solrFieldName": "type"
+       	}
+      ]      		
+    },
+    {
+      "kgRequiredPredicateNames": [],
+      "kgOptionalPredicateNames": [
+        "http://www.w3.org/2002/07/owl#sameAs"
+      ],
+      "kgVariableName": "sameAs",      
+      "solrMappingGroups": [
+      	{
+      		"solrFieldName": "sameAs"
+      	}
+      ]
+    },
+    {
+      "kgRequiredPredicateNames": [],
+      "kgOptionalPredicateNames": [
+      	"http://dbpedia.org/ontology/subsidiary",
+      	"http://dbpedia.org/property/subsid",
+      	"http://dbpedia.org/property/subsidiaries",
+      	"http://dbpedia.org/property/allianz",
+      	"http://dbpedia.org/ontology/alliance",
+      	"http://dbpedia.org/property/alliance",
+      	"http://dbpedia.org/property/acquisitions"
+      ],
+      "kgVariableName": "inLinks",      
+      "solrMappingGroups": [
+      	{
+	      "solrFieldName": "inLink",
+	      "matchPattern": "^http.*"
+	    }
+	  ]
+    },
+    {
+      "kgRequiredPredicateNames": [],
+      "kgOptionalPredicateNames": [
+      	"http://dbpedia.org/property/parent",
+      	"http://dbpedia.org/ontology/parentCompany",      	
+      	"http://dbpedia.org/property/acquiredBy",
+      ],
+      "kgVariableName": "outLinks",      
+      "solrMappingGroups": [
+      	{
+	      "solrFieldName": "outLink",
+	      "matchPattern": "^http.*"
+	    }
+	  ]
+    }
+  ]
+}
