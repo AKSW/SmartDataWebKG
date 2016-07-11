@@ -123,6 +123,9 @@ public class StatsRecorder {
 				if (false == this.statistics.containsKey(id)) {
 					value = new AtomicLong(0);
 					this.statistics.put(id, value);
+				} else {
+					// make sure we get to correct atomic number
+					value = this.statistics.get(id);
 				}
 			} finally {
 				lock.unlock();
