@@ -245,7 +245,7 @@ public class SolrHandler implements Closeable {
 				return null;
 			}	
 			
-			List<KgSolrResultDocument> resultList = new ArrayList<>();
+			List<KgSolrResultDocument> resultList = new ArrayList<>();			
 			
 			ListIterator<SolrDocument> documentIterator = results.listIterator();
 			while (documentIterator.hasNext()) {

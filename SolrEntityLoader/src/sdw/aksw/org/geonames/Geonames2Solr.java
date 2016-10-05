@@ -31,7 +31,7 @@ public class Geonames2Solr {
 			return;
 		}
 		
-		// find sameAs relationships
+		// find sameAs relationships 
 		SolrInputField id = solrInputDocument.get("id");		
 		List<String> links = dbpediaUtils.getSameAsUris((String) id.getValue());
 		if (null != links) {

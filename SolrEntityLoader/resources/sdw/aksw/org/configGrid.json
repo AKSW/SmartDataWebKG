@@ -21,8 +21,16 @@
       		"matchPattern": ".*@de$"
       	},
       	{
+      		"solrFieldName": "nameDeK",
+      		"matchPattern": ".*@de$"
+      	},
+      	{
       		"solrFieldName": "nameEn",
       		"matchPattern": "(^\".*\"$)|(.*@en$)"
+      	},
+      	      	{
+      		"solrFieldName": "nameEnK",
+      		"matchPattern": ".*@de$"
       	}
       ]
     },

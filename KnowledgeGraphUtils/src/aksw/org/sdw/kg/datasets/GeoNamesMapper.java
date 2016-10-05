@@ -11,17 +11,23 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
+import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QueryExecutionFactory;
+import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.ResultSet;
+import org.apache.jena.rdf.model.Literal;
+import org.apache.jena.rdf.model.Resource;
 import org.apache.log4j.Logger;
 
 //import com.google.common.cache.Cache;
 //import com.google.common.cache.CacheBuilder;
 //import com.google.common.cache.CacheLoader;
-import com.hp.hpl.jena.query.QueryExecution;
-import com.hp.hpl.jena.query.QueryExecutionFactory;
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.Literal;
-import com.hp.hpl.jena.rdf.model.Resource;
+//import com.hp.hpl.jena.query.QueryExecution;
+//import com.hp.hpl.jena.query.QueryExecutionFactory;
+//import com.hp.hpl.jena.query.QuerySolution;
+//import com.hp.hpl.jena.query.ResultSet;
+//import com.hp.hpl.jena.rdf.model.Literal;
+//import com.hp.hpl.jena.rdf.model.Resource;
 
 import aksw.org.kg.KgException;
 import aksw.org.kg.input.CsvReader;

@@ -23,6 +23,8 @@ import aksw.org.sdw.kg.handler.solr.SolrHandler.TAGGER_LANGUAGE;
 public class TestSolrHandler {
 	
 	static String solrUrl = "http://localhost:8983/solr/companies";
+	
+	SolrHandler solrHandler;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -34,10 +36,13 @@ public class TestSolrHandler {
 
 	@Before
 	public void setUp() throws Exception {
+		this.solrHandler = new SolrHandler("http://localhost:8983/solr/companies");
+
 	}
 
 	@After
 	public void tearDown() throws Exception {
+		this.solrHandler.close();
 	}
 
 	/**
@@ -46,8 +51,8 @@ public class TestSolrHandler {
 	 */
 	@Test
 	public void contactSolr() throws IOException {
-		SolrHandler solrHandler = new SolrHandler("http://localhost:8983/solr/companies");
-		solrHandler.close();
+		//SolrHandler solrHandler = new SolrHandler("http://localhost:8983/solr/companies");
+		//solrHandler.close();
 	}
 	
 	/**
@@ -58,7 +63,7 @@ public class TestSolrHandler {
 	 */
 	@Test
 	public void testQueryExecutionSolr() throws IOException, KgException {
-		SolrHandler solrHandler = new SolrHandler(solrUrl);
+		//solrHandler = new SolrHandler(solrUrl);
 		
 		List<KgSolrResultDocument> resuts = solrHandler.executeQuery("nameEn:\"Germany\"", null);
 		assertNotNull("Got results", resuts);

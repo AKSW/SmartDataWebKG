@@ -8,13 +8,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QueryExecutionFactory;
+import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.ResultSet;
+import org.apache.jena.rdf.model.RDFNode;
 import org.apache.solr.common.SolrDocument;
 
-import com.hp.hpl.jena.query.QueryExecution;
-import com.hp.hpl.jena.query.QueryExecutionFactory;
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.RDFNode;
+//import com.hp.hpl.jena.query.QueryExecution;
+//import com.hp.hpl.jena.query.QueryExecutionFactory;
+//import com.hp.hpl.jena.query.QuerySolution;
+//import com.hp.hpl.jena.query.ResultSet;
+//import com.hp.hpl.jena.rdf.model.RDFNode;
 
 import aksw.org.sdw.kg.handler.solr.SolrUriInputDocument;
 

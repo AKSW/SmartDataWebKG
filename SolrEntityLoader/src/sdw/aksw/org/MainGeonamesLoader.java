@@ -33,8 +33,12 @@ public class MainGeonamesLoader {
 		
 		SolrHandler solrHandler = new SolrHandler(KgSolrGeonamesConfig.getInstance().getSolrUrl());
 		
-		if (KgSolrGeonamesConfig.getInstance().deleteAllSolrDocs()) {
+		if (true) {
 			solrHandler.deleteAllDocuments();
+		}
+		
+		if (true) {
+			return;
 		}
 		
 		Geonames2Solr geonames2Solr = new Geonames2Solr(solrHandler, dbpediaUtils);

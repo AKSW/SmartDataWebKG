@@ -50,6 +50,7 @@ public class KgSolrResultDocument {
 	 * @param fieldName
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public List<String> getFieldValueAsStringList(final String fieldName) {
 		if (null == fieldName || fieldName.isEmpty()) {
 			return null;
@@ -57,6 +58,10 @@ public class KgSolrResultDocument {
 		
 		Object fieldValuesObject = this.solrDocumentValues.get(fieldName);
 		if (null != fieldValuesObject) {
+			
+			if (fieldValuesObject instanceof List<?>) {
+				return (List<String>) fieldValuesObject;
+			}
 			
 			String[] fieldValues = (String[]) fieldValuesObject;
 			
@@ -78,6 +83,19 @@ public class KgSolrResultDocument {
 		
 		Object fieldValue = this.solrDocumentValues.get(fieldName);
 		return fieldValue;		
+	}
+	
+	public String toString() {
+		StringBuffer buffer = new StringBuffer();
+		
+		for (String key : solrDocumentValues.keySet()) {
+			buffer.append(key);
+			buffer.append("' : '");
+			buffer.append(solrDocumentValues.get(key));
+			buffer.append("'\n");
+		}
+		
+		return buffer.toString();
 	}
 
 }

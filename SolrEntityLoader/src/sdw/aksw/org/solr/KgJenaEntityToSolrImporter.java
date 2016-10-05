@@ -329,11 +329,29 @@ public class KgJenaEntityToSolrImporter {
 								}
 							} while (null == entityQueryResult && 0 < tryCount--);
 							
-							ResultSet entitySelectResult = entityQueryResult.execSelect();
-							if (false == entitySelectResult.hasNext()) {
+							tryCount = 5;
+							boolean gotException = false;
+							ResultSet entitySelectResult = null;
+							do {
+								
+								gotException = false;
+								try {
+									entitySelectResult = entityQueryResult.execSelect();
+								} catch (Exception e) {
+									gotException = true;
+									if (0 >= tryCount) {
+										throw e;
+									} else {
+										Thread.sleep(500);
+									}
+								}
+							} while (gotException && 0 < tryCount--);
+							
+							if (null == entitySelectResult || false == entitySelectResult.hasNext()) {
 								// no more results from this graph
 								return "";
 							}
+							
 						
 							while (entitySelectResult.hasNext()) {
 								QuerySolution entityResult = entitySelectResult.next();
