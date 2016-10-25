@@ -27,10 +27,10 @@ public class SparqlHandler {
 	}
 	
 	public QueryExecution createQueryExecuter(final String queryString) {
-		System.out.println("Query:\n\n" + queryString);
+		System.out.println("!Query:\n\n" + queryString);
 		
 		QueryExecution queryExecution =  QueryExecutionFactory.sparqlService(
-				this.sparqlEndpointUrl, queryString, graphName);
+				this.sparqlEndpointUrl, queryString);
 		
 		// is required, since we have invalid URIs in DBpedia at the moment
 		// (e.g. "http://de.dbpedia.org/resource/Adm_–_Agentur_für_Dialogmarketing")

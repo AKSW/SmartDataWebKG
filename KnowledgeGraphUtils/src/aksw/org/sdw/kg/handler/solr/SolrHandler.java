@@ -203,6 +203,7 @@ public class SolrHandler implements Closeable {
 		
 		SolrQuery solrQuery = new SolrQuery();
 		solrQuery.setQuery(query);
+		solrQuery.setRows(10000);
 		
 		if (null != filterQueries) {
 			int arrayLength = filterQueries.size();
