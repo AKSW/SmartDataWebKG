@@ -44,6 +44,8 @@ public class EntityExtractor {
                 String outputFileName = args[3];
                 System.out.println("Output file: " + outputFileName);
 
+		String originalName = args[4];
+
                 SolrHandler solrHandler = new SolrHandler(solrUrl);
                 
                 boolean fileExists = false;
@@ -56,7 +58,7 @@ public class EntityExtractor {
                 BufferedWriter output = new BufferedWriter(new FileWriter(outputFile, true));
                 if (false == fileExists) {
 			// write out headline --> only when the file did not exist before!
-                	output.append("uri\tlabel\thomepage\n");
+                	output.append("original name\turi\tlabel\thomepage\n");
                 }
 
                 SparqlHandler sparqlHandler = new SparqlHandler(sparqlBackend, null);
@@ -150,7 +152,8 @@ public class EntityExtractor {
                         int finalCount = 0;
 //                        System.out.println("index\turi\tlabel\thomepage");                        
                         for (String uri : uri2Labels.keySet()) {
-                                output.append(uri + "\t" + uri2Labels.get(uri)
+                                output.append(originalName + "\t");
+				output.append(uri + "\t" + uri2Labels.get(uri)
                                 				   + (null == uri2Homepages.get(uri) ? "\t" : "\t" + uri2Homepages.get(uri)));
 				output.append("\n"); // add a new line
                         }
