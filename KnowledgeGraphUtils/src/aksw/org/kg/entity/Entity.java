@@ -1,15 +1,35 @@
 package aksw.org.kg.entity;
 
+import java.io.ByteArrayOutputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
+
+import org.apache.jena.datatypes.RDFDatatype;
+import org.apache.jena.graph.Triple;
+import org.apache.jena.rdf.model.Literal;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.NodeIterator;
+import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.ResourceFactory;
+import org.apache.jena.rdf.model.Statement;
+import org.apache.jena.rdf.model.StmtIterator;
+import org.apache.jena.rdf.model.impl.PropertyImpl;
+import org.apache.jena.rdf.model.impl.ResourceImpl;
+import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.riot.RDFFormat;
 
 /**
  * This class stores all the information which
@@ -27,27 +47,27 @@ public class Entity {
 	final static Pattern cleanupWhiteSpaces = Pattern.compile("\\s+");
 	
 	/** data store which will store all the entity information */
-	protected Map<String, Map<RdfObject, AtomicInteger>> entityInformation = new LinkedHashMap<>();
+	//protected Map<String, Map<RdfObject, AtomicInteger>> entityInformation = new LinkedHashMap<>();
 	
 	/** container which can be used to store sub entity information */
 	protected Map<String, Entity> subEntities = null;
 	
 	protected Map<String, Entity> subEntitiesCategoryMap = null;
 	
-	/** counts the number of triples which are stored in this entity */
-	protected long tripleCount = 0L;
-	
 	/** specifies the actual subject uri */
 	protected String mainSubjectUri = null;
 	
 	/** main uri object for reuse */
-	protected RdfObjectUri mainSubjectUriObject = null;
+	protected Resource mainSubjectUriObject = null;
 	
 	/** specifies whether this is a blank node */
 	protected final boolean isBlankNode;
 	
 	/** uri prefix */
 	final String uriPrefix;
+	
+	/** actual model of this entity */
+	Model entityModel;
 	
 	/**
 	 * Constructor which can be used to
@@ -58,6 +78,8 @@ public class Entity {
 	public Entity(final String uriPrefix, final boolean isBlankNode) {
 		this.isBlankNode = isBlankNode;
 		this.uriPrefix = uriPrefix;
+		
+		this.entityModel = ModelFactory.createDefaultModel();
 	}
 	
 	/**
@@ -83,11 +105,13 @@ public class Entity {
 	 */
 	public void reset() {
 		
-		for (String key : entityInformation.keySet()) {
-			entityInformation.get(key).clear();
+		if (null != this.entityModel) {
+			this.entityModel.close();
+			this.entityModel = null;
+			
+			this.entityModel = ModelFactory.createDefaultModel();
 		}
-		this.entityInformation.clear();
-		this.tripleCount = 0L;
+		
 		if (null != this.subEntities) {
 			for (String key : subEntities.keySet()) {
 				subEntities.get(key).reset();
@@ -99,6 +123,9 @@ public class Entity {
 			}
 			this.subEntitiesCategoryMap.clear();
 		}
+		
+		this.mainSubjectUri = null;
+		this.mainSubjectUriObject = null;
 	}
 	
 	/**
@@ -106,7 +133,7 @@ public class Entity {
 	 * @return true if data is stored and false otherwise
 	 */
 	public boolean isEmpty() {
-		boolean isEmpty = this.entityInformation.isEmpty();
+		boolean isEmpty = this.entityModel.isEmpty();
 		
 		if (null != this.subEntities) {
 			for (Entity subEntity : this.subEntities.values()) {
@@ -137,7 +164,7 @@ public class Entity {
 		int startName = uri.indexOf("_", prefixLength + 1);
 		
 		String name = uri.substring(startName);
-		String cleanName = cleanupPattern.matcher(name).replaceAll(" ").trim().toLowerCase();
+		String cleanName = cleanupPattern.matcher(name).replaceAll(" ").trim();// TODO km: check when and why this is needed! .toLowerCase();
 		cleanName = cleanupWhiteSpaces.matcher(cleanName).replaceAll("_");
 		
 		String rest = uri.substring(prefixLength, startName + 1);
@@ -147,7 +174,20 @@ public class Entity {
 	}
 	
 	public Collection<String> getPredicates() {
-		return Collections.unmodifiableCollection(this.entityInformation.keySet());
+		StmtIterator statements = this.entityModel.listStatements();
+		
+		Set<String> statementUris = new HashSet<>();
+		
+		while (statements.hasNext()) {
+			Statement statement = statements.next();
+			
+			Property predicate = statement.getPredicate();
+			String predicateUri = predicate.getURI();
+			
+			statementUris.add(predicateUri);
+		}
+		
+		return Collections.unmodifiableCollection(statementUris);
 	}
 	
 
@@ -192,16 +232,17 @@ public class Entity {
 		return this.mainSubjectUri;
 	}
 	
-	public RdfObjectUri getSubjectUriObject() {
+	public Resource getSubjectUriObject() {
 		if (null == this.mainSubjectUriObject && null != this.mainSubjectUri) {
-			this.mainSubjectUriObject = new RdfObjectUri(this.mainSubjectUri);
+			this.mainSubjectUriObject = new ResourceImpl(this.mainSubjectUri);
 		}
 		
 		return this.mainSubjectUriObject;
 	}
 	
 	public long getTripleCount() {
-		long totalTripleCount = this.tripleCount;
+		
+		long totalTripleCount = this.entityModel.size();		
 		
 		// just check if the other sub-entities have queries as well
 		if (null != this.subEntities) {
@@ -214,30 +255,114 @@ public class Entity {
 	}
 	
 	/**
-	 * This method can be used to add new triple information
+	 * This method can be used to add a new triple
 	 * 
-	 * @param subjectUri
+	 * @param triple
+	 */
+	public void addTriple(final Triple triple) {
+		if (null == triple) {
+			return;
+		}
+		
+		// create statement from triple
+		Statement statement = this.entityModel.asStatement(triple);		
+		
+		// add statement
+		this.entityModel.add(statement);
+	}
+	
+	/**
+	 * Creates Literal from given label and language Code
+	 * 
+	 * @param label
+	 * @param languageCode
+	 * @return
+	 */
+	public Literal getLiteral(final String label, final String languageCode) {
+		return this.entityModel.createLiteral(label, languageCode);
+	}
+	
+	/**
+	 * Creates Literal from given label and datatype instance
+	 * 
+	 * @param label
+	 * @param languageCode
+	 * @return
+	 */
+	public Literal getLiteral(final String label, final RDFDatatype dataType) {
+		return this.entityModel.createTypedLiteral(label, dataType);
+	}
+	
+	/**
+	 * Add triple with literal with language code
+	 * 
+	 * @param predicate
+	 * @param label
+	 * @param languageCode
+	 */
+	public void addTripleWithLiteral(final String predicateString, final String label, final String languageCode) {
+		this.addTripleWithLiteral(new PropertyImpl(predicateString), label, languageCode);
+	}
+	
+	/**
+	 * Add triple with literal with language code
+	 * 
+	 * @param predicate
+	 * @param label
+	 * @param languageCode
+	 */
+	public void addTripleWithLiteral(final Property predicate, final String label, final String languageCode) {
+		this.addTriple(predicate, this.getLiteral(label, languageCode));
+	}
+	
+	/**
+	 * Add triple with literal and literal data type information
+	 * 
+	 * @param predicate
+	 * @param lexicalForm
+	 * @param dataType
+	 */
+	public void addTripleWithLiteral(final String predicateString, final String label, final RDFDatatype dataType) { 
+		this.addTripleWithLiteral(new PropertyImpl(predicateString), label, dataType);
+	}
+	
+	/**
+	 * Add triple with literal and literal data type information
+	 * 
+	 * @param predicate
+	 * @param lexicalForm
+	 * @param dataType
+	 */
+	public void addTripleWithLiteral(final Property predicate, final String label, final RDFDatatype dataType) {
+		this.addTriple(predicate, this.getLiteral(label, dataType));
+	}
+	
+	/**
+	 * Adds triple with RDFNode (e.g. URI, Literal)
+	 * 
 	 * @param predicate
 	 * @param object
 	 */
-	public void addTriple(final String predicate, final RdfObject object) {
+	public void addTriple(final String predicateString, final RDFNode object) {
+		this.addTriple(new PropertyImpl(predicateString), object);
+	}
+	
+	/**
+	 * Adds triple with RDFNode (e.g. URI, Literal)
+	 * 
+	 * @param predicate
+	 * @param object
+	 */
+	public void addTriple(final Property predicate, final RDFNode object) {
 		if (null == predicate || null == object) {
 			return;
 		}
 		
-		Map<RdfObject, AtomicInteger> rdfObjects = this.entityInformation.get(predicate);
-		if (null == rdfObjects) {
-			rdfObjects = new HashMap<>();
-			this.entityInformation.put(predicate, rdfObjects);
-		}
+		Statement statement = ResourceFactory.createStatement(
+				getSubjectUriObject(), predicate, object);		
 		
-		if (false == rdfObjects.containsKey(object)) {
-			rdfObjects.put(object, new AtomicInteger(1));
-			++this.tripleCount;
-		} else {
-			// if we know it already --> add count
-			rdfObjects.get(object).incrementAndGet();
-		}
+		// add statement
+		this.entityModel.add(statement);
 	}
 	
 	/**
@@ -329,17 +454,22 @@ public class Entity {
 	 * @param predicateString
 	 * @return
 	 */
-	public List<RdfObject> getRdfObjects(final String predicateString) {
-		if (null == this.mainSubjectUri) {
+	public List<RDFNode> getRdfObjects(final String predicateString) {
+		if (null == predicateString || null == this.mainSubjectUri) {
 			return Collections.emptyList();
 		}
 		
-		Map<RdfObject, AtomicInteger> rdfObjects = this.entityInformation.get(predicateString);
-		if (null == rdfObjects) {
-			return Collections.emptyList();
-		} else {
-			return new ArrayList<>(rdfObjects.keySet());
+		Property predicate = new PropertyImpl(predicateString);
+		NodeIterator objectList = this.entityModel.listObjectsOfProperty(predicate);
+		
+		List<RDFNode> objects = new ArrayList<>();
+		while (objectList.hasNext()) {
+			RDFNode object = objectList.next();
+			
+			objects.add(object);
 		}
+		
+		return objects;
 	}
 	
 	/**
@@ -354,12 +484,8 @@ public class Entity {
 			return;
 		}
 		
-		Map<RdfObject, AtomicInteger> objects = this.entityInformation.get(predicateUri);
-		if (null != objects) {
-			objects.clear();
-		}
-		
-		this.entityInformation.remove(predicateUri);
+		Property predicate = new PropertyImpl(predicateUri);
+		this.entityModel.removeAll(null, predicate, null);
 	}
 	
 	public void deleteSubEntity(final Entity entity) {
@@ -390,59 +516,32 @@ public class Entity {
 	 * (sub-entities have to be queried separately)
 	 */
 	public Collection<String> getProperties() {
-		return Collections.unmodifiableCollection(this.entityInformation.keySet());
+		return this.getPredicates();
 	}
 	
-	public String toStringWithCount(final boolean withCount) {
-		StringBuilder builder = new StringBuilder();
-		
-		for (String predicateString : this.entityInformation.keySet()) {
-
-			Map<RdfObject, AtomicInteger> objects =  this.entityInformation.get(predicateString);
-			if (null == objects || objects.isEmpty()) {
-				continue;
-			}
-			
-			for (RdfObject object : objects.keySet()) {
-				
-				if (this.isBlankNode) {
-					// correct URI and remove all spaces
-					builder.append(this.mainSubjectUri);
-				} else {
-					// correct URI and remove all spaces
-					builder.append("<");
-					builder.append(this.mainSubjectUri);
-					builder.append(">");
-				}
-				
-				builder.append(" <");
-				builder.append(cleanupWhiteSpaces.matcher(predicateString).replaceAll("_"));
-				builder.append("> ");				
-
-				builder.append(object);
-				if (withCount) {
-					builder.append(" {");
-					builder.append(objects.get(object).get());
-					builder.append("} ");
-				}
-				
-				builder.append(" .\n");
-			}
+	public String toStringWithCount(ByteArrayOutputStream outputStream) {
+		if (null == outputStream) {
+			outputStream = new ByteArrayOutputStream();
 		}
 		
+		// write output into output stream
+		RDFDataMgr.write(outputStream, this.entityModel, RDFFormat.NT);		
+		StringBuilder builder = new StringBuilder();
+		builder.append(outputStream.toByteArray());		
+						
 		if (null != this.subEntities) {
 			for (String entityId : this.subEntities.keySet()) {
 				Entity entity = this.subEntities.get(entityId);			
-				builder.append(entity.toString());
+				builder.append(entity.toStringWithCount(outputStream));
 			}
 		}
 		
-		return builder.toString();
+		return new String(outputStream.toByteArray(), Charset.defaultCharset());
 	}
 	
 	@Override
 	public String toString() {
-		return this.toStringWithCount(false);
+		return this.toStringWithCount(null);
 	}
 	
 	/**
@@ -456,17 +555,19 @@ public class Entity {
 			return;
 		}
 		
-		for (String predicateUri : this.entityInformation.keySet()) {
-			if (predicatePattern.matcher(predicateUri).matches()) {
-				Map<RdfObject, AtomicInteger> rdfObjects = this.entityInformation.get(predicateUri);
-				if (null == rdfObjects || rdfObjects.isEmpty()) {
-					continue;
-				}
-				
-				// execute normalizer
-				normalizer.normalize(rdfObjects.keySet(), this.mainSubjectUri, predicateUri);
-			}
-		}
+		throw new RuntimeException("Why did we call this?");
+//		
+//		for (String predicateUri : this.entityInformation.keySet()) {
+//			if (predicatePattern.matcher(predicateUri).matches()) {
+//				Map<RdfObject, AtomicInteger> rdfObjects = this.entityInformation.get(predicateUri);
+//				if (null == rdfObjects || rdfObjects.isEmpty()) {
+//					continue;
+//				}
+//				
+//				// execute normalizer
+//				normalizer.normalize(rdfObjects.keySet(), this.mainSubjectUri, predicateUri);
+//			}
+//		}
 	}
 	
 	/**
@@ -486,7 +587,7 @@ public class Entity {
 		 * @param subjectUri
 		 * @param predicateUri
 		 */
-		protected abstract void normalize(final Collection<RdfObject> rdfObjects,
+		protected abstract void normalize(final Collection<RDFNode> rdfObjects,
 						final String subjectUri, final String predicateUri);
 	}
 	

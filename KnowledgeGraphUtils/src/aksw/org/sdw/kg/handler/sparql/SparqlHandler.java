@@ -1,5 +1,8 @@
 package aksw.org.sdw.kg.handler.sparql;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.sparql.engine.http.QueryEngineHTTP;
@@ -27,7 +30,7 @@ public class SparqlHandler {
 	}
 	
 	public QueryExecution createQueryExecuter(final String queryString) {
-		System.out.println("!Query:\n\n" + queryString);
+		//System.out.println("!Query:\n\n" + queryString);
 		
 		QueryExecution queryExecution =  QueryExecutionFactory.sparqlService(
 				this.sparqlEndpointUrl, queryString);

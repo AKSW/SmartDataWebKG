@@ -89,7 +89,7 @@ public class GeoNamesMapper {
 		// get unmodifiable map
 		return Collections.unmodifiableMap(synonymMap);
 	}
-
+	
 	/**
 	 * 
 	 * @param fileName
@@ -97,6 +97,18 @@ public class GeoNamesMapper {
 	 * @throws KgException
 	 */
 	public GeoNamesMapper(final String fileName) throws KgException {
+		this(fileName, "http://localhost:9890/sparql", "http://geonames.org");
+	}
+
+	/**
+	 * 
+	 * @param fileName
+	 *            			 - file name to geo names mapping file
+	 * @param sparqlEndpoint - address of sparql endpoint
+	 * @param graphName 	 - name of graph which should be searched
+	 * @throws KgException
+	 */
+	public GeoNamesMapper(final String fileName, final String sparqlEndpoint, final String graphName) throws KgException {
 
 		URL url = GeoNamesMapper.class.getClassLoader().getResource(fileName);
 		if (null == url) {

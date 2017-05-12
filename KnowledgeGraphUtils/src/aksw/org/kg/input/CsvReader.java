@@ -73,7 +73,16 @@ public class CsvReader {
 
 		URL url = GeoNamesMapper.class.getClassLoader().getResource(fileName);
 		if (null == url) {
-			throw new KgException("Was not able to find file: " + fileName);
+			File file = new File(fileName);
+			if (false == file.exists()) {
+				throw new KgException("Was not able to find file: " + fileName);
+			}
+			
+			try {
+				url = file.toURL();
+			} catch (Exception e) {
+				throw new KgException("Was not able to get URL", e);
+			}
 		}
 
 		this.delimeterPattern = Pattern.compile(delimiter);
@@ -104,6 +113,7 @@ public class CsvReader {
 	protected String normalizeHeaderName(final String headerName) {
 		String cleanedHeader = headerName.trim();
 		cleanedHeader = cleanupPattern.matcher(cleanedHeader).replaceAll("_");
+		cleanedHeader = cleanedHeader.replaceAll("\"", "");
 		return cleanedHeader;
 	}
 
@@ -222,7 +232,15 @@ public class CsvReader {
 
 				List<String> fieldValues = new ArrayList<>(fields.length);
 				for (String fieldValue : fields) {
-					fieldValues.add(fieldValue);
+					if (false == fieldValue.isEmpty() && fieldValue.startsWith("\"")) {
+						try {
+							fieldValues.add(fieldValue.substring(1, fieldValue.length() - 1));
+						} catch (Exception e) {
+							System.out.println("Got: " + fieldValue);
+						}
+					} else {
+						fieldValues.add(fieldValue);
+					}
 				}
 
 				this.idLineMappings.put(key.toString(), fieldValues);
