@@ -53,8 +53,8 @@
     	<version>2.6.2</version>
 	</dependency>
   	<dependency>
-  		<groupId>KnowledgeGraphUtils</groupId>
-  		<artifactId>KnowledgeGraphUtils</artifactId>
+  		<groupId>org.aksw.sdw</groupId>
+  		<artifactId>org.aksw.sdw.KnowledgeGraphUtils</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   	    <dependency>
