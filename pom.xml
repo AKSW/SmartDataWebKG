@@ -10,7 +10,8 @@
   
   <modules>
     <module>KnowledgeGraphUtils</module>
-    <module>SolrEntityLoader</module>
+    <module>AvroImporter</module>
+    <module>SdwKG2Solr</module>
   </modules>
   
   <build>

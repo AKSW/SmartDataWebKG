@@ -1,6 +1,0 @@
-{
-  "solrUrl": "http://localhost:10083/solr/companies",
-  "sparqlUrl": "http://localhost:9890/sparql",
-  "graphNameGeonames": "http://geonames.org",
-  "graphNameDbpedia": "http://dbpedia.org" 
-}
