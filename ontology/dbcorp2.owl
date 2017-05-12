@@ -99,8 +99,6 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-    
-
 
     <!-- http://corp.dbpedia.org/ontology#countryOfOrigin -->
 
@@ -108,6 +106,12 @@
         <rdfs:domain rdf:resource="http://corp.dbpedia.org/ontology#Company"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
         <rdfs:label xml:lang="en">country of origin</rdfs:label>
+    </owl:ObjectProperty>
+
+    <!-- http://corp.dbpedia.org/ontology#hasEventSite -->
+
+    <owl:ObjectProperty rdf:about="http://corp.dbpedia.org/ontology#hasEventSite">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/ns/org#hasRegisteredSite"/>
     </owl:ObjectProperty>
     
 
@@ -157,7 +161,6 @@
     </owl:ObjectProperty>
     
 
-
     <!-- http://corp.dbpedia.org/ontology#orgType -->
 
     <owl:ObjectProperty rdf:about="http://corp.dbpedia.org/ontology#orgType">
@@ -165,17 +168,142 @@
         <rdfs:domain rdf:resource="http://www.w3.org/ns/org#Organization"/>
         <rdfs:range rdf:resource="http://corp.dbpedia.org/ontology#OrgType"/>
     </owl:ObjectProperty>
-    
 
+    <!-- http://corp.dbpedia.org/ontology#orgCategory -->
+
+    <owl:ObjectProperty rdf:about="http://corp.dbpedia.org#orgCategory">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/ns/org#classification"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/ns/org#Organization"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="en">Category/industry of a company. Is stored as string until we decided on our own taxonomy!</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- http://corp.dbpedia.org/ontology#productCategory -->
+
+    <owl:ObjectProperty rdf:about="http://corp.dbpedia.org#productCategory">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/ns/org#classification"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/ns/org#Organization"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="en">Product categoryof an organisation. Is stored as string until we decided on our own taxonomy!</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- http://corp.dbpedia.org/ontology#providesProduct -->
+
+    <owl:ObjectProperty rdf:about="http://corp.dbpedia.org/ontology#providesProduct">
+        <rdfs:domain rdf:resource="http://www.w3.org/ns/org#Organization"/>
+        <rdfs:range rdf:resource="http://corp.dbpedia.org/ontology#Product"/>
+        <rdfs:comment xml:lang="en">Organization provides product</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- http://corp.dbpedia.org/ontology#usesProduct -->
+
+    <owl:ObjectProperty rdf:about="http://corp.dbpedia.org/ontology#usesProduct">
+        <rdfs:domain rdf:resource="http://www.w3.org/ns/org#Organization"/>
+        <rdfs:range rdf:resource="http://corp.dbpedia.org/ontology#Product"/>
+        <rdfs:comment xml:lang="en">Organization uses product</rdfs:comment>
+    </owl:ObjectProperty>
+
+  <!-- http://corp.dbpedia.org/ontology#providesTechnology -->
+
+    <owl:ObjectProperty rdf:about="http://corp.dbpedia.org/ontology#providesTechnology">
+        <rdfs:domain rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="en">Concept which provides technology.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- http://corp.dbpedia.org/ontology#usesTechnology -->
+
+    <owl:ObjectProperty rdf:about="http://corp.dbpedia.org/ontology#usesTechnology">
+        <rdfs:domain rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:range rdf:resource="http://corp.dbpedia.org/ontology#Technology"/>
+        <rdfs:comment xml:lang="en">Concept which uses technology.</rdfs:comment>
+    </owl:ObjectProperty>
 
     <!-- http://www.w3.org/ns/org#hasRegisteredSite -->
 
     <rdf:Description rdf:about="http://www.w3.org/ns/org#hasRegisteredSite">
         <rdfs:label xml:lang="en">registered address</rdfs:label>
     </rdf:Description>
+
+    <!-- http://corp.dbpedia.org/ontology#hasCustomer -->
+
+    <owl:ObjectProperty rdf:about="http://corp.dbpedia.org/ontology#hasCustomer">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/ns/org#role"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/ns/org#Organization"/>
+        <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Agent"/>
+        <rdfs:comment xml:lang="en">Points to known customer of the organization.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- http://corp.dbpedia.org/ontology#hasMainCustomer -->
+
+    <owl:ObjectProperty rdf:about="http://corp.dbpedia.org/ontology#hasMainCustomer">
+        <rdfs:subPropertyOf rdf:resource="http://corp.dbpedia.org/ontology#hasCustomer"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/ns/org#Organization"/>
+        <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Agent"/>
+        <rdfs:comment xml:lang="en">The company's largest customer by turnover, or taken from marketing statements, together with link to information source.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- http://corp.dbpedia.org/ontology#hasReferenceCustomer -->
+
+    <owl:ObjectProperty rdf:about="http://corp.dbpedia.org/ontology#hasReferenceCustomer">
+        <rdfs:subPropertyOf rdf:resource="http://corp.dbpedia.org/ontology#hasCustomer"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/ns/org#Organization"/>
+        <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Agent"/>
+        <rdfs:comment xml:lang="en">Some other important customers, for instance those in a similar industry to subject company.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- http://corp.dbpedia.org/ontology#changedByCompanySale -->
+
+    <owl:ObjectProperty rdf:about="http://corp.dbpedia.org/ontology#changedByCompanySale">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/ns/org#changedBy"/>
+        <rdfs:comment xml:lang="en">company sale predicate</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- http://corp.dbpedia.org/ontology#changedByCompanyFoundation -->
+
+    <owl:ObjectProperty rdf:about="http://corp.dbpedia.org/ontology#changedByCompanyFoundation">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/ns/org#changedBy"/>
+        <rdfs:comment xml:lang="en">company foundatation predicate</rdfs:comment>
+    </owl:ObjectProperty>
+
+   <!-- http://corp.dbpedia.org/ontology#changedByCompanySpinoff -->
+
+    <owl:ObjectProperty rdf:about="http://corp.dbpedia.org/ontology#changedByCompanySpinoff">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/ns/org#changedBy"/>
+        <rdfs:comment xml:lang="en">company spinoff predicate</rdfs:comment>
+    </owl:ObjectProperty>
+
+   <!-- http://corp.dbpedia.org/ontology#changedByCompanyMerger -->
+
+    <owl:ObjectProperty rdf:about="http://corp.dbpedia.org/ontology#changedByCompanyMerger">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/ns/org#changedBy"/>
+        <rdfs:comment xml:lang="en">company merger predicate</rdfs:comment>
+    </owl:ObjectProperty>
+
+   <!-- http://corp.dbpedia.org/ontology#changedByCompanyAcquisition -->
+
+    <owl:ObjectProperty rdf:about="http://corp.dbpedia.org/ontology#changedByCompanyAcquisition">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/ns/org#changedBy"/>
+        <rdfs:comment xml:lang="en">company acquisition predicate</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- http://corp.dbpedia.org/ontology#ceoOf -->
+
+    <owl:ObjectProperty rdf:about="http://corp.dbpedia.org/ontology#ceoOf">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/ns/org#headOf"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/ns/org#Organization"/>
+        <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Agent"/>
+        <rdfs:comment xml:lang="en">Points to CEO of an organisation</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- http://corp.dbpedia.org/ontology#hasFounder -->
+
+    <owl:ObjectProperty rdf:about="http://corp.dbpedia.org/ontology#hasFounder">
+        <rdfs:domain rdf:resource="http://www.w3.org/ns/org#Organization"/>
+        <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Agent"/>
+        <rdfs:comment xml:lang="en">Agent which founded an Organisation</rdfs:comment>
+    </owl:ObjectProperty>
     
-
-
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
@@ -184,8 +312,12 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-    
+    <!-- http://corp.dbpedia.org/ontology#twitterChannel -->
 
+    <owl:ObjectProperty rdf:about="http://corp.dbpedia.org/ontology#twitterChannel">
+        <rdfs:subPropertyOf rdf:resource="http://xmlns.com/foaf/0.1/homepage"/>
+        <rdfs:label xml:lang="en">twitter channel of agent</rdfs:label>
+    </owl:ObjectProperty>
 
     <!-- http://corp.dbpedia.org/ontology#MIC -->
 
@@ -245,6 +377,7 @@
     <owl:DatatypeProperty rdf:about="http://corp.dbpedia.org/ontology#date">
         <rdfs:label xml:lang="en">date</rdfs:label>
     </owl:DatatypeProperty>
+    
 
 
     <!-- http://corp.dbpedia.org/ontology#emailAddress -->
@@ -288,12 +421,30 @@
         <rdfs:domain rdf:resource="http://www.w3.org/ns/org#Site"/>
     </owl:DatatypeProperty>
     
+
+
     <!-- http://corp.dbpedia.org/ontology#phoneNumber -->
 
     <owl:DatatypeProperty rdf:about="http://corp.dbpedia.org/ontology#phoneNumber">
         <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Agent"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
         <rdfs:label xml:lang="en">phone number</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <!-- http://corp.dbpedia.org/ontology#customerServicePhoneNr -->
+
+    <owl:DatatypeProperty rdf:about="http://corp.dbpedia.org/ontology#customerServicePhoneNr">
+        <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Agent"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="en">customer service phone number</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <!-- http://corp.dbpedia.org/ontology#stockQuote -->
+
+    <owl:DatatypeProperty rdf:about="http://corp.dbpedia.org/ontology#stockQuote">
+        <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Agent"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="en">Stock quote of company</rdfs:label>
     </owl:DatatypeProperty>
     
 
@@ -327,6 +478,30 @@
     
 
 
+    <!-- http://www.w3.org/2006/vcard/ns#country-name -->
+
+    <owl:DatatypeProperty rdf:about="http://www.w3.org/2006/vcard/ns#country-name"/>
+    
+
+
+    <!-- http://www.w3.org/2006/vcard/ns#locality -->
+
+    <owl:DatatypeProperty rdf:about="http://www.w3.org/2006/vcard/ns#locality"/>
+    
+
+
+    <!-- http://www.w3.org/2006/vcard/ns#postal-code -->
+
+    <owl:DatatypeProperty rdf:about="http://www.w3.org/2006/vcard/ns#postal-code"/>
+    
+
+
+    <!-- http://www.w3.org/2006/vcard/ns#region -->
+
+    <owl:DatatypeProperty rdf:about="http://www.w3.org/2006/vcard/ns#region"/>
+    
+
+
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
@@ -335,6 +510,16 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
+    
+
+
+    <!-- http://corp.dbpedia.org/ontology#Active -->
+
+    <owl:Class rdf:about="http://corp.dbpedia.org/ontology#Active">
+        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#OrgStatus"/>
+        <rdfs:comment xml:lang="en">activity status of an organisation</rdfs:comment>
+        <rdfs:label xml:lang="en">is active</rdfs:label>
+    </owl:Class>
     
 
 
@@ -352,13 +537,40 @@
         <rdfs:label>Company</rdfs:label>
     </owl:Class>
     
+    <!-- http://corp.dbpedia.org/ontology#CompanySpinoff-->
 
+    <owl:Class rdf:about="http://corp.dbpedia.org/ontology#CompanySpinoff">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/org#ChangeEvent"/>
+        <rdfs:label xml:lang="en">Company Acquisition</rdfs:label>
+    </owl:Class>
+
+    <!-- http://corp.dbpedia.org/ontology#CompanyMerger-->
+
+    <owl:Class rdf:about="http://corp.dbpedia.org/ontology#CompanyMerger">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/org#ChangeEvent"/>
+        <rdfs:label xml:lang="en">Company Acquisition</rdfs:label>
+    </owl:Class>
+
+
+    <!-- http://corp.dbpedia.org/ontology#CompanyAcquisition -->
+
+    <owl:Class rdf:about="http://corp.dbpedia.org/ontology#CompanyAcquisition">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/org#ChangeEvent"/>
+        <rdfs:label xml:lang="en">Company Acquisition</rdfs:label>
+    </owl:Class>
 
     <!-- http://corp.dbpedia.org/ontology#CompanyFoundation -->
 
     <owl:Class rdf:about="http://corp.dbpedia.org/ontology#CompanyFoundation">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/org#ChangeEvent"/>
-        <rdfs:label xml:lang="en">Company foundation</rdfs:label>
+        <rdfs:label xml:lang="en">Company Foundation</rdfs:label>
+    </owl:Class>
+
+    <!-- http://corp.dbpedia.org/ontology#CompanySales -->
+
+    <owl:Class rdf:about="http://corp.dbpedia.org/ontology#CompanySales">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/org#ChangeEvent"/>
+        <rdfs:label xml:lang="en">Company Sales</rdfs:label>
     </owl:Class>
     
 
@@ -381,12 +593,30 @@
     
 
 
+    <!-- http://corp.dbpedia.org/ontology#InActive -->
+
+    <owl:Class rdf:about="http://corp.dbpedia.org/ontology#InActive">
+        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#OrgStatus"/>
+        <rdfs:comment xml:lang="en">InActivity status of an organisation</rdfs:comment>
+        <rdfs:label xml:lang="en">is inactive</rdfs:label>
+    </owl:Class>
+    
+
+
     <!-- http://corp.dbpedia.org/ontology#Incorporation -->
 
     <owl:Class rdf:about="http://corp.dbpedia.org/ontology#Incorporation">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/org#ChangeEvent"/>
         <rdfs:label xml:lang="en">Incorporation</rdfs:label>
     </owl:Class>
+
+    <!-- http://corp.dbpedia.org/ontology#EventSite -->
+
+    <rdf:Description rdf:about="http://corp.dbpedia.org/ontology#EventSite">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/org#Site"/>
+        <rdfs:label xml:lang="de">Ort eines Events</rdfs:label>
+        <rdfs:label xml:lang="en">Event Location</rdfs:label>
+    </rdf:Description>
     
 
 
@@ -405,22 +635,6 @@
         <rdfs:comment xml:lang="en">The current status of a company : active, inactive etc. TODO: look into modelling this as events</rdfs:comment>
         <rdfs:label xml:lang="en">Company Status</rdfs:label>
     </owl:Class>
-
-   <!-- http://corp.dbpedia.org/ontology#Active -->
-
-    <owl:Class rdf:about="http://corp.dbpedia.org/ontology#Active">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#OrgStatus"/>
-        <rdfs:comment xml:lang="en">activity status of an organisation</rdfs:comment>
-        <rdfs:label xml:lang="en">is active</rdfs:label>
-    </owl:Class>
-
-    <!-- http://corp.dbpedia.org/ontology#InActive -->
-
-    <owl:Class rdf:about="http://corp.dbpedia.org/ontology#InActive">
-        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#OrgStatus"/>
-        <rdfs:comment xml:lang="en">InActivity status of an organisation</rdfs:comment>
-        <rdfs:label xml:lang="en">is inactive</rdfs:label>
-    </owl:Class>
     
 
 
@@ -428,21 +642,53 @@
 
     <owl:Class rdf:about="http://corp.dbpedia.org/ontology#OrgType">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
-        <rdfs:comment xml:lang="en">The class / type / domain / industry / category a company is working in</rdfs:comment>
-        <rdfs:label xml:lang="en">Industry class</rdfs:label>
+        <rdfs:comment xml:lang="en">The origanization type of a company (e.g. Corporation, Unlimied Partnership)</rdfs:comment>
+        <rdfs:comment xml:lang="de">Rechtsform einer Organisation (z.B. GmbH, AG, e.V.)</rdfs:comment>
     </owl:Class>
-    
 
+    <!-- http://corp.dbpedia.org/ontology#OrgCategory -->
+
+    <owl:Class rdf:about="http://corp.dbpedia.org/ontology#OrgCategory">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:comment xml:lang="en">The category of the origanization, e.g. in what type of industry is the company working in.</rdfs:comment>
+        <rdfs:comment xml:lang="en">For now only prefLabel and altLabel are used to store category names. Proper system is put in place, once we have decided on a taxonomy.</rdfs:comment>
+    </owl:Class>
 
     <!-- http://corp.dbpedia.org/ontology#Product -->
 
     <owl:Class rdf:about="http://corp.dbpedia.org/ontology#Product">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
-        <rdfs:subClassOf rdf:resource="http://purl.org/goodrelations/v1#ProductOrService"/>
-        <rdfs:label xml:lang="en">Product</rdfs:label>
-        <rdfs:label xml:lang="de">Produkt</rdfs:label>
+        <rdfs:label xml:lang="en">Product which is sold by a company</rdfs:label>
     </owl:Class>
 
+    <!-- http://corp.dbpedia.org/ontology#ProductCategory -->
+
+    <owl:Class rdf:about="http://corp.dbpedia.org/ontology#ProductCategory">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">Product category</rdfs:label>
+        <rdfs:comment xml:lang="en">For now only prefLabel and altLabel are used to store category names. Proper system is put in place, once we have decided on a taxonomy.</rdfs:comment>
+    </owl:Class>
+
+    <!-- http://corp.dbpedia.org/ontology#Technology -->
+
+    <owl:Class rdf:about="http://corp.dbpedia.org/ontology#Technology">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">Technology which is can be used in a product.</rdfs:label>
+    </owl:Class>
+
+    <!-- http://corp.dbpedia.org/ontology#TechnologySensor -->
+
+    <owl:Class rdf:about="http://corp.dbpedia.org/ontology#TechnologySensor">
+        <rdfs:subClassOf rdf:resource="http://corp.dbpedia.org/ontology#Technology"/>
+        <rdfs:label xml:lang="en">Sensor Technology which is can be used in a product.</rdfs:label>
+    </owl:Class>
+
+    <!-- http://corp.dbpedia.org/ontology#Project -->
+
+    <owl:Class rdf:about="http://corp.dbpedia.org/ontology#Project">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">Project which is run by at least one agent (e.g. organisation)</rdfs:label>
+    </owl:Class>
 
     <!-- http://corp.dbpedia.org/ontology#Resource -->
 
@@ -450,20 +696,37 @@
         <rdfs:comment xml:lang="en">Property for Company status (e.g. active, inactive)</rdfs:comment>
     </owl:Class>
     
+
+
     <!-- http://dbpedia.org/ontology/Company -->
 
-    <owl:Class rdf:about="http://dbpedia.org/ontology/Company"/>    
+    <owl:Class rdf:about="http://dbpedia.org/ontology/Company"/>
+    
 
 
     <!-- http://dbpedia.org/ontology/Event -->
 
     <owl:Class rdf:about="http://dbpedia.org/ontology/Event"/>
     
+
+
+    <!-- http://dbpedia.org/ontology/PopulatedPlace -->
+
+    <owl:Class rdf:about="http://dbpedia.org/ontology/PopulatedPlace"/>
+    
+
+
     <!-- http://schema.org/Organization -->
 
     <owl:Class rdf:about="http://schema.org/Organization">
         <owl:equivalentClass rdf:resource="http://xmlns.com/foaf/0.1/Organization"/>
     </owl:Class>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#Concept -->
+
+    <owl:Class rdf:about="http://www.w3.org/2004/02/skos/core#Concept"/>
     
 
 
@@ -483,13 +746,17 @@
         <rdfs:label xml:lang="fr">succursale</rdfs:label>
         <rdfs:label xml:lang="it">succursale</rdfs:label>
     </rdf:Description>
-    
 
+
+    <!-- http://xmlns.com/foaf/0.1/Agent -->
+
+    <owl:Class rdf:about="http://xmlns.com/foaf/0.1/Agent"/>
+    
 
 
     <!-- http://xmlns.com/foaf/0.1/Organization -->
 
-    <rdf:Description rdf:about="http://xmlns.com/foaf/0.1/Organization"/>
+    <owl:Class rdf:about="http://xmlns.com/foaf/0.1/Organization"/>
     
 
 
@@ -523,9 +790,9 @@
     <rdf:Description rdf:about="http://creativecommons.org/ns#license">
         <rdfs:comment xml:lang="de">Die deutsche Gesellschaft bürgerlichen Rechts (Abk.: GbR oder GdbR, auch BGB-Gesellschaft) ist ein Zusammenschluss von mindestens zwei Gesellschaftern (natürlichen oder juristischen Personen), die sich durch einen Gesellschaftsvertrag gegenseitig verpflichten, die Erreichung eines gemeinsamen Zwecks in der durch den Vertrag bestimmten Weise zu fördern (§ 705 BGB). Eine Gesellschaft bürgerlichen Rechts ist die ursprüngliche und einfachste Form der Personengesellschaft und eine Gesamthandsgemeinschaft.</rdfs:comment>
         <rdfs:label xml:lang="de">GdbR</rdfs:label>
+        <rdfs:label xml:lang="de">BGB-Gesellschaft</rdfs:label>
         <rdfs:label xml:lang="de">Gesellschaft bürgerlichen Rechts</rdfs:label>
         <rdfs:label xml:lang="de">GbR</rdfs:label>
-        <rdfs:label xml:lang="de">BGB-Gesellschaft</rdfs:label>
     </rdf:Description>
     <rdf:Description rdf:about="http://dbpedia.org/ontology/foundingDate">
         <rdfs:label xml:lang="en">latest founding date</rdfs:label>
