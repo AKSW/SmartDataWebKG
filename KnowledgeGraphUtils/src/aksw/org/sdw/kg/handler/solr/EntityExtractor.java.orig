@@ -44,8 +44,11 @@ public class EntityExtractor {
                 String outputFileName = args[3];
                 System.out.println("Output file: " + outputFileName);
 
+<<<<<<< HEAD
+=======
 		String originalName = args[4];
 
+>>>>>>> 5c554cd7e530cd803bcd0b23bb21daa74c0ec709
                 SolrHandler solrHandler = new SolrHandler(solrUrl);
                 
                 boolean fileExists = false;
@@ -54,11 +57,17 @@ public class EntityExtractor {
                 	fileExists = true;
                 }
                 
+<<<<<<< HEAD
+                BufferedWriter output = new BufferedWriter(new FileWriter(outputFile, true));
+                if (false == fileExists) {
+                	output.append("index\turi\tlabel\thomepage");
+=======
 		// open file and if exists --> append
                 BufferedWriter output = new BufferedWriter(new FileWriter(outputFile, true));
                 if (false == fileExists) {
 			// write out headline --> only when the file did not exist before!
                 	output.append("original name\turi\tlabel\thomepage\n");
+>>>>>>> 5c554cd7e530cd803bcd0b23bb21daa74c0ec709
                 }
 
                 SparqlHandler sparqlHandler = new SparqlHandler(sparqlBackend, null);
@@ -152,10 +161,15 @@ public class EntityExtractor {
                         int finalCount = 0;
 //                        System.out.println("index\turi\tlabel\thomepage");                        
                         for (String uri : uri2Labels.keySet()) {
+<<<<<<< HEAD
+                                output.append(++finalCount + "\t" + uri + "\t" + uri2Labels.get(uri)
+                                				   + (null == uri2Homepages.get(uri) ? "\t" : "\t" + uri2Homepages.get(uri)));
+=======
                                 output.append(originalName + "\t");
 				output.append(uri + "\t" + uri2Labels.get(uri)
                                 				   + (null == uri2Homepages.get(uri) ? "\t" : "\t" + uri2Homepages.get(uri)));
 				output.append("\n"); // add a new line
+>>>>>>> 5c554cd7e530cd803bcd0b23bb21daa74c0ec709
                         }
 
                         output.flush();
@@ -168,4 +182,7 @@ public class EntityExtractor {
                 }
         }
 }
+<<<<<<< HEAD
+=======
 
+>>>>>>> 5c554cd7e530cd803bcd0b23bb21daa74c0ec709
