@@ -6,7 +6,7 @@
   <name>KnowledgeGraphUtils</name>
   <parent>
 	<groupId>org.aksw.sdw</groupId>
-	<artifactId>org.aksw.sdw.SmartDataWebUtils</artifactId>
+	<artifactId>SmartDataWebUtils</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
   </parent>
   <build>
