@@ -3,6 +3,11 @@
   <groupId>org.aksw.sdw</groupId>
   <artifactId>org.aksw.sdw.KnowledgeGraphUtils</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <parent>
+	<groupId>org.aksw.sdw</groupId>
+	<artifactId>org.aksw.sdw.SmartDataWebUtils</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+  </parent>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
