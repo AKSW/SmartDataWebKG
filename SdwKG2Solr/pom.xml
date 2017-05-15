@@ -2,8 +2,8 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.aksw.sdw</groupId>
   <artifactId>SdwKG2Solr</artifactId>
-  <name>SdwKG2Solr</name>
   <version>0.0.1-SNAPSHOT</version>
+  <name>SdwKG2Solr</name>
   <parent>
         <groupId>org.aksw.sdw</groupId>
         <artifactId>SmartDataWebUtils</artifactId>
@@ -60,7 +60,7 @@
 	</dependency>
   	<dependency>
   		<groupId>org.aksw.sdw</groupId>
-  		<artifactId>org.aksw.sdw.KnowledgeGraphUtils</artifactId>
+  		<artifactId>KnowledgeGraphUtils</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   	    <dependency>
