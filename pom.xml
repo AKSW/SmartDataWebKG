@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>org.aksw.sdw</groupId>
-  <artifactId>org.aksw.sdw.SmartDataWebUtils</artifactId>
+  <artifactId>SmartDataWebUtils</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>sdw-root</name>
