@@ -1,6 +1,7 @@
 package aksw.org.kg.entity;
 
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,6 +31,7 @@ import org.apache.jena.rdf.model.impl.PropertyImpl;
 import org.apache.jena.rdf.model.impl.ResourceImpl;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
+import org.apache.jena.update.UpdateAction;
 
 /**
  * This class stores all the information which
@@ -271,6 +273,10 @@ public class Entity {
 		this.entityModel.add(statement);
 	}
 	
+	public Literal getLiteral(final String label) {
+		return this.entityModel.createLiteral(label);
+	}
+	
 	/**
 	 * Creates Literal from given label and language Code
 	 * 
@@ -291,6 +297,16 @@ public class Entity {
 	 */
 	public Literal getLiteral(final String label, final RDFDatatype dataType) {
 		return this.entityModel.createTypedLiteral(label, dataType);
+	}
+	
+	/**
+	 * Add triple with literal with language code
+	 * 
+	 * @param predicate
+	 * @param label
+	 */
+	public void addTripleWithLiteral(final String predicateString, final String label) {
+		this.addTriple(new PropertyImpl(predicateString), this.getLiteral(label));
 	}
 	
 	/**
@@ -363,6 +379,61 @@ public class Entity {
 		
 		// add statement
 		this.entityModel.add(statement);
+	}
+	
+	/**
+	 * This method can be used to update triple objects within the entity model
+	 * 
+	 * @param predicateString	- predicate uri string of predicate which should be changed
+	 * @param oldObject			- corresponding object which should be changed
+	 * @param newObject			- new object
+	 */
+	public void updateTripleObject(final String predicateString, final RDFNode oldObject, final RDFNode newObject) {
+		this.updateTripleObject(this.entityModel.createProperty(predicateString), oldObject, newObject);
+	}
+
+	
+	/**
+	 * This method can be used to update triple objects within the entity model
+	 * 
+	 * @param predicateString	-  predicate which should be changed
+	 * @param oldObject			- corresponding object which should be changed
+	 * @param newObject			- new object
+	 */
+	public void updateTripleObject(final Property predicate, final RDFNode oldObject, final RDFNode newObject) {
+		if (null == predicate || null == oldObject || null == newObject) {
+			return;
+		}
+		
+		// create models
+		Model updateModelOld = ModelFactory.createDefaultModel();
+		Model updateModelNew = ModelFactory.createDefaultModel();
+		
+		// create tripples
+		updateModelOld.add(this.mainSubjectUriObject, predicate, oldObject);
+		updateModelNew.add(this.mainSubjectUriObject, predicate, newObject);
+
+		// create bye output stream
+		OutputStream outputStreamOld = new ByteArrayOutputStream();
+		OutputStream outputStreamNew = new ByteArrayOutputStream();
+		
+		// write to output stream
+		RDFDataMgr.write(outputStreamOld, updateModelOld, RDFFormat.NT);		
+		RDFDataMgr.write(outputStreamNew, updateModelNew, RDFFormat.NT);
+		
+		// get actual triple strings
+		String oldTriples = outputStreamOld.toString().replaceAll("\\n", "");
+		String newTriples = outputStreamNew.toString().replaceAll("\\n", "");
+
+
+		// create update query
+		StringBuilder builder = new StringBuilder();		
+		builder.append("DELETE { ").append(oldTriples).append(" }\n");
+		builder.append("INSERT { ").append(newTriples).append(" }\n");
+		builder.append("WHERE { ").append(oldTriples).append(" }");		
+		
+		// update within main model
+		UpdateAction.parseExecute(builder.toString(), this.entityModel);
 	}
 	
 	/**
