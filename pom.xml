@@ -10,7 +10,7 @@
   
   <modules>
     <module>KnowledgeGraphUtils</module>
-<!--    <module>AvroImporter</module> -->
+    <module>AvroImporter</module>
     <module>SdwKG2Solr</module>
   </modules>
   
