@@ -44,6 +44,9 @@ public class SolrHandler implements Closeable {
 	/** SOLR client instance */
 	SolrClient solrClient;
 	
+	/** specifies delay until document is going to be committed [ms] */
+	final static int commitTimeoutDelay = 1_000;
+	
 	/**
 	 * Constr
 	 * @param solrUrl
@@ -53,6 +56,11 @@ public class SolrHandler implements Closeable {
 		this.solrClient = this.getSolrClient(solrUrl);
 	}
 	
+	/**
+	 * Make sure that changes are commited
+	 * 
+	 * @throws KgSolrException
+	 */
 	public void commit() throws KgSolrException {		
 		try {
 			this.solrClient.commit();
@@ -77,7 +85,7 @@ public class SolrHandler implements Closeable {
 	
 	/**
 	 * This method can be used to obtain all the registered and known field names,
-	 * which are stored in SOLR.
+	 * which are stored in a SOLR core.
 	 * 
 	 * @return collection of known field names
 	 * throws DataIdSolrException
@@ -131,7 +139,7 @@ public class SolrHandler implements Closeable {
 	
 	
 	/**
-	 * This method can be used to add new SOLR documents to the solr index
+	 * This method can be used to add new SOLR documents to the Solr core
 	 * 
 	 * @param solrDocuments	- solr document
 	 * @throws KgSolrException
@@ -147,10 +155,10 @@ public class SolrHandler implements Closeable {
 		}
 		
 		try {
-			solrClient.add(solrInputDocuments, 10000);
+			solrClient.add(solrInputDocuments);
 			solrClient.commit();
 		} catch (Exception e) {
-			throw new KgSolrException("Was not able to add new SOLR document", e);
+			throw new KgSolrException("Was not able to add new SOLR documents", e);
 		}
 	}
 	
@@ -159,7 +167,7 @@ public class SolrHandler implements Closeable {
 	}
 	
 	/**
-	 * This method can be used to add new SOLR documents to the solr index
+	 * This method can be used to add new SOLR documents to the Solr core
 	 * 
 	 * @param solrDocuments	- solr document
 	 * @param commit		- commits data to solr
@@ -171,7 +179,7 @@ public class SolrHandler implements Closeable {
 		}
 		
 		try {
-			solrClient.add(solrDocument.getSolrInputDocument(), 100000);
+			solrClient.add(solrDocument.getSolrInputDocument());
 			
 			if (commit) {
 				solrClient.commit();
@@ -181,10 +189,71 @@ public class SolrHandler implements Closeable {
 		}
 	}
 	
+	/**
+	 * This method can be used to delete a document for a SOLR core
+	 * 
+	 * @param id ID which should be used to delete the document
+	 * @throws KgSolrException
+	 */
+	public void deleteDocument(final String id) throws KgSolrException {
+		if (null == id || id.isEmpty()) {
+			return;
+		}
+		
+		try {
+			this.solrClient.deleteById(id, commitTimeoutDelay);
+		} catch (Exception e) {
+			throw new KgSolrException("Was not able to delete the document by id", e);
+		}
+	}
+	
+	
+	/**
+	 * This method can be used to delete a document for a SOLR core
+	 * 
+	 * @param ids IDs which should be used to delete the document
+	 * @throws KgSolrException
+	 */
+	public void deleteDocuments(final List<String> ids) throws KgSolrException {
+		if (null == ids || ids.isEmpty()) {
+			return;
+		}
+		
+		try {
+			this.solrClient.deleteById(ids, commitTimeoutDelay);
+		} catch (Exception e) {
+			throw new KgSolrException("Was not able to delete the documents by id", e);
+		}
+	}
+	
+	/**
+	 * This method can be used to delete documents for a SOLR core which match a given query
+	 * 
+	 * @param query
+	 * @throws KgSolrException
+	 */
+	public void deleteDocumentsWithQuery(final String query) throws KgSolrException {
+		if (null == query) {
+			return;
+		}
+		
+		try {
+			this.solrClient.deleteByQuery(query, commitTimeoutDelay);
+		} catch (Exception e) {
+			throw new KgSolrException("Was not able to delete the documents", e);
+		}
+	}
+	
+	/**
+	 * This method can be used to delete all the documents in the SOLR core.
+	 * 
+	 * !!!! USE WITH CAUTION !!!!
+	 * 
+	 * @throws KgSolrException
+	 */
 	public void deleteAllDocuments() throws KgSolrException {
 		try {
-			this.solrClient.deleteByQuery("*:*");
-			this.solrClient.commit();
+			this.solrClient.deleteByQuery("*:*", commitTimeoutDelay);
 		} catch (Exception e) {
 			throw new KgSolrException("Was not able to delete the documents", e);
 		}
@@ -193,6 +262,7 @@ public class SolrHandler implements Closeable {
 	/**
 	 * This method can be used to obtain results based on an input query
 	 * @param query
+	 * @param filterQueries
 	 * @return
 	 */
 	public List<KgSolrResultDocument> executeQuery(final String query, final List<String> filterQueries) throws KgException {
