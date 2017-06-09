@@ -23,7 +23,8 @@ public class SolrUriInputDocument implements KgSorlInputDocument {
 		this.uri = uri;
 	}
 	
-	public String getUri() {
+	@Override
+	public String getId() {
 		return this.uri;
 	}
 	

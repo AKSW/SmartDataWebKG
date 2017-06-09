@@ -11,6 +11,12 @@ import org.apache.solr.common.SolrInputDocument;
 public interface KgSorlInputDocument {
 	
 	/**
+	 * 
+	 * @return unique ID of this SOLR document
+	 */
+	public String getId();
+	
+	/**
 	 * This method can be used to obtain the generated SOLR input document
 	 * 
 	 * @return solr input document which contains the provided information

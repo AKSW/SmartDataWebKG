@@ -163,7 +163,7 @@ public class GeonamesLoader implements Iterator<SolrUriInputDocument>, Closeable
 			this.graphName = graphName;
 			this.types = types;
 			this.parentDoc = parentDoc;
-			this.parentId = (null == parentDoc) ? null : parentDoc.getUri();
+			this.parentId = (null == parentDoc) ? null : parentDoc.getId();
 		}
 		
 		protected boolean executeCountryQuery() {

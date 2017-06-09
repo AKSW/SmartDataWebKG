@@ -151,7 +151,8 @@ public class SolrHandler implements Closeable {
 		// create a batch and send in one go!
 		List<SolrInputDocument> solrInputDocuments = new ArrayList<>();		
 		for (KgSorlInputDocument solrDocument : solrDocuments) {
-			solrInputDocuments.add(solrDocument.getSolrInputDocument());
+			SolrInputDocument solrInputDoc = solrDocument.getSolrInputDocument();
+			solrInputDocuments.add(solrInputDoc);
 		}
 		
 		try {
@@ -201,7 +202,8 @@ public class SolrHandler implements Closeable {
 		}
 		
 		try {
-			this.solrClient.deleteById(id, commitTimeoutDelay);
+			this.solrClient.deleteById(id);
+			this.solrClient.commit();
 		} catch (Exception e) {
 			throw new KgSolrException("Was not able to delete the document by id", e);
 		}
@@ -220,7 +222,8 @@ public class SolrHandler implements Closeable {
 		}
 		
 		try {
-			this.solrClient.deleteById(ids, commitTimeoutDelay);
+			this.solrClient.deleteById(ids);
+			this.solrClient.commit();
 		} catch (Exception e) {
 			throw new KgSolrException("Was not able to delete the documents by id", e);
 		}
@@ -238,7 +241,8 @@ public class SolrHandler implements Closeable {
 		}
 		
 		try {
-			this.solrClient.deleteByQuery(query, commitTimeoutDelay);
+			this.solrClient.deleteByQuery(query);
+			this.solrClient.commit();
 		} catch (Exception e) {
 			throw new KgSolrException("Was not able to delete the documents", e);
 		}
@@ -253,10 +257,46 @@ public class SolrHandler implements Closeable {
 	 */
 	public void deleteAllDocuments() throws KgSolrException {
 		try {
-			this.solrClient.deleteByQuery("*:*", commitTimeoutDelay);
+			this.solrClient.deleteByQuery("*:*");
+			this.solrClient.commit();
 		} catch (Exception e) {
 			throw new KgSolrException("Was not able to delete the documents", e);
 		}
+	}
+	
+	/**
+	 * This method can be used to update a SOLR document in a SOLR core
+	 * 
+	 * @param updatedDocument	- document which have to be updated in the SOLR core
+	 * @throws KgSolrException
+	 */
+	public void updateDocument(final KgSorlInputDocument updatedDocument) throws KgSolrException {		
+		this.updateDocuments(Collections.singleton(updatedDocument));
+	}
+	
+	/**
+	 * This method can be used to update SOLR documents in a SOLR core
+	 * 
+	 * @param updatedDocuments	- list of documents which have to be updated in the SOLR core
+	 * @throws KgSolrException
+	 */
+	public void updateDocuments(final Collection<KgSorlInputDocument> updatedDocuments) throws KgSolrException {
+		if (null == updatedDocuments || updatedDocuments.isEmpty()) {
+			return;
+		}
+		
+		// get ids from all documents which have to be updated
+		List<String> ids = new ArrayList<>();
+		for (KgSorlInputDocument updatedDocument : updatedDocuments) {			
+			String id = updatedDocument.getId();
+			ids.add(id);
+		}
+		
+		// make sure all these documents are deleted in the SOLR core
+		this.deleteDocuments(ids);
+		
+		// add updated documents instead
+		this.addSolrDocuments(updatedDocuments);
 	}
 	
 	/**
