@@ -1,0 +1,118 @@
+{
+  "id" : "vico/13da1fe4-e485-36af-9ff9-5e1a3bd75692",
+  "raw" : "",
+  "text" : null,
+  "uri" : null,
+  "signature" : null,
+  "langCode" : null,
+  "date" : null,
+  "tokens" : null,
+  "sentences" : null,
+  "corefChains" : null,
+  "conceptMentions" : null,
+  "relationMentions" : {
+    "array" : [ {
+      "id" : "",
+      "span" : {
+        "start" : 379,
+        "end" : 390,
+        "attributes" : null
+      },
+      "name" : "CompanyTechnology",
+      "args" : {
+        "array" : [ {
+          "id" : "",
+          "role" : "COMPANY",
+          "conceptMention" : {
+            "id" : "",
+            "span" : {
+              "start" : 375,
+              "end" : 377,
+              "attributes" : null
+            },
+            "type" : "COMPANY",
+            "normalizedValue" : {
+              "string" : "ASC"
+            },
+            "refids" : null,
+            "attributes" : {
+              "map" : {
+                "segmenterId" : "0",
+                "stringId" : "97740",
+                "segmentEnd" : "70",
+                "charBegin" : "375",
+                "segmentBegin" : "70",
+                "charEnd" : "377",
+                "annotationType" : "argument",
+                "type" : "COMPANY",
+                "value" : "ASC"
+              }
+            },
+            "provenance" : null
+          },
+          "attributes" : null
+        }, {
+          "id" : "",
+          "role" : "SENSOR",
+          "conceptMention" : {
+            "id" : "",
+            "span" : {
+              "start" : 455,
+              "end" : 493,
+              "attributes" : null
+            },
+            "type" : "SENSOR",
+            "normalizedValue" : {
+              "string" : "the latest larger FOV _ PSI 1000 sensor"
+            },
+            "refids" : null,
+            "attributes" : {
+              "map" : {
+                "segmenterId" : "0",
+                "stringId" : "97740",
+                "segmentEnd" : "91",
+                "charBegin" : "455",
+                "segmentBegin" : "84",
+                "charEnd" : "493",
+                "annotationType" : "argument",
+                "type" : "SENSOR",
+                "value" : "the latest larger FOV _ PSI 1000 sensor"
+              }
+            },
+            "provenance" : null
+          },
+          "attributes" : null
+        } ]
+      },
+      "provenance" : {
+        "array" : [ {
+          "annotator" : "EDM_INDREX_SENSORS.OIE_QUERY_EXPORT_https://github.com/tkilias/indrex-extractors/commit/8f6ebfdba8e26f557e9ae4470b92bd3c2dfae672",
+          "license" : null,
+          "score" : {
+            "float" : "NaN"
+          },
+          "attributes" : null
+        } ]
+      },
+      "attributes" : {
+        "map" : {
+          "segmenterId" : "0",
+          "stringId" : "0",
+          "segmentEnd" : "72",
+          "charBegin" : "379",
+          "segmentBegin" : "71",
+          "lemma" : "exhibit",
+          "charEnd" : "390",
+          "annotationType" : "trigger",
+          "value" : "will exhibit"
+        }
+      }
+    } ]
+  },
+  "annotations" : null,
+  "provenance" : null,
+  "refids" : null,
+  "title" : null,
+  "attributes" : null,
+  "docType" : null
+}
