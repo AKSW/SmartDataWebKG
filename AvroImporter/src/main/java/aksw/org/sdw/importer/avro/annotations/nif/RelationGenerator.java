@@ -27,6 +27,13 @@ import aksw.org.sdw.rdf.namespaces.CorpDbpedia;
 import aksw.org.sdw.rdf.namespaces.W3COrg;
 import aksw.org.sdw.rdf.namespaces.W3CProvenance;
 
+/**
+ * This class can be used to add actual graph data of extracted relationships.
+ * In addition metadata for each triple is stored which is stored in a metadata sub graph
+ * 
+ * @author kay
+ *
+ */
 public class RelationGenerator extends DocRdfGenerator {
 	
 	/** input document */

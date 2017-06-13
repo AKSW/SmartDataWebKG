@@ -50,10 +50,5 @@
 		<scope>system</scope>
 		<systemPath>${project.basedir}/libs/sdw-tools-1.0-SNAPSHOT.jar</systemPath>
 	</dependency>
-	<dependency>
-		<groupId>org.nlp2rdf</groupId>
-		<artifactId>nif</artifactId>
-		<version>0.4</version>
-	</dependency>
   </dependencies>
 </project>

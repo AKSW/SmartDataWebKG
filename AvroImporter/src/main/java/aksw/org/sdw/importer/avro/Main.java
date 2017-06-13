@@ -1,3 +1,4 @@
+package aksw.org.sdw.importer.avro;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,13 +25,15 @@ public class Main  {
 		
 		String outputDirectoryPath;
 		String filePath;
+		String filePrefix;
 		if (InputType.BEUTH == inputType) {
-			filePath = "/home/kay/Uni/Projects/SmartDataWeb/CompanyData/DataSets/Crawl/it02/Beuth/it02_beuth_company_technology.json";
-//			filePath = "/home/kay/Uni/Projects/SmartDataWeb/CompanyData/DataSets/Crawl/it02/Beuth/test.json";
-			outputDirectoryPath = "/home/kay/Uni/Projects/SmartDataWeb/CompanyData/DataSets/Crawl/it02/Beuth/output";
+			filePath = new File(".").getAbsolutePath() + "/resources/example.json";
+			outputDirectoryPath = new File(".").getAbsolutePath() + "/output";
+			filePrefix = "beuth";
 		} else {
-			filePath = "/home/kay/Uni/Projects/SmartDataWeb/Code/IngestionRitesh/DFKIAvro/1.avro";
-			outputDirectoryPath = "/home/kay/Uni/Projects/SmartDataWeb/CompanyData/DataSets/Crawl/it02/DFKI/output";
+			filePath = new File(".").getAbsolutePath() + "/resources/example.avro";
+			outputDirectoryPath = new File(".").getAbsolutePath() + "/output";
+			filePrefix = "dfki";
 		}
 		
 		File outputDirectory = new File(outputDirectoryPath);
@@ -56,11 +59,17 @@ public class Main  {
 		int count = 0;
 		System.out.println("Number of documents: " + foundDocs.size());
 		for (Document doc : foundDocs.values()) {
-			if (1 >=  doc.relationMentions.size()) {
-				continue;
+			
+			String countString = Integer.toString(count);
+			
+			String leadingZero = "";
+			for (int i = 10 - countString.length(); i >= 0; --i) {
+				leadingZero += "0";
 			}
 			
-			String outputFile = outputDirectoryPath + "/" + doc.generatedId + ".trig";
+			leadingZero += countString;
+			
+			String outputFile = outputDirectoryPath + "/doc_" + filePrefix + "_" + leadingZero + ".trig";
 			OutputStream outputStream = new FileOutputStream(new File(outputFile));
 			
 			System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
