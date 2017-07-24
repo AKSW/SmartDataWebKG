@@ -7,7 +7,7 @@ import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
+import java.util.Map.Entry;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -109,5 +109,16 @@ public class BeuthImporter implements RelationMentionImporter {
 				try { bufferedReader.close(); } catch (Exception e) {}
 			}
 		}
+	}
+
+
+	/* (non-Javadoc)
+	 * @see aksw.org.sdw.importer.avro.annotations.RelationMentionImporter#getRelationshipMentionIterator()
+	 */
+	@Override
+	public Iterator<Entry<String, Document>> getRelationshipMentionIterator()
+	{
+		throw new UnsupportedOperationException("Not implemented yet");
+		//return null;
 	}
 }

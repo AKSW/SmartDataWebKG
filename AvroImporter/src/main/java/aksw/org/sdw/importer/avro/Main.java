@@ -19,6 +19,8 @@ public class Main  {
 	enum InputType {BEUTH, DFKI};
 
 	public static void main(String[] args) throws IOException {
+//		String b[]  = {"/home/kilt/Desktop/johannes-kilt/SDW/iter02/1.avro","/home/kilt/Desktop/johannes-kilt/SDW/iter02/1-b.csv"};
+//		de.dfki.lt.spree.examples.RelationMentionPrinter.main(b);
 		System.out.println("SDW Crawled Data Importer");
 		
 		InputType inputType = InputType.DFKI;
@@ -31,7 +33,8 @@ public class Main  {
 			outputDirectoryPath = new File(".").getAbsolutePath() + "/output";
 			filePrefix = "beuth";
 		} else {
-			filePath = new File(".").getAbsolutePath() + "/resources/example.avro";
+			filePath = new File(".").getAbsolutePath() + "/resources/example.json";
+		  filePath = "/home/kilt/Desktop/johannes-kilt/SDW/iter02/1.avro";
 			outputDirectoryPath = new File(".").getAbsolutePath() + "/output";
 			filePrefix = "dfki";
 		}
@@ -48,17 +51,25 @@ public class Main  {
 		} else {
 			importer = new DfkiImporter(filePath);
 		}
+		int count = 0;
+		
 		
 		Map<String, Document> foundDocs = importer.getRelationshipMentions();
 		if (null == foundDocs || foundDocs.isEmpty()) {
 			System.err.println("Did not return any results");
 			return;
 		}
-		
-		
-		int count = 0;
+	
 		System.out.println("Number of documents: " + foundDocs.size());
+		
+		
 		for (Document doc : foundDocs.values()) {
+		
+		
+		
+		
+//		for ( Map.Entry<String, Document> entry : importer.getRelationshipMentionIterable()) {
+//			Document doc =entry.getValue();  
 			
 			String countString = Integer.toString(count);
 			
