@@ -52,6 +52,7 @@ public class Main {
 
 			if (commandLine.hasOption("h")) {
 				formatter.printHelp("avroimporter", options);
+				System.exit(0);
 			}
 
 			if (commandLine.hasOption("p") && commandLine.hasOption("t")) {
@@ -66,10 +67,14 @@ public class Main {
 					formatter.printHelp("avroimporter", options);
 				}
 				filePath = commandLine.getOptionValue("p");
+			} else {
+				formatter.printHelp("avroimporter", options);
+				System.exit(1);
 			}
 
 		} catch (ParseException e) {
 			formatter.printHelp("avroimporter", options);
+			System.exit(1);
 		}
 
 		String outputDirectoryPath;
@@ -144,5 +149,4 @@ public class Main {
 			rdfGnerator.writeRdfDataAsTrig(outputStream);
 		}
 	}
-
 }
