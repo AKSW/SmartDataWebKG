@@ -139,7 +139,6 @@ public class Main {
 				System.out.println("Relation: " + relationshipMentions.toJson());
 			}
 			
-			System.out.println(Dfki2SdwKgMapper.missingMappings);
 
 			String nifUri = doc.entityIdGenerator.uriNamespace + "nif/";
 			String metadataUri = doc.entityIdGenerator.uriNamespace + "metadata/";
@@ -150,5 +149,9 @@ public class Main {
 
 			rdfGnerator.writeRdfDataAsTrig(outputStream);
 		}
+		
+		System.out.println("missingMappings:###"+Dfki2SdwKgMapper.missingMappings.toString());
+		System.out.println("missingRelations:###"+RelationGenerator.missingRelations.toString());
+		System.out.println("strangeRelations:###"+RelationGenerator.strangeRelations.toString());
 	}
 }

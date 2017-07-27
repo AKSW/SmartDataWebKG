@@ -48,6 +48,7 @@ public class RelationGenerator extends DocRdfGenerator {
 	final ConcurrentMap<String, AtomicInteger> relationFunctionCount = new ConcurrentHashMap<>();
 	
 	static final public Map<String, AtomicInteger> missingRelations = new HashMap<>();
+	static final public Map<String, AtomicInteger> strangeRelations = new HashMap<>();
 	
 	final static String HandleEntityLabels		= "HandleEntityLabels";
 	final static String HandleEntityTypes		= "HandleEntityTypes";
@@ -114,6 +115,15 @@ public class RelationGenerator extends DocRdfGenerator {
 			missingRelations.put(sourcetype, new AtomicInteger(1));
 	}
 	
+	static public void recordStrangeRelationsNumber(String sourcetype)
+	{
+		AtomicInteger count = strangeRelations.get(sourcetype);
+		if (count !=null)
+			count.incrementAndGet();
+		else 
+			strangeRelations.put(sourcetype, new AtomicInteger(1));
+	}
+	
 	protected Dataset addToRdfData_internal(final Dataset dataset) {
 		
 		String langCode = this.document.langCode;
@@ -122,13 +132,19 @@ public class RelationGenerator extends DocRdfGenerator {
 		}
 		
 		for (RelationMention relationMention : document.relationMentions) {
+			Model relationModel = this.createNewModel();
 			if (2 != relationMention.entities.size()) {
-				throw new RuntimeException("Did get uneven number ("
+				Level level = Level.WARNING;
+				Logger.getGlobal().log(level,"Did get uneven number ("
 						+ relationMention.entities.size()
 						+ ") of entities: " + relationMention.entities +"\n\t in Relation: " + relationMention);
+				recordStrangeRelationsNumber(""+relationMention.entities.size());
+//				throw new RuntimeException("Did get uneven number ("
+//						+ relationMention.entities.size()
+//						+ ") of entities: " + relationMention.entities +"\n\t in Relation: " + relationMention);
 			}
 			
-			Model relationModel = this.createNewModel();
+//			Model relationModel = this.createNewModel();
 			
 			for (String relationType : relationMention.relation.types) {
 				this.createRelationTriple(relationType, relationMention, relationModel);
