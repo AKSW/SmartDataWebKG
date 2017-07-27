@@ -7,6 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.jena.query.Dataset;
 import org.apache.jena.rdf.model.Model;
@@ -45,6 +47,8 @@ public class RelationGenerator extends DocRdfGenerator {
 	/** count of how often a method was called */
 	final ConcurrentMap<String, AtomicInteger> relationFunctionCount = new ConcurrentHashMap<>();
 	
+	static final public Map<String, AtomicInteger> missingRelations = new HashMap<>();
+	
 	final static String HandleEntityLabels		= "HandleEntityLabels";
 	final static String HandleEntityTypes		= "HandleEntityTypes";
 	final static String HandleProvenance		= "HandleProvenance";
@@ -82,7 +86,11 @@ public class RelationGenerator extends DocRdfGenerator {
 		
 		Function<ModelData, Integer> methodReference = this.relationFunctionMap.get(relationType);
 		if (null == methodReference) {
-			throw new RuntimeException("Unknown relation type: " + relationType + " for relationMention: " + relationMention);
+			Level level = Level.WARNING;
+			Logger.getGlobal().log(level,"Unknown relation type: " + relationType + " for relationMention: " + relationMention);
+			recordUnmappedRelations(relationType); 
+			return;
+			//throw new RuntimeException("Unknown relation type: " + relationType + " for relationMention: " + relationMention);
 		}
 		
 		// gets count for how often method was called
@@ -97,6 +105,15 @@ public class RelationGenerator extends DocRdfGenerator {
 		methodReference.apply(input);
 	}
 	
+	static public void recordUnmappedRelations(String sourcetype)
+	{
+		AtomicInteger count = missingRelations.get(sourcetype);
+		if (count !=null)
+			count.incrementAndGet();
+		else 
+			missingRelations.put(sourcetype, new AtomicInteger(1));
+	}
+	
 	protected Dataset addToRdfData_internal(final Dataset dataset) {
 		
 		String langCode = this.document.langCode;
@@ -108,7 +125,7 @@ public class RelationGenerator extends DocRdfGenerator {
 			if (2 != relationMention.entities.size()) {
 				throw new RuntimeException("Did get uneven number ("
 						+ relationMention.entities.size()
-						+ ") of entities: " + relationMention.entities);
+						+ ") of entities: " + relationMention.entities +"\n\t in Relation: " + relationMention);
 			}
 			
 			Model relationModel = this.createNewModel();

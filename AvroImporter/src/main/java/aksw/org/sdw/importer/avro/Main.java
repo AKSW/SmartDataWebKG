@@ -17,6 +17,7 @@ import aksw.org.sdw.importer.avro.annotations.Document;
 import aksw.org.sdw.importer.avro.annotations.RelationMention;
 import aksw.org.sdw.importer.avro.annotations.RelationMentionImporter;
 import aksw.org.sdw.importer.avro.annotations.beuth.BeuthImporter;
+import aksw.org.sdw.importer.avro.annotations.dfki.Dfki2SdwKgMapper;
 import aksw.org.sdw.importer.avro.annotations.dfki.DfkiImporter;
 import aksw.org.sdw.importer.avro.annotations.nif.DocRdfGenerator;
 import aksw.org.sdw.importer.avro.annotations.nif.NIFAnnotationGenerator;
@@ -104,19 +105,18 @@ public class Main {
 		}
 		int count = 0;
 
-		Map<String, Document> foundDocs = importer.getRelationshipMentions();
-		if (null == foundDocs || foundDocs.isEmpty()) {
-			System.err.println("Did not return any results");
-			return;
-		}
+//		Map<String, Document> foundDocs = importer.getRelationshipMentions();
+//		if (null == foundDocs || foundDocs.isEmpty()) {
+//			System.err.println("Did not return any results");
+//			return;
+//		}
+//
+//		System.out.println("Number of documents: " + foundDocs.size());
+//
+//		for (Document doc : foundDocs.values()) {
 
-		System.out.println("Number of documents: " + foundDocs.size());
-
-		for (Document doc : foundDocs.values()) {
-
-			// for ( Map.Entry<String, Document> entry :
-			// importer.getRelationshipMentionIterable()) {
-			// Document doc =entry.getValue();
+		for ( Map.Entry<String, Document> entry : importer.getRelationshipMentionIterable()) {
+			Document doc =entry.getValue();
 
 			String countString = Integer.toString(count);
 
@@ -138,6 +138,8 @@ public class Main {
 			for (RelationMention relationshipMentions : doc.relationMentions) {
 				System.out.println("Relation: " + relationshipMentions.toJson());
 			}
+			
+			System.out.println(Dfki2SdwKgMapper.missingMappings);
 
 			String nifUri = doc.entityIdGenerator.uriNamespace + "nif/";
 			String metadataUri = doc.entityIdGenerator.uriNamespace + "metadata/";

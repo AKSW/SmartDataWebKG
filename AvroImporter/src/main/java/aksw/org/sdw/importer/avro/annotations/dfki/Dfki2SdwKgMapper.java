@@ -5,13 +5,17 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import aksw.org.sdw.rdf.namespaces.W3COrg;
 
 public class Dfki2SdwKgMapper {
 	
 	/** This map can be used to map DFKI types to KG class URIs */
-	static final private Map<String, Collection<String>> typeMappings = getTypeMappings();	
+	static final private Map<String, Collection<String>> typeMappings = getTypeMappings();
+	static final public Map<String, AtomicInteger> missingMappings = new HashMap<>();
 	static final private Map<String, Collection<String>> getTypeMappings() {
 		Map<String, Collection<String>> typeMappings = new HashMap<>();
 		
@@ -75,8 +79,20 @@ public class Dfki2SdwKgMapper {
 		if (null != mappedTypes) {
 			targetTypes.addAll(mappedTypes);
 		} else {
-			throw new RuntimeException("Was not able to map entity type: " + sourceType);
+			Level level = Level.WARNING;
+			Logger.getGlobal().log(level, "Was not able to map entity type: " + sourceType);
+			recordUnmappedEntities(sourceType);
+			//throw new RuntimeException("Was not able to map entity type: " + sourceType);
 		}
+	}
+	
+	static public void recordUnmappedEntities(String sourcetype)
+	{
+		AtomicInteger count = missingMappings.get(sourcetype);
+		if (count !=null)
+			count.incrementAndGet();
+		else 
+			missingMappings.put(sourcetype, new AtomicInteger(1));
 	}
 
 }
