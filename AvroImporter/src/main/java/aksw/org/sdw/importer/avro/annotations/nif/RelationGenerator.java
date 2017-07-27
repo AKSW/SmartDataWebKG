@@ -138,7 +138,7 @@ public class RelationGenerator extends DocRdfGenerator {
 				Logger.getGlobal().log(level,"Did get uneven number ("
 						+ relationMention.entities.size()
 						+ ") of entities: " + relationMention.entities +"\n\t in Relation: " + relationMention);
-				recordStrangeRelationsNumber(""+relationMention.entities.size());
+				recordStrangeRelationsNumber(relationMention.relation.textNormalized+""+relationMention.entities.size());
 //				throw new RuntimeException("Did get uneven number ("
 //						+ relationMention.entities.size()
 //						+ ") of entities: " + relationMention.entities +"\n\t in Relation: " + relationMention);
