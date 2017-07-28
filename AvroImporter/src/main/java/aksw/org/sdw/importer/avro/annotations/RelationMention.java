@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * Class which can be used to handle a relationship mention
@@ -35,8 +36,10 @@ public class RelationMention {
 	/** provenance for this relationship */
 	public Set<Provenance> provenance = new LinkedHashSet<>();
 	
-	public String toJson() {		
-		Gson gson = new Gson();
+	public String toJson() {
+		GsonBuilder gb = new GsonBuilder();
+		gb.serializeSpecialFloatingPointValues();
+		Gson gson = gb.create();
 		String json = gson.toJson(this);
 		return json;
 	}

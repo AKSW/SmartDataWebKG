@@ -36,6 +36,7 @@ public class Main {
 
 		InputType inputType = InputType.DFKI;
 		String filePath = null;
+		String outputDirectoryPath = null;
 		
 		System.out.println("SDW Crawled Data Importer");
 
@@ -45,6 +46,7 @@ public class Main {
 		options.addOption("h", "help", false, "show help.");
 		options.addOption("p", "path", true, "path to avro file.");
 		options.addOption("t", "type", true, "input type [BEUTH|DFKI|SIEMENS]");
+		options.addOption("o", "out", true, "output folder directory");
 
 		CommandLine commandLine = null;
 		CommandLineParser parser = new BasicParser();
@@ -68,6 +70,7 @@ public class Main {
 					formatter.printHelp("avroimporter", options);
 				}
 				filePath = commandLine.getOptionValue("p");
+				outputDirectoryPath = commandLine.getOptionValue("o");
 			} else {
 				formatter.printHelp("avroimporter", options);
 				System.exit(1);
@@ -78,16 +81,15 @@ public class Main {
 			System.exit(1);
 		}
 
-		String outputDirectoryPath;
 		String filePrefix;
 		if (InputType.BEUTH == inputType) {
 //			filePath = new File(".").getAbsolutePath() + "/resources/example.json";
-			outputDirectoryPath = new File(".").getAbsolutePath() + "/output";
+//			outputDirectoryPath = new File(".").getAbsolutePath() + "/output";
 			filePrefix = "beuth";
 		} else {
 //			filePath = new File(".").getAbsolutePath() + "/resources/example.json";
 //			filePath =  "/home/kilt/Desktop/johannes-kilt/SDW/iter02/1.avro";
-			outputDirectoryPath = new File(".").getAbsolutePath() + "/output";
+//			outputDirectoryPath = new File(".").getAbsolutePath() + "/output";
 			filePrefix = "dfki";
 		}
 
