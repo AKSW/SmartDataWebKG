@@ -82,17 +82,6 @@ public class Main {
 		}
 
 		String filePrefix;
-		if (InputType.BEUTH == inputType) {
-//			filePath = new File(".").getAbsolutePath() + "/resources/example.json";
-//			outputDirectoryPath = new File(".").getAbsolutePath() + "/output";
-			filePrefix = "beuth";
-		} else {
-//			filePath = new File(".").getAbsolutePath() + "/resources/example.json";
-//			filePath =  "/home/kilt/Desktop/johannes-kilt/SDW/iter02/1.avro";
-//			outputDirectoryPath = new File(".").getAbsolutePath() + "/output";
-			filePrefix = "dfki";
-		}
-
 		File outputDirectory = new File(outputDirectoryPath);
 
 		if (false == outputDirectory.exists() && false == outputDirectory.mkdirs()) {
@@ -102,11 +91,22 @@ public class Main {
 		RelationMentionImporter importer;
 		if (InputType.BEUTH == inputType) {
 			importer = new BeuthImporter(filePath);
-		} else {
+			filePrefix = "beuth";
+		} 
+		else if (InputType.DFKI == inputType) {
 			importer = new DfkiImporter(filePath);
+			filePrefix = "dfki";
 		}
+		else if (InputType.SIEMENS == inputType) {
+			importer = null;//TODO Siemens Importer here
+			filePrefix = "siemens";
+		}
+		else {
+			throw new UnsupportedOperationException("conversion input type "+inputType+" is not supported");
+		}
+		
 		int count = 0;
-
+	//for all-in-memory conversion 
 //		Map<String, Document> foundDocs = importer.getRelationshipMentions();
 //		if (null == foundDocs || foundDocs.isEmpty()) {
 //			System.err.println("Did not return any results");
@@ -116,9 +116,9 @@ public class Main {
 //		System.out.println("Number of documents: " + foundDocs.size());
 //
 //		for (Document doc : foundDocs.values()) {
-
+	//for "streaming" conversion
 		for ( Map.Entry<String, Document> entry : importer.getRelationshipMentionIterable()) {
-			Document doc =entry.getValue();
+			Document doc =entry.getValue(); 
 
 			String countString = Integer.toString(count);
 
@@ -126,6 +126,8 @@ public class Main {
 			for (int i = 10 - countString.length(); i >= 0; --i) {
 				leadingZero += "0";
 			}
+			if (count>0) System.exit(0);
+			
 
 			leadingZero += countString;
 
@@ -152,8 +154,9 @@ public class Main {
 			rdfGnerator.writeRdfDataAsTrig(outputStream);
 		}
 		
-		System.out.println("missingMappings:###"+Dfki2SdwKgMapper.missingMappings.toString());
+		System.out.println("missingMappingsDFKI:###"+Dfki2SdwKgMapper.missingMappings.toString());
 		System.out.println("missingRelations:###"+RelationGenerator.missingRelations.toString());
 		System.out.println("strangeRelations:###"+RelationGenerator.strangeRelations.toString());
+		System.out.println("Number of documents: " + count);
 	}
 }

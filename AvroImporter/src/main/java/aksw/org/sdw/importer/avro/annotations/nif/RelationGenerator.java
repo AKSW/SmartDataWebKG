@@ -10,6 +10,8 @@ import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.jena.atlas.lib.IRILib;
+import org.apache.jena.iri.IRIFactory;
 import org.apache.jena.query.Dataset;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Property;
@@ -249,7 +251,8 @@ public class RelationGenerator extends DocRdfGenerator {
 		for (Provenance provenance : relationMention.provenance) {
 			if (null != provenance.annotator) {
 				
-				RDFNode annotatorObject = metadataModel.createResource(provenance.annotator);
+				RDFNode annotatorObject = metadataModel.createTypedLiteral(provenance.annotator);
+				
 				this.addStatement(uriString, NIF21Format.RDF_PROPERTY_ANNOTATOR, annotatorObject, metadataModel);
 				
 				RDFNode scoreObject = metadataModel.createTypedLiteral(provenance.score);

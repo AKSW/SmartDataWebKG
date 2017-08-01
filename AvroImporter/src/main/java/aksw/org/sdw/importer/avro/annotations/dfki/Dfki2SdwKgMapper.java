@@ -82,6 +82,7 @@ public class Dfki2SdwKgMapper {
 			Level level = Level.WARNING;
 			Logger.getGlobal().log(level, "Was not able to map entity type: " + sourceType);
 			recordUnmappedEntities(sourceType);
+			targetTypes.add("http://UNMAPPED.ER/"+sourceType);
 			//throw new RuntimeException("Was not able to map entity type: " + sourceType);
 		}
 	}

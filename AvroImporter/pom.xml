@@ -46,6 +46,26 @@
 			<version>655c440218dda4e4ccc570170e7e1f8c337244e9</version>
 		</dependency>
 		<dependency>
+			<groupId>com.github.jitpack</groupId>
+			<artifactId>maven-simple</artifactId>
+			<version>master-SNAPSHOT</version>
+		</dependency>
+<!-- 	<dependency>
+			<groupId>org.apache.jena</groupId>
+			<artifactId>jena-tdb</artifactId>
+			<version>3.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.jena</groupId>
+			<artifactId>jena-core</artifactId>
+			<version>3.3.0</version>
+		</dependency> 
+ 		<dependency>
+			<groupId>org.nlp2rdf</groupId>
+			<artifactId>nif</artifactId>
+			<version>0.3.8</version>
+		</dependency> -->
+		<dependency>
 			<groupId>org.apache.avro</groupId>
 			<artifactId>avro</artifactId>
 			<version>1.8.1</version>

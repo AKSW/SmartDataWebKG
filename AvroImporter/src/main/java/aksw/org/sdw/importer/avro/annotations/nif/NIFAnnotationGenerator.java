@@ -11,6 +11,8 @@ import org.nlp2rdf.bean.NIFBean;
 import org.nlp2rdf.bean.NIFType;
 import org.nlp2rdf.nif21.impl.NIF21;
 
+import com.github.jsonldjava.core.RDFDatasetUtils;
+
 import aksw.org.sdw.importer.avro.annotations.Document;
 import aksw.org.sdw.importer.avro.annotations.Mention;
 import aksw.org.sdw.importer.avro.annotations.Provenance;
@@ -100,7 +102,7 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
         		Provenance provenance = provenanceIt.next();
         		
         		if (null != provenance.annotator) {
-        			builderMention.annotator(provenance.annotator);
+        			builderMention.annotator( RDFHelpers.createValidIriComponent(provenance.annotator));
         			builderMention.score((double) provenance.score);
         			break;
         		} else {
