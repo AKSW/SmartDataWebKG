@@ -43,80 +43,81 @@ public class BeuthImporter implements RelationMentionImporter {
 
 	@Override
 	public Map<String, Document> getRelationshipMentions() {
-
-		BufferedReader bufferedReader = null;
-		try {
-			File inputFile = new File(this.filePath);
-			if (null == inputFile || false == inputFile.exists() || false == inputFile.isFile()) {
-				throw new RuntimeException("Was not able to find file: " + this.filePath);
-			}
-
-			bufferedReader = new BufferedReader(new FileReader(inputFile));
-
-			StringBuilder builder = null;
-			String line;
-
-			// only used to find matching doc
-			Map<String, Document> docMap = new HashMap<>();
-			while (null != (line = bufferedReader.readLine())) {
-
-				if (null == builder) {
-					builder = new StringBuilder();
-				}
-
-				builder.append(line);
-
-				// load input text into memory byte stream
-				// --> once entity is loaded --> start parsing and extracting
-				if (line.startsWith("}")) {
-					byte[] jsonBytes = builder.toString().getBytes();
-					ByteArrayInputStream memoryStream = new ByteArrayInputStream(jsonBytes);
-					builder = null; // not required until next JSON object is read
-
-					// read JSON file
-					ObjectMapper mapper = new ObjectMapper();
-					JsonNode node = mapper.readTree(memoryStream);
-
-					JsonNode relationMentions = node.get("relationMentions");
-					JsonNode relationMentionsArray = relationMentions.get("array");
-					if (null != relationMentionsArray && relationMentionsArray.isArray()) {
-						Iterator<JsonNode> iterator = relationMentionsArray.getElements();
-
-						while (iterator.hasNext()) {
-							JsonNode relationMentionNode = iterator.next();
-
-							try {
-								String docId = node.get("id").asText();
-
-								// check if we already now this relation type
-								BeuthDocumentAdapter currentDoc = (BeuthDocumentAdapter) docMap.get(docId);
-								if (null == currentDoc) {
-									currentDoc = new BeuthDocumentAdapter(BeuthImporter.namespacePrefix, docId);
-
-									docMap.put(docId, currentDoc);
-								}
-
-								currentDoc.addData(relationMentionNode, currentDoc);
-							} catch (Exception e) {
-								e.printStackTrace(System.out);
-							}
-						}
-					}
-				}
-			}
-
-			return docMap;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		} finally {
-			if (null != bufferedReader) {
-				try {
-					bufferedReader.close();
-				} catch (Exception e) {
-				}
-			}
-		}
+		return null;
 	}
+//		BufferedReader bufferedReader = null;
+//		try {
+//			File inputFile = new File(this.filePath);
+//			if (null == inputFile || false == inputFile.exists() || false == inputFile.isFile()) {
+//				throw new RuntimeException("Was not able to find file: " + this.filePath);
+//			}
+//
+//			bufferedReader = new BufferedReader(new FileReader(inputFile));
+//
+//			StringBuilder builder = null;
+//			String line;
+//
+//			// only used to find matching doc
+//			Map<String, Document> docMap = new HashMap<>();
+//			while (null != (line = bufferedReader.readLine())) {
+//
+//				if (null == builder) {
+//					builder = new StringBuilder();
+//				}
+//
+//				builder.append(line);
+//
+//				// load input text into memory byte stream
+//				// --> once entity is loaded --> start parsing and extracting
+//				if (line.startsWith("}")) {
+//					byte[] jsonBytes = builder.toString().getBytes();
+//					ByteArrayInputStream memoryStream = new ByteArrayInputStream(jsonBytes);
+//					builder = null; // not required until next JSON object is read
+//
+//					// read JSON file
+//					ObjectMapper mapper = new ObjectMapper();
+//					JsonNode node = mapper.readTree(memoryStream);
+//
+//					JsonNode relationMentions = node.get("relationMentions");
+//					JsonNode relationMentionsArray = relationMentions.get("array");
+//					if (null != relationMentionsArray && relationMentionsArray.isArray()) {
+//						Iterator<JsonNode> iterator = relationMentionsArray.getElements();
+//
+//						while (iterator.hasNext()) {
+//							JsonNode relationMentionNode = iterator.next();
+//
+//							try {
+//								String docId = node.get("id").asText();
+//
+//								// check if we already now this relation type
+//								BeuthDocumentAdapter currentDoc = (BeuthDocumentAdapter) docMap.get(docId);
+//								if (null == currentDoc) {
+//									currentDoc = new BeuthDocumentAdapter(BeuthImporter.namespacePrefix, docId);
+//
+//									docMap.put(docId, currentDoc);
+//								}
+//
+//								currentDoc.addData(relationMentionNode, currentDoc);
+//							} catch (Exception e) {
+//								e.printStackTrace(System.out);
+//							}
+//						}
+//					}
+//				}
+//			}
+//
+//			return docMap;
+//		} catch (Exception e) {
+//			throw new RuntimeException(e);
+//		} finally {
+//			if (null != bufferedReader) {
+//				try {
+//					bufferedReader.close();
+//				} catch (Exception e) {
+//				}
+//			}
+//		}
+//	}
 
 	/*
 	 * (non-Javadoc)
