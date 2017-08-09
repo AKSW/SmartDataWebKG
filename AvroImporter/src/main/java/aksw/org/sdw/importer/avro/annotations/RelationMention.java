@@ -46,7 +46,9 @@ public class RelationMention {
 	
 	@Override
 	public String toString() {
-		Gson gson = new Gson();
+		GsonBuilder gb = new GsonBuilder();
+		gb.serializeSpecialFloatingPointValues();
+		Gson gson = gb.create();
 		String json = gson.toJson(this);
 		return json;
 	}

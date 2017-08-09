@@ -54,7 +54,8 @@ public class Dfki2SdwKgMapper {
 		typeMappings.put("misc", Collections.singleton("http://dbpedia.org/ontology/Unknown"));
 		typeMappings.put("set", Collections.singleton("http://dbpedia.org/ontology/Unknown"));
 		
-				
+		typeMappings.put("sensor", Collections.singleton("http://dbpedia.org/resource/Sensor"));
+						
 		return Collections.unmodifiableMap(typeMappings);
 	}
 	
@@ -75,7 +76,7 @@ public class Dfki2SdwKgMapper {
 		}
 		
 		// find mapping and add it to the target collection
-		Collection<String> mappedTypes = Dfki2SdwKgMapper.typeMappings.get(sourceType);
+		Collection<String> mappedTypes = Dfki2SdwKgMapper.typeMappings.get(sourceType.toLowerCase());
 		if (null != mappedTypes) {
 			targetTypes.addAll(mappedTypes);
 		} else {
