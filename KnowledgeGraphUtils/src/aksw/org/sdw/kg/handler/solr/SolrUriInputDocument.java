@@ -34,7 +34,7 @@ public class SolrUriInputDocument implements KgSorlInputDocument {
 	 * @param fieldName
 	 * @param fieldData
 	 */
-	public void addFieldData(final String fieldName, final String fieldData) {
+	public void addFieldData(final String fieldName, final Object fieldData) {
 		if (null == fieldName || null == fieldData) {
 			return;
 		}
@@ -48,12 +48,12 @@ public class SolrUriInputDocument implements KgSorlInputDocument {
 	 * @param fieldName
 	 * @param fieldDataCollection
 	 */
-	public void addFieldData(final String fieldName, final Collection<String> fieldDataCollection) {
+	public void addFieldData(final String fieldName, final Collection<Object> fieldDataCollection) {
 		if (null == fieldName || null == fieldDataCollection || fieldDataCollection.isEmpty()) {
 			return;
 		}
 		
-		for (String fieldData : fieldDataCollection) {
+		for (Object fieldData : fieldDataCollection) {
 			this.solrDocument.addField(fieldName, fieldData);
 		}
 	}
