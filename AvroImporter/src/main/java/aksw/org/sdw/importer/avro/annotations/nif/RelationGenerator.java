@@ -21,6 +21,8 @@ import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.impl.StatementImpl;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
+import org.apache.velocity.runtime.directive.Foreach;
+import org.apache.xerces.impl.io.MalformedByteSequenceException;
 import org.nlp2rdf.nif21.NIF21Format;
 
 import aksw.org.sdw.importer.avro.annotations.Document;
@@ -48,6 +50,8 @@ public class RelationGenerator extends DocRdfGenerator {
 	
 	/** count of how often a method was called */
 	final ConcurrentMap<String, AtomicInteger> relationFunctionCount = new ConcurrentHashMap<>();
+
+	private Object entity;
 	
 	static final public Map<String, AtomicInteger> missingRelations = new HashMap<>();
 	static final public Map<String, AtomicInteger> strangeRelations = new HashMap<>();
@@ -62,6 +66,7 @@ public class RelationGenerator extends DocRdfGenerator {
 	final static String CompanyHeadquarters		= "CompanyHeadquarters";
 	final static String OrganizationLeadership	= "OrganizationLeadership";
 	final static String CompanyRelationship		= "CompanyRelationship";
+	final static String RawRelationship			= "RawRelationship";
 	
 	public RelationGenerator(final String graphName,final Document document) {
 		this(graphName, document, (DocRdfGenerator) null);
@@ -91,8 +96,8 @@ public class RelationGenerator extends DocRdfGenerator {
 		if (null == methodReference) {
 			Level level = Level.WARNING;
 			Logger.getGlobal().log(level,"Unknown relation type: " + relationType + " for relationMention: " + relationMention);
-			recordUnmappedRelations(relationType); 
-			return;
+			recordUnmappedRelations(relationType);
+			methodReference = this::handleRawRelationship;
 			//throw new RuntimeException("Unknown relation type: " + relationType + " for relationMention: " + relationMention);
 		}
 		
@@ -304,6 +309,46 @@ public class RelationGenerator extends DocRdfGenerator {
 				
 		RDFNode object = argument.model.createResource(rightEntity);
 		this.addStatement(leftEntity, W3COrg.headOf, object, argument.model);
+		
+		return 0;
+	}
+	
+	protected int handleRawRelationship(final ModelData arg) {
+		Objects.requireNonNull(arg);
+		
+		RelationMention rm = arg.relationMention;
+		Model m = arg.model;
+		
+		Resource relUri = m.createResource(rm.generatedUri);
+		relUri.addLiteral(m.createProperty("http://UNMAPPED.ER/type"),rm.relation.id);
+		
+		int count=0;
+		for (Mention e : arg.relationMention.entities)
+		{
+			relUri.addLiteral(m.createProperty("http://UNMAPPED.ER/hasRelationEntity#"+count),e.generatedUri);
+			count++;
+		}
+		
+//		Mention leftEntity = argument.relationMention.entities.get(0);
+//		
+//		String leftEntityString = argument.relationMention.entities.get(0).generatedUri;
+//		String rightEntityString = argument.relationMention.entities.get(1).generatedUri;
+//		
+//		if (leftEntity.types.contains("dbpedia.org/ontology/parentCompany")) {
+//			
+//			RDFNode childCompany = argument.model.createResource(rightEntityString);
+//			this.addStatement(leftEntityString, W3COrg.hasSubOrganization, childCompany, argument.model);
+//			
+//			RDFNode parentCompany = argument.model.createResource(leftEntityString);
+//			this.addStatement(rightEntityString, W3COrg.subOrganizationOf, parentCompany, argument.model);
+//		} else {
+//			
+//			RDFNode childCompany = argument.model.createResource(leftEntityString);
+//			this.addStatement(rightEntityString, W3COrg.hasSubOrganization, childCompany, argument.model);
+//			
+//			RDFNode parentCompany = argument.model.createResource(rightEntityString);
+//			this.addStatement(leftEntityString, W3COrg.subOrganizationOf, parentCompany, argument.model);
+//		}		
 		
 		return 0;
 	}

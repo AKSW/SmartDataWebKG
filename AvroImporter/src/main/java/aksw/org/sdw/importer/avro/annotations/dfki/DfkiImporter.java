@@ -114,7 +114,7 @@ public Iterator<Map.Entry<String, Document>> getRelationshipMentionIterator() {
 					String docId = dfkiDoc.getId();
 					DfkiDocumentAdapter currentDoc  = new DfkiDocumentAdapter();
 						currentDoc.addData(dfkiDoc, currentDoc);
-						currentDoc.id = docId;					
+						currentDoc.id = docId;				
 						return new AbstractMap.SimpleEntry<String, Document>(docId, currentDoc)
 						{
 							private static final long serialVersionUID = 1L;

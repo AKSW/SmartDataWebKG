@@ -43,13 +43,13 @@
 		<dependency>
 			<groupId>com.github.NLP2RDF</groupId>
 			<artifactId>NIF-lib</artifactId>
-			<version>655c440218dda4e4ccc570170e7e1f8c337244e9</version>
+			<version>369e096d45</version>
 		</dependency>
-		<dependency>
+<!-- 		<dependency>
 			<groupId>com.github.jitpack</groupId>
 			<artifactId>maven-simple</artifactId>
 			<version>master-SNAPSHOT</version>
-		</dependency>
+		</dependency> -->
 <!-- 	<dependency>
 			<groupId>org.apache.jena</groupId>
 			<artifactId>jena-tdb</artifactId>
