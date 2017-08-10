@@ -126,7 +126,7 @@ public class Main {
 			for (int i = 10 - countString.length(); i >= 0; --i) {
 				leadingZero += "0";
 			}
-			if (count>0) System.exit(0);
+			if (count>100) break;
 			
 
 			leadingZero += countString;
@@ -138,7 +138,7 @@ public class Main {
 			System.out.println(++count + ": Doc ID: " + doc.id);
 			System.out.println("Number of concept mentions: " + doc.conceptMentions.size());
 			System.out.println("Number of relationship mentions: " + doc.relationMentions.size());
-
+			
 			for (RelationMention relationshipMentions : doc.relationMentions) {
 				System.out.println("Relation: " + relationshipMentions.toJson());
 			}
@@ -156,7 +156,7 @@ public class Main {
 		
 		System.out.println("missingMappingsDFKI:###"+Dfki2SdwKgMapper.missingMappings.toString());
 		System.out.println("missingRelations:###"+RelationGenerator.missingRelations.toString());
-		System.out.println("strangeRelations:###"+RelationGenerator.strangeRelations.toString());
+		System.out.println("nary-Relations:###"+RelationGenerator.strangeRelations.toString());
 		System.out.println("Number of documents: " + count);
 	}
 }

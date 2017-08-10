@@ -14,6 +14,7 @@ public class DfkiRelationMentionAdapter extends RelationMention implements DataI
 	public void addData_internal(de.dfki.lt.tap.RelationMention dfkiRelationMention, Document document) {
 		List<de.dfki.lt.tap.Provenance> dfkiProvenanceList = dfkiRelationMention.getProvenance();
 		
+		// add provenance
 		if (null != dfkiProvenanceList && false == dfkiProvenanceList.isEmpty()) {
 			
 			for (de.dfki.lt.tap.Provenance dfkiProvenance : dfkiProvenanceList) {
@@ -23,7 +24,8 @@ public class DfkiRelationMentionAdapter extends RelationMention implements DataI
 				this.provenance.add(provenance);
 			}
 		}
-				
+		
+		// add relation arguments (concept mentions)
 		List<RelationArgument> relationArguments = dfkiRelationMention.getArgs();
 		if (null != relationArguments && false == relationArguments.isEmpty()) {
 			for (RelationArgument relationArgument : relationArguments) {
@@ -44,6 +46,21 @@ public class DfkiRelationMentionAdapter extends RelationMention implements DataI
 				}
 			}
 		}
+		
+		// add relation // TODO
+		
+		DfkiMentionAdapter relation = new DfkiMentionAdapter(); relation.addData(dfkiRelationMention,document);
+		relation.addData(dfkiRelationMention, document); 
+		this.relation = relation;
+		
+		// add attributes // TODO
+		
+		// add span // TODO
+		
+		// add id // TODO
+		
+		
+		
 		
 		this.relation.span = new DfkiSpanAdapter();
 		((DfkiSpanAdapter) this.relation.span).addData_internal(dfkiRelationMention.getSpan(), document);

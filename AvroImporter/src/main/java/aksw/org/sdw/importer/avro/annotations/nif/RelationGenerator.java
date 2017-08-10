@@ -85,7 +85,12 @@ public class RelationGenerator extends DocRdfGenerator {
 		super(graphName, relationGenerator);
 		this.document = document;
 	}
-	
+	 /**
+	  * 
+	  * @param relationType
+	  * @param relationMention 
+	  * @param model the jena model which will contain the output triples as 'return value' for this relation
+	  */
 	protected void createRelationTriple(final String relationType,
 										final RelationMention relationMention,
 										final Model model) {
@@ -124,6 +129,7 @@ public class RelationGenerator extends DocRdfGenerator {
 	
 	static public void recordStrangeRelationsNumber(String sourcetype)
 	{
+		System.out.println("record nary: "+sourcetype);
 		AtomicInteger count = strangeRelations.get(sourcetype);
 		if (count !=null)
 			count.incrementAndGet();
@@ -142,9 +148,9 @@ public class RelationGenerator extends DocRdfGenerator {
 			Model relationModel = this.createNewModel();
 			if (2 != relationMention.entities.size()) {
 				Level level = Level.WARNING;
-				Logger.getGlobal().log(level,"Did get uneven number ("
+				Logger.getGlobal().log(level,"Received nary relation of degree ("
 						+ relationMention.entities.size()
-						+ ") of entities: " + relationMention.entities +"\n\t in Relation: " + relationMention);
+						+ ") with entities: " + relationMention.entities +"\n\t in Relation: " + relationMention.relation);
 				recordStrangeRelationsNumber(relationMention.relation.textNormalized+""+relationMention.entities.size());
 //				throw new RuntimeException("Did get uneven number ("
 //						+ relationMention.entities.size()
