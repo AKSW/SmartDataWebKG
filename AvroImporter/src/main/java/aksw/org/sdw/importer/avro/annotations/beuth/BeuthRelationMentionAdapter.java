@@ -2,6 +2,7 @@ package aksw.org.sdw.importer.avro.annotations.beuth;
 
 import java.util.Iterator;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.codehaus.jackson.JsonNode;
 
 import aksw.org.sdw.importer.avro.annotations.DataImportAdapter;
@@ -52,10 +53,12 @@ public class BeuthRelationMentionAdapter extends RelationMention implements Data
 				BeuthMentionAdapter newEntity = new BeuthMentionAdapter();
 				newEntity.addData(mentionNode, document);
 				
-				if (false == this.entities.contains(newEntity)) {
-					this.entities.add(newEntity);
-					
-				}
+				throw new NotImplementedException("this piece of code below needs to be refactored. after changing data structure");
+				
+//				if (false == this.entities.contains(newEntity)) { //TODO change afer swithc from list to MAP
+//					this.entities.add(newEntity);
+//					
+//				}
 			}
 		}
 		

@@ -1,9 +1,11 @@
 package aksw.org.sdw.importer.avro.annotations;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.google.gson.Gson;
@@ -22,7 +24,7 @@ public class RelationMention {
 	public String generatedUri;
 	
 	/** All entities which were found for this relationship */
-	public List<Mention> entities = new ArrayList<>();
+	public Map<String,Mention> entities = new HashMap<>();
 	
 //	/** concept on the left **/
 //	public Mention leftConcept;

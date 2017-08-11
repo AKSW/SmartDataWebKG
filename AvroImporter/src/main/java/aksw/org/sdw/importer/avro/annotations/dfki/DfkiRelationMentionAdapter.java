@@ -39,10 +39,11 @@ public class DfkiRelationMentionAdapter extends RelationMention implements DataI
 					String role = relationArgument.getRole();
 					Dfki2SdwKgMapper.addEntityTypeMapping(role, conceptMention.types);
 					
-					if (false == this.entities.contains(conceptMention)) {
-						this.entities.add(conceptMention);
-					}
-					document.conceptMentions.add(conceptMention);
+					//if (false == this.entities.contains(conceptMention)) {
+						this.entities.put(role,conceptMention);
+					//}
+					if (false == document.conceptMentions.contains(conceptMention)) 
+						document.conceptMentions.add(conceptMention);
 				}
 			}
 		}

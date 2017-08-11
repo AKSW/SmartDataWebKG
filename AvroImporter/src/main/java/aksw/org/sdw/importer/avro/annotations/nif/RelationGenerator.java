@@ -203,11 +203,14 @@ public class RelationGenerator extends DocRdfGenerator {
 		
 		RelationMention relationMention = argument.relationMention;
 		
-		Mention organisation = (relationMention.entities.get(0).types.contains(W3COrg.organization)
-				? relationMention.entities.get(0) : relationMention.entities.get(1));
+//		Mention organisation = (relationMention.entities.get(0).types.contains(W3COrg.organization)
+//				? relationMention.entities.get(0) : relationMention.entities.get(1));
+		Mention organisation = relationMention.entities.get("company");
 		
-		Mention product = (relationMention.entities.get(1).types.contains(W3COrg.organization)
-				? relationMention.entities.get(0) : relationMention.entities.get(1));
+//		Mention product = (relationMention.entities.get(1).types.contains(W3COrg.organization)
+//				? relationMention.entities.get(0) : relationMention.entities.get(1));
+		
+		Mention product = relationMention.entities.get("product");
 		
 		String leftEntity = organisation.generatedUri;
 		String rightEntity = product.generatedUri;
@@ -223,7 +226,7 @@ public class RelationGenerator extends DocRdfGenerator {
 		
 		Model relationModel = argument.model;
 		
-		for (Mention entity : argument.relationMention.entities) {					
+		for (Mention entity : argument.relationMention.entities.values()) {		//TODO check whether it is still correct after changing entities from list to MAP			
 			String leftLabel = (null == entity.text) ? entity.textNormalized : entity.text;	
 			if (null != leftLabel) {						
 				RDFNode object = relationModel.createLiteral(leftLabel, this.document.langCode);			
@@ -234,12 +237,12 @@ public class RelationGenerator extends DocRdfGenerator {
 		return 0;
 	}
 	
-	protected int handleTypes(final ModelData argument) {
+	protected int handleTypes(final ModelData argument) {        //TODO check whether it is still correct after changing entities from list to MAP		
 		Objects.requireNonNull(argument);
 		
 		Model relationModel = argument.model;
 		
-		for (Mention entity : argument.relationMention.entities) {
+		for (Mention entity : argument.relationMention.entities.values()) {
 			// add type triples
 			for (String type : entity.types) {	
 				
@@ -289,10 +292,13 @@ public class RelationGenerator extends DocRdfGenerator {
 		RelationMention relationMention = argument.relationMention;
 		Model relationModel = argument.model;
 		
-		Mention organisation = (relationMention.entities.get(1).types.contains(W3COrg.site)
-				? relationMention.entities.get(0) : relationMention.entities.get(1));
-		Mention headquarter = (relationMention.entities.get(0).types.contains(W3COrg.site)
-				? relationMention.entities.get(0) : relationMention.entities.get(1));
+//		Mention organisation = (relationMention.entities.get(1).types.contains(W3COrg.site)
+//				? relationMention.entities.get(0) : relationMention.entities.get(1));
+//		Mention headquarter = (relationMention.entities.get(0).types.contains(W3COrg.site)
+//				? relationMention.entities.get(0) : relationMention.entities.get(1));
+		
+		Mention organisation = relationMention.entities.get("company");
+		Mention headquarter = relationMention.entities.get("headquarter");
 		
 		String organisationUri = organisation.generatedUri;
 		
@@ -310,8 +316,8 @@ public class RelationGenerator extends DocRdfGenerator {
 	protected int handleOrganizationLeadership(final ModelData argument) {
 		Objects.requireNonNull(argument);
 		
-		String leftEntity = argument.relationMention.entities.get(0).generatedUri;
-		String rightEntity = argument.relationMention.entities.get(1).generatedUri;
+		String leftEntity = argument.relationMention.entities.get("person").generatedUri;
+		String rightEntity = argument.relationMention.entities.get("organization").generatedUri;
 				
 		RDFNode object = argument.model.createResource(rightEntity);
 		this.addStatement(leftEntity, W3COrg.headOf, object, argument.model);
@@ -329,7 +335,7 @@ public class RelationGenerator extends DocRdfGenerator {
 		relUri.addLiteral(m.createProperty("http://UNMAPPED.ER/type"),rm.relation.id);
 		
 		int count=0;
-		for (Mention e : arg.relationMention.entities)
+		for (Mention e : arg.relationMention.entities.values())
 		{
 			relUri.addLiteral(m.createProperty("http://UNMAPPED.ER/hasRelationEntity#"+count),e.generatedUri);
 			count++;
@@ -362,26 +368,17 @@ public class RelationGenerator extends DocRdfGenerator {
 	protected int handleCompanyRelationship(final ModelData argument) {
 		Objects.requireNonNull(argument);
 		
-		Mention leftEntity = argument.relationMention.entities.get(0);
+		Mention leftEntity = argument.relationMention.entities.get("parent");
 		
-		String leftEntityString = argument.relationMention.entities.get(0).generatedUri;
-		String rightEntityString = argument.relationMention.entities.get(1).generatedUri;
+		String leftEntityString = leftEntity.generatedUri;
+		String rightEntityString = argument.relationMention.entities.get("child").generatedUri;
 		
-		if (leftEntity.types.contains("dbpedia.org/ontology/parentCompany")) {
-			
-			RDFNode childCompany = argument.model.createResource(rightEntityString);
-			this.addStatement(leftEntityString, W3COrg.hasSubOrganization, childCompany, argument.model);
-			
-			RDFNode parentCompany = argument.model.createResource(leftEntityString);
-			this.addStatement(rightEntityString, W3COrg.subOrganizationOf, parentCompany, argument.model);
-		} else {
-			
-			RDFNode childCompany = argument.model.createResource(leftEntityString);
-			this.addStatement(rightEntityString, W3COrg.hasSubOrganization, childCompany, argument.model);
-			
-			RDFNode parentCompany = argument.model.createResource(rightEntityString);
-			this.addStatement(leftEntityString, W3COrg.subOrganizationOf, parentCompany, argument.model);
-		}		
+		RDFNode childCompany = argument.model.createResource(rightEntityString);
+		this.addStatement(leftEntityString, W3COrg.hasSubOrganization, childCompany, argument.model);
+		
+		RDFNode parentCompany = argument.model.createResource(leftEntityString);
+		this.addStatement(rightEntityString, W3COrg.subOrganizationOf, parentCompany, argument.model);
+		
 		
 		return 0;
 	}
