@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
@@ -133,14 +135,16 @@ public class Main {
 
 			String outputFile = outputDirectoryPath + "/doc_" + filePrefix + "_" + leadingZero + ".trig";
 			OutputStream outputStream = new FileOutputStream(new File(outputFile));
-
-			System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-			System.out.println(++count + ": Doc ID: " + doc.id);
-			System.out.println("Number of concept mentions: " + doc.conceptMentions.size());
-			System.out.println("Number of relationship mentions: " + doc.relationMentions.size());
+			
+			Level info_level = Level.INFO;
+			Logger.getGlobal().log(info_level,	"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"+"\n"+
+												++count + ": Doc ID: " + doc.id +"\n"+
+												"Number of concept mentions: " + doc.conceptMentions.size() +"\n"+
+												"Number of relationship mentions: " + doc.relationMentions.size());
 			
 			for (RelationMention relationshipMentions : doc.relationMentions) {
-				System.out.println("Relation: " + relationshipMentions.toJson());
+				Level config_level = Level.CONFIG;
+				Logger.getGlobal().log(config_level,() -> "Relation: " + relationshipMentions.toJson()); //lambda to enable lazy evaluation for performance benefit when logging disabled
 			}
 			
 
@@ -149,7 +153,7 @@ public class Main {
 			DocRdfGenerator rdfGnerator = new NIFAnnotationGenerator(nifUri, doc,
 					new RelationGenerator(metadataUri, doc));
 
-			System.out.println("Relation: \n");
+
 
 			rdfGnerator.writeRdfDataAsTrig(outputStream);
 		}
@@ -157,6 +161,6 @@ public class Main {
 		System.out.println("missingMappingsDFKI:###"+Dfki2SdwKgMapper.missingMappings.toString());
 		System.out.println("missingRelations:###"+RelationGenerator.missingRelations.toString());
 		System.out.println("nary-Relations:###"+RelationGenerator.strangeRelations.toString());
-		System.out.println("Number of documents: " + count);
+		System.out.println("Number of documents: " + count); 
 	}
 }

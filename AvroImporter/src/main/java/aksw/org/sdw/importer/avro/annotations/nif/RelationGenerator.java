@@ -151,7 +151,7 @@ public class RelationGenerator extends DocRdfGenerator {
 				Logger.getGlobal().log(level,"Received nary relation of degree ("
 						+ relationMention.entities.size()
 						+ ") with entities: " + relationMention.entities +"\n\t in Relation: " + relationMention.relation);
-				recordStrangeRelationsNumber(relationMention.relation.textNormalized+""+relationMention.entities.size());
+				recordStrangeRelationsNumber(relationMention.relation.textNormalized+relationMention.entities.size()+"''"+relationMention.entities.keySet());
 //				throw new RuntimeException("Did get uneven number ("
 //						+ relationMention.entities.size()
 //						+ ") of entities: " + relationMention.entities +"\n\t in Relation: " + relationMention);
