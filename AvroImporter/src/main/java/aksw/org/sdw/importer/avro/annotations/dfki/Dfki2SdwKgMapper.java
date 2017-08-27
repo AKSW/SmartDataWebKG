@@ -51,11 +51,15 @@ public class Dfki2SdwKgMapper {
 		typeMappings.put("percentage", Collections.singleton("http://dbpedia.org/ontology/Statistic"));
 		typeMappings.put("ordinal", Collections.singleton("http://dbpedia.org/ontology/Statistic"));
 		
-		typeMappings.put("misc", Collections.singleton("http://dbpedia.org/ontology/Unknown"));
-		typeMappings.put("set", Collections.singleton("http://dbpedia.org/ontology/Unknown"));
-		
 		typeMappings.put("sensor", Collections.singleton("http://dbpedia.org/resource/Sensor"));
-						
+		
+//		typeMappings.put("misc", Collections.singleton("http://dbpedia.org/ontology/Unknown"));
+//		typeMappings.put("set", Collections.singleton("http://dbpedia.org/ontology/Unknown"));
+		
+		typeMappings.put("financial-event", Collections.singleton("http://corp.dbpedia.org/resource/financialEvent"));
+		typeMappings.put("percent", Collections.singleton("http://corp.dbpedia.org/resource/percent"));
+		typeMappings.put("event_type", Collections.singleton("http://corpdbpedia.org/resource/eventType"));
+					
 		return Collections.unmodifiableMap(typeMappings);
 	}
 	

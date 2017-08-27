@@ -38,6 +38,7 @@ public class Main {
 
 		InputType inputType = InputType.DFKI;
 		String filePath = null;
+		String inputDir = null;
 		String outputDirectoryPath = null;
 		
 		System.out.println("SDW Crawled Data Importer");
@@ -49,6 +50,7 @@ public class Main {
 		options.addOption("p", "path", true, "path to avro file.");
 		options.addOption("t", "type", true, "input type [BEUTH|DFKI|SIEMENS]");
 		options.addOption("o", "out", true, "output folder directory");
+		options.addOption("d", "dir", true, "convert directory to avro");
 
 		CommandLine commandLine = null;
 		CommandLineParser parser = new BasicParser();
@@ -60,7 +62,9 @@ public class Main {
 				System.exit(0);
 			}
 
-			if (commandLine.hasOption("p") && commandLine.hasOption("t")) {
+			if ( ( commandLine.hasOption("p") || commandLine.hasOption("d") )
+					&& commandLine.hasOption("t") && commandLine.hasOption("o")) {
+			
 				String str_type = commandLine.getOptionValue("t");
 				if (str_type.toLowerCase().equals("beuth")) {
 					inputType = InputType.BEUTH;
@@ -72,6 +76,7 @@ public class Main {
 					formatter.printHelp("avroimporter", options);
 				}
 				filePath = commandLine.getOptionValue("p");
+				inputDir = commandLine.getOptionValue("d");
 				outputDirectoryPath = commandLine.getOptionValue("o");
 			} else {
 				formatter.printHelp("avroimporter", options);
@@ -83,14 +88,39 @@ public class Main {
 			System.exit(1);
 		}
 
-		String filePrefix;
 		File outputDirectory = new File(outputDirectoryPath);
 
 		if (false == outputDirectory.exists() && false == outputDirectory.mkdirs()) {
 			System.err.println("Was not able to create directories: " + outputDirectoryPath);
 		}
-
+		
+		// for file ?
+		if(!commandLine.hasOption('d')) {
+			System.out.println("ConvertFile");
+			forFile(inputType, filePath, outputDirectoryPath);
+		// or for directory
+		} else {
+			System.out.println("ConvertDir");
+			File dir = new File(inputDir);
+			for(File x : dir.listFiles()) {
+				if( x.toString().endsWith(".avro") ) {
+					//TODO subfolder name ?
+					String[] xarray = x.toString().split("/");
+					String subfolderPath = outputDirectoryPath+"/"+xarray[xarray.length-1].replaceAll("\\.", "_");
+					File subfolder = new File(subfolderPath);
+					if (false == subfolder.exists() && false == subfolder.mkdirs()) {
+						System.err.println("Was not able to create directories: " + outputDirectoryPath);
+					}
+					forFile(inputType, x.toString(), subfolderPath);
+				}
+			}
+		}
+		
+	}
+	
+	public static void forFile(InputType inputType, String filePath, String outputDirectoryPath) throws IOException{
 		RelationMentionImporter importer;
+		String filePrefix;
 		if (InputType.BEUTH == inputType) {
 			importer = new BeuthImporter(filePath);
 			filePrefix = "beuth";
@@ -106,7 +136,6 @@ public class Main {
 		else {
 			throw new UnsupportedOperationException("conversion input type "+inputType+" is not supported");
 		}
-		
 		int count = 0;
 	//for all-in-memory conversion 
 //		Map<String, Document> foundDocs = importer.getRelationshipMentions();
@@ -128,7 +157,7 @@ public class Main {
 			for (int i = 10 - countString.length(); i >= 0; --i) {
 				leadingZero += "0";
 			}
-//			if (count>100) break;
+			if (count>100) break;
 			
 
 			leadingZero += countString;
@@ -162,5 +191,6 @@ public class Main {
 		System.out.println("missingRelations:###"+RelationGenerator.missingRelations.toString());
 		System.out.println("nary-Relations:###"+RelationGenerator.strangeRelations.toString());
 		System.out.println("Number of documents: " + count); 
+
 	}
 }

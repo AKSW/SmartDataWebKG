@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * Marks general annotation instances
@@ -43,7 +44,9 @@ public abstract class Annotation {
 	
 	@Override
 	public String toString() {
-		Gson gson = new Gson();
+		GsonBuilder gb = new GsonBuilder();
+		gb.serializeSpecialFloatingPointValues();
+		Gson gson = gb.create();
 		String json = gson.toJson(this);
 		return json;
 	}

@@ -36,7 +36,7 @@ public class DfkiRelationMentionAdapter extends RelationMention implements DataI
 					DfkiMentionAdapter conceptMention = new DfkiMentionAdapter();
 					conceptMention.addData_internal(dfkiConceptMention, document);
 					
-					String role = relationArgument.getRole();
+					String role = relationArgument.getRole().toLowerCase();
 					Dfki2SdwKgMapper.addEntityTypeMapping(role, conceptMention.types);
 					
 					//if (false == this.entities.contains(conceptMention)) {

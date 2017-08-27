@@ -62,6 +62,7 @@ public class RelationGenerator extends DocRdfGenerator {
 	
 	final static String CompanyTechnology		= "CompanyTechnology";
 	final static String CompanyProvidesProduct	= "CompanyProvidesProduct";
+	final static String CompanyFinancialEvent	= "CompanyFinancialEvent";
 	
 	final static String CompanyHeadquarters		= "CompanyHeadquarters";
 	final static String OrganizationLeadership	= "OrganizationLeadership";
@@ -71,6 +72,7 @@ public class RelationGenerator extends DocRdfGenerator {
 	public RelationGenerator(final String graphName,final Document document) {
 		this(graphName, document, (DocRdfGenerator) null);
 		
+		relationFunctionMap.put(RelationGenerator.CompanyFinancialEvent,	this::handleCompanyFinancialEvent);
 		relationFunctionMap.put(RelationGenerator.CompanyTechnology, 		this::handleCompanyTechnology);
 		relationFunctionMap.put(RelationGenerator.CompanyProvidesProduct,	this::handleCompanyTechnology);
 		relationFunctionMap.put(RelationGenerator.HandleEntityLabels,		this::handleLabel);
@@ -152,7 +154,8 @@ public class RelationGenerator extends DocRdfGenerator {
 						+ relationMention.entities.size()
 						+ ") with entities: " + relationMention.entities +"\n\t in Relation: " + relationMention.relation);
 				recordStrangeRelationsNumber(relationMention.relation.textNormalized+relationMention.entities.size()+"''"+relationMention.entities.keySet());
-//				throw new RuntimeException("Did get uneven number ("
+				return dataset;
+				//				throw new RuntimeException("Did get uneven number ("
 //						+ relationMention.entities.size()
 //						+ ") of entities: " + relationMention.entities +"\n\t in Relation: " + relationMention);
 			}
@@ -202,15 +205,15 @@ public class RelationGenerator extends DocRdfGenerator {
 		Objects.requireNonNull(argument);
 		
 		RelationMention relationMention = argument.relationMention;
-		
-//		Mention organisation = (relationMention.entities.get(0).types.contains(W3COrg.organization)
-//				? relationMention.entities.get(0) : relationMention.entities.get(1));
-		Mention organisation = relationMention.entities.get("company");
-		
-//		Mention product = (relationMention.entities.get(1).types.contains(W3COrg.organization)
-//				? relationMention.entities.get(0) : relationMention.entities.get(1));
-		
+
+    	Mention organisation = relationMention.entities.get("company");
+				
 		Mention product = relationMention.entities.get("product");
+		//for beuth
+		if( null == product ) product = relationMention.entities.get("sensor");
+		
+		//TODO
+		if (null == product || null == organisation ) return 0;
 		
 		String leftEntity = organisation.generatedUri;
 		String rightEntity = product.generatedUri;
@@ -365,12 +368,24 @@ public class RelationGenerator extends DocRdfGenerator {
 		return 0;
 	}
 	
+	protected int handleCompanyFinancialEvent(final ModelData argument) {
+		
+		Objects.requireNonNull(argument);
+		
+		String leftEntityString = argument.relationMention.entities.get("company").generatedUri;
+		String rightEntityString = argument.relationMention.entities.get("event_type").generatedUri;
+		
+		RDFNode event = argument.model.createResource(rightEntityString);
+		this.addStatement(leftEntityString, "http://corp.dbpedia.org/ontology#hasEventSite", event, argument.model);
+				
+		return 0;
+	}
+	
 	protected int handleCompanyRelationship(final ModelData argument) {
 		Objects.requireNonNull(argument);
 		
-		Mention leftEntity = argument.relationMention.entities.get("parent");
+		String leftEntityString = argument.relationMention.entities.get("parent").generatedUri;
 		
-		String leftEntityString = leftEntity.generatedUri;
 		String rightEntityString = argument.relationMention.entities.get("child").generatedUri;
 		
 		RDFNode childCompany = argument.model.createResource(rightEntityString);
