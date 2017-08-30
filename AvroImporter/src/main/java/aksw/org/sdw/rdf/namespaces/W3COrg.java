@@ -40,6 +40,4 @@ public class W3COrg {
 	final static public String linkedTo = W3COrg.prefix + "linkedTo";
 	final static public String headOf = W3COrg.prefix + "headOf";
 
-
-
 }

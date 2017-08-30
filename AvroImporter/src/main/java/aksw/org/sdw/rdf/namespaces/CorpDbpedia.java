@@ -47,4 +47,10 @@ public class CorpDbpedia {
 	
 	/** related to products */
 	public static final String providesProduct = prefixOntology + "providesProduct";
+
+	/** Not added to ontology yet */
+	public static final String relation = prefix+"Relation";
+	public static final String relationMemmber = prefixOntology+"hasRelationMember";
+	
+	
 }

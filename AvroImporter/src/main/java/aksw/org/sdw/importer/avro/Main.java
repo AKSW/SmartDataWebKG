@@ -163,6 +163,7 @@ public class Main {
 			leadingZero += countString;
 
 			String outputFile = outputDirectoryPath + "/doc_" + filePrefix + "_" + leadingZero + ".trig";
+			//System.out.println(outputFile);
 			OutputStream outputStream = new FileOutputStream(new File(outputFile));
 			
 			Level info_level = Level.INFO;

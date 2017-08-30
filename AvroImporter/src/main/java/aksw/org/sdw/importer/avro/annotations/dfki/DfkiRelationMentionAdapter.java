@@ -28,6 +28,7 @@ public class DfkiRelationMentionAdapter extends RelationMention implements DataI
 		// add relation arguments (concept mentions)
 		List<RelationArgument> relationArguments = dfkiRelationMention.getArgs();
 		if (null != relationArguments && false == relationArguments.isEmpty()) {
+			int count = 1;
 			for (RelationArgument relationArgument : relationArguments) {
 				
 				// get entities
@@ -39,9 +40,13 @@ public class DfkiRelationMentionAdapter extends RelationMention implements DataI
 					String role = relationArgument.getRole().toLowerCase();
 					Dfki2SdwKgMapper.addEntityTypeMapping(role, conceptMention.types);
 					
-					//if (false == this.entities.contains(conceptMention)) {
+					if (false == this.entities.containsKey(role)) {
 						this.entities.put(role,conceptMention);
-					//}
+					} else {
+						//TODO: better count -> second map
+						this.entities.put(role+count, conceptMention);
+						count++;
+					}
 					if (false == document.conceptMentions.contains(conceptMention)) 
 						document.conceptMentions.add(conceptMention);
 				}
