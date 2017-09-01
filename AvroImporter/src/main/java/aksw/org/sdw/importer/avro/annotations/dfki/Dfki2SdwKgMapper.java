@@ -54,17 +54,16 @@ public class Dfki2SdwKgMapper {
 		
 		typeMappings.put("sensor", Collections.singleton("http://dbpedia.org/resource/Sensor"));
 		
-//		set", "type", "acquired", "misc", "buyer TODO
-		
-//		typeMappings.put("set", Collections.singleton("http://dbpedia.org/ontology/Unknown"));
-//		typeMappings.put("type", Collections.singleton("http://dbpedia.org/ontology/Unknown"));
+		// NEW 
+		typeMappings.put("set", Collections.singleton("http://corp.dbpedia.org/ontology#Set"));
+		typeMappings.put("type", Collections.singleton("http://corp.dbpedia.org/ontology#DisasterType"));
+		typeMappings.put("misc", Collections.singleton("http://corp.dbpedia.org/ontology#Miscellaneous"));
 		typeMappings.put("acquired", Arrays.asList("http://www.w3.org/ns/org#Organization",
 				"http://dbpedia.org/ontololgy/Organisation"));
-//		typeMappings.put("misc", Collections.singleton("http://dbpedia.org/ontology/Unknown"));
 		typeMappings.put("buyer", Arrays.asList("http://www.w3.org/ns/org#Organization",
 				"http://dbpedia.org/ontololgy/Organisation"));
-//		typeMappings.put("financial-event", Collections.singleton("http://corp.dbpedia.org/resource/financialEvent"));
-//		typeMappings.put("event_type", Collections.singleton("http://corpdbpedia.org/resource/eventType"));
+		typeMappings.put("financial-event", Collections.singleton("http://corp.dbpedia.org/ontology#FinancialEvent"));
+		typeMappings.put("event_type", Collections.singleton("http://corpdbpedia.org/ontology#EventType"));
 					
 		return Collections.unmodifiableMap(typeMappings);
 	}

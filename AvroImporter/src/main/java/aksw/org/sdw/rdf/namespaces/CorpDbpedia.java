@@ -1,5 +1,7 @@
 package  aksw.org.sdw.rdf.namespaces;
 
+import java.util.Collections;
+
 public class CorpDbpedia {
 	
 	public static final String prefix = "http://corp.dbpedia.org/";
@@ -48,9 +50,37 @@ public class CorpDbpedia {
 	/** related to products */
 	public static final String providesProduct = prefixOntology + "providesProduct";
 
-	/** Not added to ontology yet */
+	/**
+	 *  Not added to ontology yet NEW
+	 **/
+	
+	/** nary relation */
 	public static final String relation = prefix+"Relation";
 	public static final String relationMemmber = prefixOntology+"hasRelationMember";
 	
+	/** FinancialEvnet */
+	public static final String hasFinancialEvent = prefixOntology+"hasFinancialEvent";
+	public static final String hasEventType = prefixOntology+"hasEventType";
+	
+	/** Date **/ //TODO multi Format
+	public static final String hasDate = prefixOntology+"hasDate";
+	
+	/** SpinOff */	
+	public static final String hasSpinOff = prefixOntology+"hasSpinOff";
+	public static final String isSpinOff = prefixOntology+"isSpinOff";
+	
+	/** Acquired */
+	public static final String acquired= prefixOntology+"acquired";
+	public static final String acquiredBy = prefixOntology+"acquiredBy";
+	
+	/** Disaster */
+	public static final String hasDisaster = prefixOntology+"hasDisaster";
+	
+	/** CompanyProject */
+	public static final String hasProject = prefixOntology+"Project";
+	public static final String isProjectOf = prefixOntology+"ProjectOf";
+	
+	/** Industry **/
+	public static final String industry = prefixOntology+"Industry";
 	
 }

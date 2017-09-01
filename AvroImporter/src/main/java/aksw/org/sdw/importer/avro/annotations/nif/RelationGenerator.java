@@ -166,6 +166,8 @@ public class RelationGenerator extends DocRdfGenerator {
 		}
 
 		for (RelationMention relationMention : document.relationMentions) {
+			
+			//System.out.println(relationMention.relation.types+" "+relationMention.entities.keySet());
 			Model relationModel = this.createNewModel();
 			boolean exceptThis = false;
 			//TODO exceptThis betters
@@ -194,6 +196,7 @@ public class RelationGenerator extends DocRdfGenerator {
 			relationMention.generatedId = uniqueId;
 			
 			for (String relationType : relationMention.relation.types) {
+				System.out.println(relationType+" "+relationMention.entities.keySet());
 				this.createRelationTriple(relationType, relationMention, relationModel);
 			}
 
@@ -241,6 +244,13 @@ public class RelationGenerator extends DocRdfGenerator {
 		// for beuth
 		if (null == product)
 			product = relationMention.entities.get("sensor");
+		
+		try {
+			String str = relationMention.entities.get("type").generatedUri;
+			System.out.println("type "+str);
+		} catch( Exception e ) {
+			
+		}
 
 		if (null == product || null == organisation) {
 			Logger.getGlobal().log(Level.WARNING, "Failed Relation CompanyTechnology: " + relationMention.entities );
@@ -435,13 +445,13 @@ public class RelationGenerator extends DocRdfGenerator {
 			return 0;
 		}
 		RDFNode event = argument.model.createResource(rightEntityString);
-		this.addStatement(leftEntityString, "http://corp.dbpedia.org/ontology#hasEventSite", event, argument.model);
+		this.addStatement(leftEntityString, CorpDbpedia.hasFinancialEvent, event, argument.model);
 		
 		try {
 			dateString = argument.relationMention.entities.get("date").textNormalized;
 //			System.out.println("DATE FOUND");
-			//TODO
-			this.addStatementWithLiteral(leftEntityString, "http://hasDate", dateString, RDF.dtLangString, argument.model);
+			//DONE
+			this.addStatementWithLiteral(leftEntityString, CorpDbpedia.hasDate, dateString, RDF.dtLangString, argument.model);
 		} catch( Exception e) {
 //			System.out.println("DATE ERROR");
 			return 0;
@@ -471,12 +481,12 @@ public class RelationGenerator extends DocRdfGenerator {
 		String leftEntityString = argument.relationMention.entities.get("parent").generatedUri;
 		String rightEntityString = argument.relationMention.entities.get("child").generatedUri;
 
-		// TODO: hasSpinOff and isSpinOff
+		// DONE: hasSpinOff and isSpinOff
 		RDFNode childCompany = argument.model.createResource(rightEntityString);
-		this.addStatement(leftEntityString, "hasSpinOff", childCompany, argument.model);
+		this.addStatement(leftEntityString, CorpDbpedia.hasSpinOff, childCompany, argument.model);
 
 		RDFNode parentCompany = argument.model.createResource(leftEntityString);
-		this.addStatement(rightEntityString, "isSpinOff", parentCompany, argument.model);
+		this.addStatement(rightEntityString, CorpDbpedia.isSpinOff, parentCompany, argument.model);
 
 		// keys: parent, child
 		return 0;
@@ -488,12 +498,12 @@ public class RelationGenerator extends DocRdfGenerator {
 		String leftEntityString = argument.relationMention.entities.get("company").generatedUri;
 		String rightEntityString = argument.relationMention.entities.get("project").generatedUri;
 
-		// TODO: COMPANY x PROJECT
-		RDFNode childCompany = argument.model.createResource(rightEntityString);
-		this.addStatement(leftEntityString, "hasSpinOff", childCompany, argument.model);
+		// DONE: COMPANY x PROJECT
+		RDFNode project = argument.model.createResource(rightEntityString);
+		this.addStatement(leftEntityString, CorpDbpedia.hasProject, project, argument.model);
 
-		RDFNode parentCompany = argument.model.createResource(leftEntityString);
-		this.addStatement(rightEntityString, "isSpinOff", parentCompany, argument.model);
+		RDFNode company = argument.model.createResource(leftEntityString);
+		this.addStatement(rightEntityString, CorpDbpedia.isProjectOf, company, argument.model);
 
 		// keys: project, company
 		return 0;
@@ -504,15 +514,16 @@ public class RelationGenerator extends DocRdfGenerator {
 		String leftEntityString;
 		String rightEntityString;
 		try {
-			leftEntityString = argument.relationMention.entities.get("parent").generatedUri;
-			rightEntityString = argument.relationMention.entities.get("child").generatedUri;
+			leftEntityString = argument.relationMention.entities.get("location").generatedUri;
+			rightEntityString = argument.relationMention.entities.get("type").generatedUri;
+			
 		} catch(Exception e) {
 			return 0;
 		}
 		
-		// TODO: hasSpinOff and isSpinOff
-		RDFNode childCompany = argument.model.createResource(rightEntityString);
-		this.addStatement(leftEntityString, "hasDisaster", childCompany, argument.model);
+		// DONE: check relation
+		RDFNode type = argument.model.createResource(rightEntityString);
+		this.addStatement(leftEntityString, CorpDbpedia.hasDisaster, type, argument.model);
 
 		// keys: location, type
 		return 0;
@@ -524,12 +535,11 @@ public class RelationGenerator extends DocRdfGenerator {
 		String leftEntityString = argument.relationMention.entities.get("company").generatedUri;
 		String rightEntityString = argument.relationMention.entities.get("industry").generatedUri;
 
-		// TODO: hasSpinOff and isSpinOff
-		RDFNode childCompany = argument.model.createResource(rightEntityString);
-		this.addStatement(leftEntityString, "hasSpinOff", childCompany, argument.model);
+		RDFNode industry = argument.model.createResource(rightEntityString);
+		this.addStatement(leftEntityString, CorpDbpedia.industry, industry, argument.model);
 
-		RDFNode parentCompany = argument.model.createResource(leftEntityString);
-		this.addStatement(rightEntityString, "isSpinOff", parentCompany, argument.model);
+//		RDFNode parentCompany = argument.model.createResource(leftEntityString);
+//		this.addStatement(rightEntityString, CorpDbpedia.prefixOntology+"isSpinOff", parentCompany, argument.model);
 
 		// keys: company, industry http://corp.dbpedia.org/ontology#orgCategory
 		return 0;
@@ -541,12 +551,12 @@ public class RelationGenerator extends DocRdfGenerator {
 		String leftEntityString = argument.relationMention.entities.get("acquired").generatedUri;
 		String rightEntityString = argument.relationMention.entities.get("buyer").generatedUri;
 
-		// TODO: COMPANY x COMPANY
+		// DONE: COMPANY x COMPANY
 		RDFNode childCompany = argument.model.createResource(rightEntityString);
-		this.addStatement(leftEntityString, "hasSpinOff", childCompany, argument.model);
+		this.addStatement(leftEntityString, CorpDbpedia.acquired, childCompany, argument.model);
 
 		RDFNode parentCompany = argument.model.createResource(leftEntityString);
-		this.addStatement(rightEntityString, "isSpinOff", parentCompany, argument.model);
+		this.addStatement(rightEntityString, CorpDbpedia.acquiredBy, parentCompany, argument.model);
 
 		// keys: acquired, buyer
 		return 0;
