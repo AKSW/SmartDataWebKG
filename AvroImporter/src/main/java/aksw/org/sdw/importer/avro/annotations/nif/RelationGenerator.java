@@ -196,7 +196,7 @@ public class RelationGenerator extends DocRdfGenerator {
 			relationMention.generatedId = uniqueId;
 			
 			for (String relationType : relationMention.relation.types) {
-				System.out.println(relationType+" "+relationMention.entities.keySet());
+				//System.out.println(relationType+" "+relationMention.entities.keySet());
 				this.createRelationTriple(relationType, relationMention, relationModel);
 			}
 
@@ -247,7 +247,7 @@ public class RelationGenerator extends DocRdfGenerator {
 		
 		try {
 			String str = relationMention.entities.get("type").generatedUri;
-			System.out.println("type "+str);
+			//System.out.println("type "+str);
 		} catch( Exception e ) {
 			
 		}
@@ -312,7 +312,8 @@ public class RelationGenerator extends DocRdfGenerator {
 		for (Provenance provenance : relationMention.provenance) {
 			if (null != provenance.annotator) {
 
-				RDFNode annotatorObject = metadataModel.createTypedLiteral(provenance.annotator);
+				//ANNOTATOR
+				RDFNode annotatorObject = metadataModel.createTypedLiteral(RDFHelpers.createValidIRIfromBase(provenance.annotator,"http://corp.dbpedia.org/annotator"));
 
 				this.addStatement(uriString, NIF21Format.RDF_PROPERTY_ANNOTATOR, annotatorObject, metadataModel);
 
@@ -378,18 +379,19 @@ public class RelationGenerator extends DocRdfGenerator {
 	protected int handleRawRelationship(final ModelData arg) {
 		Objects.requireNonNull(arg);
 		
-		
-
 		RelationMention rm = arg.relationMention;
 		Model m = arg.model;
 		
-		RDFNode object = arg.model.createResource("http://corp.dbpedia.org/naryRelation/"+rm.relation.textNormalized);
+		RDFNode object = arg.model.createResource(CorpDbpedia.relation);//+rm.relation.textNormalized);
 		
 		this.addStatement(rm.relation.generatedUri, RDF.type.getURI() , object, arg.model);
 		
+		RDFNode label = arg.model.createLiteral(rm.relation.textNormalized, document.langCode);
+		this.addStatement(rm.relation.generatedUri, RDFS.label.getURI(), label, arg.model);
+		
 		for (Mention mem : rm.entities.values()) {
 			RDFNode member = arg.model.createResource(mem.generatedUri);
-			this.addStatement(rm.relation.generatedUri, "http://corp.dbpedia.org/hasRelationMember" , member, arg.model);
+			this.addStatement(rm.relation.generatedUri, CorpDbpedia.relationMember , member, arg.model);
 		}
 		
 //		Resource relUri = m.createResource(rm.generatedUri);

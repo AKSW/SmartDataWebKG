@@ -157,7 +157,7 @@ public class Main {
 			for (int i = 10 - countString.length(); i >= 0; --i) {
 				leadingZero += "0";
 			}
-			//if (count>100) break;
+			if (count>100) break;
 			
 
 			leadingZero += countString;

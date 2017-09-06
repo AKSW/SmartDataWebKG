@@ -99,11 +99,12 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
         	// add provenance information
         	Iterator<Provenance> provenanceIt = conceptMention.provenanceSet.iterator();
 
+        	//ANNOTATOR
         	if( !provenanceIt.hasNext() ) builderMention.annotator(RDFHelpers.createValidIRIfromBase("default","http://corp.dbpedia.org/annotator"));
         	while (provenanceIt.hasNext()) {
         		Provenance provenance = provenanceIt.next();
         		if (null != provenance.annotator) {
-        			builderMention.annotator( RDFHelpers.createValidIriComponent(provenance.annotator));
+        			builderMention.annotator( RDFHelpers.createValidIRIfromBase(provenance.annotator ,"http://corp.dbpedia.org/annotator"));
         			builderMention.score((double) provenance.score);
         			break;
         		} else {

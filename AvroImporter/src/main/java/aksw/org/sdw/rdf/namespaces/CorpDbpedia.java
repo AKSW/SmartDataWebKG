@@ -55,8 +55,8 @@ public class CorpDbpedia {
 	 **/
 	
 	/** nary relation */
-	public static final String relation = prefix+"Relation";
-	public static final String relationMemmber = prefixOntology+"hasRelationMember";
+	public static final String relation = prefixOntology+"Relation";
+	public static final String relationMember = prefixOntology+"hasRelationMember";
 	
 	/** FinancialEvnet */
 	public static final String hasFinancialEvent = prefixOntology+"hasFinancialEvent";
@@ -82,5 +82,11 @@ public class CorpDbpedia {
 	
 	/** Industry **/
 	public static final String industry = prefixOntology+"Industry";
+	
+	/**
+	 * Annotator
+	 */
+	
+	public static final String prefixAnnotator = prefix+"annotator";
 	
 }
