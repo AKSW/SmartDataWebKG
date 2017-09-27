@@ -20,8 +20,8 @@ public class Dfki2SdwKgMapper {
 		Map<String, Collection<String>> typeMappings = new HashMap<>();
 		
 		typeMappings.put("organization", Arrays.asList("http://www.w3.org/ns/org#Organization",
-										"http://dbpedia.org/ontololgy/Organisation"));
-		typeMappings.put("company", Arrays.asList("http://dbpedia.org/ontololgy/Organisation",
+										"http://dbpedia.org/ontology/Organisation"));
+		typeMappings.put("company", Arrays.asList("http://dbpedia.org/ontology/Organisation",
 									"http://www.w3.org/ns/org#FormalOrganization",
 									"http://corp.dbpedia.org/ontology#Company")); /// TODO: CHECK
 		typeMappings.put("person", Collections.singleton("http://dbpedia.org/ontology/Person/"));
@@ -59,9 +59,9 @@ public class Dfki2SdwKgMapper {
 		typeMappings.put("type", Collections.singleton("http://corp.dbpedia.org/ontology#DisasterType"));
 		typeMappings.put("misc", Collections.singleton("http://corp.dbpedia.org/ontology#Miscellaneous"));
 		typeMappings.put("acquired", Arrays.asList("http://www.w3.org/ns/org#Organization",
-				"http://dbpedia.org/ontololgy/Organisation"));
+				"http://dbpedia.org/ontology/Organisation"));
 		typeMappings.put("buyer", Arrays.asList("http://www.w3.org/ns/org#Organization",
-				"http://dbpedia.org/ontololgy/Organisation"));
+				"http://dbpedia.org/ontology/Organisation"));
 		typeMappings.put("financial-event", Collections.singleton("http://corp.dbpedia.org/ontology#FinancialEvent"));
 		typeMappings.put("event_type", Collections.singleton("http://corpdbpedia.org/ontology#EventType"));
 					

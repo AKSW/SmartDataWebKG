@@ -122,7 +122,8 @@ public class Main {
 		RelationMentionImporter importer;
 		String filePrefix;
 		if (InputType.BEUTH == inputType) {
-			importer = new BeuthImporter(filePath);
+			//TODO compatible with dfki
+			importer = new DfkiImporter(filePath);
 			filePrefix = "beuth";
 		} 
 		else if (InputType.DFKI == inputType) {
