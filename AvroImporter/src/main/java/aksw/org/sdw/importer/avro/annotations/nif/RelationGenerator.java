@@ -446,8 +446,8 @@ public class RelationGenerator extends DocRdfGenerator {
 		} catch ( Exception e ) {
 			return 0;
 		}
-		RDFNode event = argument.model.createResource(rightEntityString);
-		this.addStatement(leftEntityString, CorpDbpedia.hasFinancialEvent, event, argument.model);
+		RDFNode event = argument.model.createResource(leftEntityString);
+		this.addStatement(rightEntityString, CorpDbpedia.hasFinancialEvent, event, argument.model);
 		
 		try {
 			dateString = argument.relationMention.entities.get("date").textNormalized;
