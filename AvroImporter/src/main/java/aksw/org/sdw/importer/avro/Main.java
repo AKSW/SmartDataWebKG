@@ -121,8 +121,8 @@ public class Main {
 	public static void forFile(InputType inputType, String filePath, String outputDirectoryPath) throws IOException{
 		RelationMentionImporter importer;
 		String filePrefix;
+		//TODO all compatible with dfki?
 		if (InputType.BEUTH == inputType) {
-			//TODO compatible with dfki
 			importer = new DfkiImporter(filePath);
 			filePrefix = "beuth";
 		} 
@@ -131,7 +131,7 @@ public class Main {
 			filePrefix = "dfki";
 		}
 		else if (InputType.SIEMENS == inputType) {
-			importer = null;//TODO Siemens Importer here
+			importer = new DfkiImporter(filePath);
 			filePrefix = "siemens";
 		}
 		else {

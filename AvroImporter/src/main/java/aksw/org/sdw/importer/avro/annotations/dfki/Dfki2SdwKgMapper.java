@@ -64,7 +64,21 @@ public class Dfki2SdwKgMapper {
 				"http://dbpedia.org/ontology/Organisation"));
 		typeMappings.put("financial-event", Collections.singleton("http://corp.dbpedia.org/ontology#FinancialEvent"));
 		typeMappings.put("event_type", Collections.singleton("http://corpdbpedia.org/ontology#EventType"));
-					
+
+		//Siemens
+		typeMappings.put("company_acquirer", Arrays.asList("http://dbpedia.org/ontology/Organisation",
+				"http://www.w3.org/ns/org#FormalOrganization",
+				"http://corp.dbpedia.org/ontology#Company"));
+		typeMappings.put("company_beingacquired", Arrays.asList("http://dbpedia.org/ontology/Organisation",
+				"http://www.w3.org/ns/org#FormalOrganization",
+				"http://corp.dbpedia.org/ontology#Company"));
+		typeMappings.put("company_customer", Arrays.asList("http://dbpedia.org/ontology/Organisation",
+				"http://www.w3.org/ns/org#FormalOrganization",
+				"http://corp.dbpedia.org/ontology#Company"));
+		typeMappings.put("company_provider", Arrays.asList("http://dbpedia.org/ontology/Organisation",
+				"http://www.w3.org/ns/org#FormalOrganization",
+				"http://corp.dbpedia.org/ontology#Company"));
+
 		return Collections.unmodifiableMap(typeMappings);
 	}
 	

@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.jena.atlas.lib.IRILib;
+import org.apache.jena.base.Sys;
 import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.iri.IRIFactory;
 import org.apache.jena.query.Dataset;
@@ -78,6 +79,7 @@ public class RelationGenerator extends DocRdfGenerator {
 	final static String Disaster = "Disaster";
 	final static String CompanyIndustry = "CompanyIndustry";
 	final static String Acquisition = "Acquisition";
+	final static String CompanyCustomer = "CompanyCustomer";
 
 	public RelationGenerator(final String graphName, final Document document) {
 		this(graphName, document, (DocRdfGenerator) null);
@@ -96,6 +98,7 @@ public class RelationGenerator extends DocRdfGenerator {
 		relationFunctionMap.put(RelationGenerator.CompanyProject, this::handleCompanyProject);
 		relationFunctionMap.put(RelationGenerator.Disaster, this::handleDisaster);
 		relationFunctionMap.put(RelationGenerator.CompanyIndustry, this::handleCompanyIndustry);
+		relationFunctionMap.put(RelationGenerator.CompanyCustomer, this::handleCompanyCustomer);
 		relationFunctionMap.put(RelationGenerator.Acquisition,	this::handleAcquisition);
 	}
 
@@ -549,9 +552,17 @@ public class RelationGenerator extends DocRdfGenerator {
 
 	protected int handleAcquisition(final ModelData argument) {
 		Objects.requireNonNull(argument);
+		RelationMention relationMention = argument.relationMention;
 
-		String leftEntityString = argument.relationMention.entities.get("acquired").generatedUri;
-		String rightEntityString = argument.relationMention.entities.get("buyer").generatedUri;
+		Mention acquired = argument.relationMention.entities.get("acquired");
+		if ( null == acquired )
+			acquired = relationMention.entities.get("company_beingacquired");
+		Mention buyer = relationMention.entities.get("buyer");
+		if ( null == buyer )
+			buyer = relationMention.entities.get("company_acquirer");
+
+		String leftEntityString = buyer.generatedUri;
+		String rightEntityString = acquired.generatedUri;
 
 		// DONE: COMPANY x COMPANY
 		RDFNode childCompany = argument.model.createResource(rightEntityString);
@@ -561,6 +572,27 @@ public class RelationGenerator extends DocRdfGenerator {
 		this.addStatement(rightEntityString, CorpDbpedia.acquiredBy, parentCompany, argument.model);
 
 		// keys: acquired, buyer
+		return 0;
+	}
+
+	protected  int handleCompanyCustomer( final ModelData argument ) {
+		Objects.requireNonNull(argument);
+		RelationMention relationMention = argument.relationMention;
+
+		//Kaeufer
+		Mention customer = relationMention.entities.get("company_customer");
+		//Anbieter
+		Mention provider = relationMention.entities.get("company_provider");
+
+		String leftEntityString = provider.generatedUri;
+		String rightEntityString = customer.generatedUri;
+
+		RDFNode customerCompany = argument.model.createResource(rightEntityString);
+		this.addStatement(leftEntityString, CorpDbpedia.customer, customerCompany, argument.model);
+
+		RDFNode providerCompany = argument.model.createResource(leftEntityString);
+		this.addStatement(rightEntityString, CorpDbpedia.customerOf, providerCompany, argument.model);
+
 		return 0;
 	}
 

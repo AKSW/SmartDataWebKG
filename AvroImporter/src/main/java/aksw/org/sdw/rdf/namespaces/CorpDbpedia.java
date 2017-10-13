@@ -82,7 +82,11 @@ public class CorpDbpedia {
 	
 	/** Industry **/
 	public static final String industry = prefixOntology+"Industry";
-	
+
+	/** Customer **/
+	public static final String customer = prefixOntology+"customer";
+	public static final String customerOf = prefixOntology+"customerOf";
+
 	/**
 	 * Annotator
 	 */
