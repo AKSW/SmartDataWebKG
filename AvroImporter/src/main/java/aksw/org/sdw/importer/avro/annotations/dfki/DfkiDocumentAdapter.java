@@ -13,10 +13,10 @@ import aksw.org.sdw.importer.avro.annotations.Document;
  */
 public class DfkiDocumentAdapter extends Document implements DataImportAdapter<de.dfki.lt.tap.Document> {
 	
-	final static String namespacePrefix = "http://corp.dbpedia.org/extract/it02/dfki/";
+	//final static String namespacePrefix = "http://corp.dbpedia.org/extract/it02/dfki/";
 	
-	public DfkiDocumentAdapter() {
-		super(DfkiDocumentAdapter.namespacePrefix);		
+	public DfkiDocumentAdapter(String namespacePrefix) {
+		super(namespacePrefix);
 	}
 	
 	@Override

@@ -1,28 +1,29 @@
 package aksw.org.sdw.importer.avro.annotations.nif;
 
+import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import aksw.org.sdw.importer.avro.annotations.ids.UniqueIdGenerator;
 import org.apache.jena.atlas.lib.IRILib;
 import org.apache.jena.base.Sys;
 import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.iri.IRIFactory;
 import org.apache.jena.query.Dataset;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.Property;
-import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.rdf.model.Statement;
+import org.apache.jena.rdf.model.*;
 import org.apache.jena.rdf.model.impl.StatementImpl;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
+import org.apache.jena.vocabulary.XSD;
 import org.apache.velocity.runtime.directive.Foreach;
 import org.apache.xerces.impl.io.MalformedByteSequenceException;
 import org.apache.xerces.stax.events.StartElementImpl;
@@ -107,6 +108,7 @@ public class RelationGenerator extends DocRdfGenerator {
 		this.document = document;
 	}
 
+	private Dataset dataset = null;
 	/**
 	 * 
 	 * @param relationType
@@ -116,20 +118,9 @@ public class RelationGenerator extends DocRdfGenerator {
 	 *            value' for this relation
 	 */
 	protected void createRelationTriple(final String relationType, final RelationMention relationMention,
-			final Model model) {
+			final Model model, final AtomicReference<String> tripleId) {
 		Objects.requireNonNull(relationType, "No relation type name passed in");
 		Objects.requireNonNull(model, "Model is null");
-
-		Function<ModelData, Integer> methodReference = this.relationFunctionMap.get(relationType);
-		if (null == methodReference) {
-			Level level = Level.WARNING;
-			Logger.getGlobal().log(level,
-					"Unknown relation type: " + relationType + " for relationMention: " + relationMention);
-			recordUnmappedRelations(relationType);
-			methodReference = this::handleRawRelationship;
-			// throw new RuntimeException("Unknown relation type: " + relationType + " for
-			// relationMention: " + relationMention);
-		}
 
 		// gets count for how often method was called
 		AtomicInteger tmpCount = new AtomicInteger(0);
@@ -139,9 +130,19 @@ public class RelationGenerator extends DocRdfGenerator {
 		input.model = model;
 		input.relationMention = relationMention;
 		input.count = (null == counter) ? tmpCount.getAndIncrement() : counter.getAndIncrement();
+		input.tripleId = tripleId;
 
-		//if (relationMention.generatedUri == null ) System.out.println("NULL"); else System.out.println(relationMention.generatedUri);;
-		methodReference.apply(input);
+		Function<ModelData, Integer> methodReference = this.relationFunctionMap.get(relationType);
+
+		if (null == methodReference) {
+			Level level = Level.WARNING;
+			Logger.getGlobal().log(level,
+					"Unknown relation type: " + relationType + " for relationMention: " + relationMention);
+			recordUnmappedRelations(relationType);
+		}
+		else {
+			methodReference.apply(input);
+		}
 	}
 
 	static public void recordUnmappedRelations(String sourcetype) {
@@ -161,8 +162,9 @@ public class RelationGenerator extends DocRdfGenerator {
 			strangeRelations.put(sourcetype, new AtomicInteger(1));
 	}
 
-	protected Dataset addToRdfData_internal(final Dataset dataset) {
+	protected Dataset addToRdfData_internal(final Dataset dset) {
 
+		this.dataset = dset;
 		String langCode = this.document.langCode;
 		if (null == langCode) {
 			langCode = "en"; // TODO km: introduce default language code for dataset
@@ -172,47 +174,54 @@ public class RelationGenerator extends DocRdfGenerator {
 			
 			//System.out.println(relationMention.relation.types+" "+relationMention.entities.keySet());
 			Model relationModel = this.createNewModel();
+			Model metadataModel = this.createNewModel();
+
 			boolean exceptThis = false;
-			//TODO exceptThis betters
 			if(relationMention.relation.types.contains("CompanyFinancialEvent")) exceptThis = true;
 			
-			if (2 != relationMention.entities.size() && !exceptThis) {
+			if (2 != relationMention.entities.size() ) { //&& !exceptThis) {
 				Level level = Level.WARNING;
 				Logger.getGlobal().log(level,
 						"Received nary relation of degree (" + relationMention.entities.size() + ") with entities: "
 								+ relationMention.entities + "\n\t in Relation: " + relationMention.relation);
 				recordStrangeRelationsNumber(relationMention.relation.textNormalized + relationMention.entities.size()
 						+ "''" + relationMention.entities.keySet());
-				return dataset;
-				// throw new RuntimeException("Did get uneven number ("
-				// + relationMention.entities.size()
-				// + ") of entities: " + relationMention.entities +"\n\t in Relation: " +
-				// relationMention);
 			}
-
-			// Model relationModel = this.createNewModel();
 
 			String uniqueId = this.document.entityIdGenerator.getUniqueId();
-			String relationMetadataUri = this.graphName + uniqueId;
-			
+			// TODO solve /#
+			String relationMetadataUri = RDFHelpers.createValidIRIfromBase(document.id, this.graphName);// ID uniqueId;
 			relationMention.generatedUri = relationMetadataUri;
-			relationMention.generatedId = uniqueId;
-			
+			relationMention.generatedId = uniqueId; // ID
+
+			Property p = ResourceFactory.createProperty(CorpDbpedia.prefixOntology+"hasRelationMention");
+
 			for (String relationType : relationMention.relation.types) {
-				//System.out.println(relationType+" "+relationMention.entities.keySet());
-				this.createRelationTriple(relationType, relationMention, relationModel);
+
+				Model binaryModel = ModelFactory.createDefaultModel();
+				AtomicReference<String> tripleId = new AtomicReference<String>();
+				this.createRelationTriple(relationType, relationMention, binaryModel, tripleId);
+				if ( "" != tripleId.toString() ) {
+					dataset.addNamedModel(tripleId.toString(), binaryModel);
+					Resource r = ResourceFactory.createResource(tripleId.toString());
+					RDFNode rMuri = metadataModel.createResource(relationMention.relation.generatedUri);
+					metadataModel.add(r,p,rMuri);
+				}
+
+				ModelData rawModelData = new ModelData();
+				rawModelData.model = relationModel;
+				rawModelData.relationMention = relationMention;
+				this.handleRawRelationship(rawModelData);
 			}
 
-			this.createRelationTriple(RelationGenerator.HandleEntityLabels, relationMention, relationModel);
-			this.createRelationTriple(RelationGenerator.HandleEntityTypes, relationMention, relationModel);
-
+			this.createRelationTriple(RelationGenerator.HandleEntityLabels, relationMention, relationModel, null);
+			this.createRelationTriple(RelationGenerator.HandleEntityTypes, relationMention, relationModel, null);
 
 			dataset.addNamedModel(relationMetadataUri, relationModel);
 
-			Model metadataModel = this.createNewModel();
 
 
-			this.createRelationTriple(RelationGenerator.HandleProvenance, relationMention, metadataModel);
+			this.createRelationTriple(RelationGenerator.HandleProvenance, relationMention, metadataModel, null);
 			if (false == metadataModel.isEmpty()) {
 				dataset.addNamedModel(this.graphName, metadataModel);
 			}
@@ -228,6 +237,8 @@ public class RelationGenerator extends DocRdfGenerator {
 		Model model;
 		/** relation of concern */
 		RelationMention relationMention;
+		/** triple Id */
+		AtomicReference<String> tripleId;
 	}
 
 	/**
@@ -330,10 +341,6 @@ public class RelationGenerator extends DocRdfGenerator {
 			}
 		}
 
-		// for (Provenance provenance : this.document.provenanceSet) {
-		// System.out.println("provenance: " + provenance);
-		// }
-
 		return 0;
 	}
 
@@ -343,12 +350,6 @@ public class RelationGenerator extends DocRdfGenerator {
 		RelationMention relationMention = argument.relationMention;
 		Model relationModel = argument.model;
 
-		// Mention organisation =
-		// (relationMention.entities.get(1).types.contains(W3COrg.site)
-		// ? relationMention.entities.get(0) : relationMention.entities.get(1));
-		// Mention headquarter =
-		// (relationMention.entities.get(0).types.contains(W3COrg.site)
-		// ? relationMention.entities.get(0) : relationMention.entities.get(1));
 
 		Mention organisation = relationMention.entities.get("company");
 		Mention headquarter = relationMention.entities.get("headquarter");
@@ -356,7 +357,7 @@ public class RelationGenerator extends DocRdfGenerator {
 		String organisationUri = organisation.generatedUri;
 
 		// String locationUriString = headquarter.generatedUri + "/site" +
-		// argument.count;
+
 		RDFNode locationUri = relationModel.createResource(headquarter.generatedUri);
 		this.addStatement(organisationUri, CorpDbpedia.hasHeadquarterSite, locationUri, relationModel);
 
@@ -381,57 +382,39 @@ public class RelationGenerator extends DocRdfGenerator {
 
 	protected int handleRawRelationship(final ModelData arg) {
 		Objects.requireNonNull(arg);
-		
+
+//		    <http://corp.dbpedia.org/extract/it02/dfki/####docid###::CompanyFinancialEvent::###docid###::GE::734::736::###docid###::earnings report::739::754-__memberRole__02>
+
 		RelationMention rm = arg.relationMention;
 		Model m = arg.model;
 		
-		RDFNode object = arg.model.createResource(CorpDbpedia.relation);//+rm.relation.textNormalized);
+		RDFNode object = arg.model.createResource(CorpDbpedia.prefixOntology+"RawRelationMention");//+rm.relation.textNormalized);
 		
 		this.addStatement(rm.relation.generatedUri, RDF.type.getURI() , object, arg.model);
 		
 		RDFNode label = arg.model.createLiteral(rm.relation.textNormalized, document.langCode);
 		this.addStatement(rm.relation.generatedUri, RDFS.label.getURI(), label, arg.model);
-		
-		for (Mention mem : rm.entities.values()) {
+
+		int memberPosition = 1;
+		for (String key : rm.entities.keySet()) {
+			Mention mem = rm.entities.get(key);
 			RDFNode member = arg.model.createResource(mem.generatedUri);
-			this.addStatement(rm.relation.generatedUri, CorpDbpedia.relationMember , member, arg.model);
+			String suffix = "__memberRole__"+String.format("%03d", memberPosition);
+			this.addStatement(rm.relation.generatedUri, CorpDbpedia.hasRelationMember , member, arg.model);
+
+			// a  dbc:MemberRoleResource;
+			this.addStatement(mem.generatedUri+suffix, RDF.type.getURI(),arg.model.createResource(CorpDbpedia.memberRoleResource), arg.model);
+			// :memberPosition
+			this.addStatementWithLiteral(mem.generatedUri+suffix, CorpDbpedia.relationMemberPosition,memberPosition,null, arg.model);
+			// :memberRole
+			this.addStatement(mem.generatedUri+suffix, CorpDbpedia.relationMemberRole,arg.model.createLiteral(key,document.langCode),arg.model);
+			// :member
+			this.addStatement(mem.generatedUri+suffix, CorpDbpedia.relationMember,arg.model.createResource(mem.generatedUri),arg.model);
+			// :mentioned  ## link to concept mention
+			this.addStatement(mem.generatedUri+suffix, CorpDbpedia.relationMemberMentioned,arg.model.createResource(rm.relation.generatedUri),arg.model);
+
+			memberPosition++;
 		}
-		
-//		Resource relUri = m.createResource(rm.generatedUri);
-//		relUri.addLiteral(m.createProperty("http://corp.dbpedia.org/naryRelation"), rm.relation.generatedUri);
-
-//		int count = 0;
-//		for (Mention e : arg.relationMention.entities.values()) {
-//			relUri.addLiteral(m.createProperty("http://UNMAPPED.ER/hasRelationEntity#" + count), e.generatedUri);
-//			count++;
-//		}
-
-		// Mention leftEntity = argument.relationMention.entities.get(0);
-		//
-		// String leftEntityString =
-		// argument.relationMention.entities.get(0).generatedUri;
-		// String rightEntityString =
-		// argument.relationMention.entities.get(1).generatedUri;
-		//
-		// if (leftEntity.types.contains("dbpedia.org/ontology/parentCompany")) {
-		//
-		// RDFNode childCompany = argument.model.createResource(rightEntityString);
-		// this.addStatement(leftEntityString, W3COrg.hasSubOrganization, childCompany,
-		// argument.model);
-		//
-		// RDFNode parentCompany = argument.model.createResource(leftEntityString);
-		// this.addStatement(rightEntityString, W3COrg.subOrganizationOf, parentCompany,
-		// argument.model);
-		// } else {
-		//
-		// RDFNode childCompany = argument.model.createResource(leftEntityString);
-		// this.addStatement(rightEntityString, W3COrg.hasSubOrganization, childCompany,
-		// argument.model);
-		//
-		// RDFNode parentCompany = argument.model.createResource(rightEntityString);
-		// this.addStatement(leftEntityString, W3COrg.subOrganizationOf, parentCompany,
-		// argument.model);
-		// }
 
 		return 0;
 	}
@@ -449,9 +432,12 @@ public class RelationGenerator extends DocRdfGenerator {
 		} catch ( Exception e ) {
 			return 0;
 		}
+
+		// TODO prefix for tripleID
+		argument.tripleId.set(UUID.randomUUID().toString());
+
 		RDFNode event = argument.model.createResource(leftEntityString);
 		this.addStatement(rightEntityString, CorpDbpedia.hasFinancialEvent, event, argument.model);
-		
 		try {
 			dateString = argument.relationMention.entities.get("date").textNormalized;
 //			System.out.println("DATE FOUND");
@@ -611,17 +597,29 @@ public class RelationGenerator extends DocRdfGenerator {
 		model.add(statement);
 	}
 	
-	protected void addStatementWithLiteral(final String subjectUri, final String predicateUri, String lex, final RDFDatatype datatype,
+	protected void addStatementWithLiteral(final String subjectUri, final String predicateUri, Object lex, final RDFDatatype datatype,
 			final Model model) {
 		Objects.requireNonNull(subjectUri);
 		Objects.requireNonNull(predicateUri);
 		Objects.requireNonNull(lex);
-		Objects.requireNonNull(datatype);
+		//Objects.requireNonNull(datatype);
 		Objects.requireNonNull(model);
 
 		Resource subject = model.createResource(subjectUri);
 		Property predicate = model.createProperty(predicateUri);
 
-		model.add(subject, predicate, lex, datatype);
+		if(null == datatype) model.addLiteral(subject,predicate,lex);
+		else model.add(subject, predicate, (String )lex, datatype);
+	}
+
+	private String generateTripleId(String triple ) {
+		String hashed = null;
+		try {
+			hashed = String.format("%064x", new java.math.BigInteger(1, MessageDigest.getInstance("SHA-256").digest(triple.getBytes("UTF-8"))));
+		} catch ( Exception e ) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+		return hashed;
 	}
 }

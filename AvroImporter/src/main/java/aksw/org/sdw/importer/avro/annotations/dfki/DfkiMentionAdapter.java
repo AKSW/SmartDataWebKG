@@ -2,6 +2,7 @@ package aksw.org.sdw.importer.avro.annotations.dfki;
 
 import java.util.List;
 
+import aksw.org.sdw.importer.avro.annotations.nif.RDFHelpers;
 import org.apache.avro.specific.SpecificRecordBase;
 
 import aksw.org.sdw.importer.avro.annotations.DataImportAdapter;
@@ -36,7 +37,7 @@ public class DfkiMentionAdapter extends Mention implements DataImportAdapter<org
 	public void addData_internal(final ConceptMention conceptMention, final Document document) {
 		this.id = conceptMention.getId();
 		this.textNormalized = conceptMention.getNormalizedValue();
-		
+
 		this.span = new DfkiSpanAdapter();
 		((DfkiSpanAdapter) this.span).addData_internal(conceptMention.getSpan(), document);
 		
@@ -52,8 +53,9 @@ public class DfkiMentionAdapter extends Mention implements DataImportAdapter<org
 				this.provenanceSet.add(provenance);
 			}
 		}
-		
-		this.generatedId = document.entityIdGenerator.addUniqueId(this);		
+
+		this.generatedId = conceptMention.getId(); // ID document.entityIdGenerator.addUniqueId(this);
+		this.generatedUri = RDFHelpers.createValidIRIfromBase(conceptMention.getId(),document.uriNamespace);
 		document.conceptMentions.add(this);
 		this.mentionType=mentionType.ENTITY;
 	}
@@ -79,7 +81,8 @@ public class DfkiMentionAdapter extends Mention implements DataImportAdapter<org
 			}
 		}
 		
-		this.generatedId = document.entityIdGenerator.addUniqueId(this);		
+		this.generatedId = relationMention.getId();// ID document.entityIdGenerator.addUniqueId(this);
+		this.generatedUri = RDFHelpers.createValidIRIfromBase(relationMention.getId(),document.uriNamespace);
 		document.conceptMentions.add(this);
 		this.mentionType=mentionType.RELATION;
 	}

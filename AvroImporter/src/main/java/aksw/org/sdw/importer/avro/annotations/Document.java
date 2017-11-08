@@ -41,12 +41,12 @@ public class Document extends Annotation {
 //	public Map<java.lang.String,java.lang.String> attributes;
 	
 	/** namespace prefix which will be used to create URIs for all the entities */
-	public final String uriNamespace;
+	public String uriNamespace;
 	
 	public Document(final String uriNamespace) {
-		this.uriNamespace = uriNamespace;		
+		this.uriNamespace = uriNamespace;
 		this.entityIdGenerator = new EntityIdGenerator(uriNamespace);
-		
+
 		// add ids to the document as well, in case it is required later on
 		this.entityIdGenerator.addUniqueId(this);
 	}

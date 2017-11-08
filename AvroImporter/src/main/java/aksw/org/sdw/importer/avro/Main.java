@@ -40,6 +40,7 @@ public class Main {
 		String filePath = null;
 		String inputDir = null;
 		String outputDirectoryPath = null;
+		String namespacePrefix = null;
 		
 		System.out.println("SDW Crawled Data Importer");
 
@@ -51,6 +52,7 @@ public class Main {
 		options.addOption("t", "type", true, "input type [BEUTH|DFKI|SIEMENS]");
 		options.addOption("o", "out", true, "output folder directory");
 		options.addOption("d", "dir", true, "convert directory to avro");
+		options.addOption("i","iterationPrefix", true, "name of iteration cycle");
 
 		CommandLine commandLine = null;
 		CommandLineParser parser = new BasicParser();
@@ -63,10 +65,11 @@ public class Main {
 			}
 
 			if ( ( commandLine.hasOption("p") || commandLine.hasOption("d") )
-					&& commandLine.hasOption("t") && commandLine.hasOption("o")) {
+					&& commandLine.hasOption("t") && commandLine.hasOption("o")
+					&& commandLine.hasOption("i")) {
 			
-				String str_type = commandLine.getOptionValue("t");
-				if (str_type.toLowerCase().equals("beuth")) {
+				String str_type = commandLine.getOptionValue("t").toLowerCase();
+				if (str_type.equals("beuth")) {
 					inputType = InputType.BEUTH;
 				} else if (str_type.toLowerCase().equals("dfki")) {
 					inputType = InputType.DFKI;
@@ -78,6 +81,7 @@ public class Main {
 				filePath = commandLine.getOptionValue("p");
 				inputDir = commandLine.getOptionValue("d");
 				outputDirectoryPath = commandLine.getOptionValue("o");
+				namespacePrefix = "http://corp.dbpedia.org/extract/"+commandLine.getOptionValue("i")+"/"+inputType.toString().toLowerCase();
 			} else {
 				formatter.printHelp("avroimporter", options);
 				System.exit(1);
@@ -97,7 +101,7 @@ public class Main {
 		// for file ?
 		if(!commandLine.hasOption('d')) {
 			System.out.println("ConvertFile");
-			forFile(inputType, filePath, outputDirectoryPath);
+			forFile(inputType, filePath, outputDirectoryPath, namespacePrefix);
 		// or for directory
 		} else {
 			System.out.println("ConvertDir");
@@ -111,27 +115,27 @@ public class Main {
 					if (false == subfolder.exists() && false == subfolder.mkdirs()) {
 						System.err.println("Was not able to create directories: " + outputDirectoryPath);
 					}
-					forFile(inputType, x.toString(), subfolderPath);
+					forFile(inputType, x.toString(), subfolderPath, namespacePrefix);
 				}
 			}
 		}
 		
 	}
 	
-	public static void forFile(InputType inputType, String filePath, String outputDirectoryPath) throws IOException{
+	public static void forFile(InputType inputType, String filePath, String outputDirectoryPath, String namespacePrefix) throws IOException{
 		RelationMentionImporter importer;
 		String filePrefix;
 		//TODO all compatible with dfki?
 		if (InputType.BEUTH == inputType) {
-			importer = new DfkiImporter(filePath);
+			importer = new DfkiImporter(filePath, namespacePrefix);
 			filePrefix = "beuth";
 		} 
 		else if (InputType.DFKI == inputType) {
-			importer = new DfkiImporter(filePath);
+			importer = new DfkiImporter(filePath, namespacePrefix);
 			filePrefix = "dfki";
 		}
 		else if (InputType.SIEMENS == inputType) {
-			importer = new DfkiImporter(filePath);
+			importer = new DfkiImporter(filePath, namespacePrefix);
 			filePrefix = "siemens";
 		}
 		else {
@@ -158,7 +162,7 @@ public class Main {
 			for (int i = 10 - countString.length(); i >= 0; --i) {
 				leadingZero += "0";
 			}
-			//if (count>100) break;
+			if (count>1) break;
 			
 
 			leadingZero += countString;
@@ -179,8 +183,8 @@ public class Main {
 			}
 			
 
-			String nifUri = doc.entityIdGenerator.uriNamespace + "nif/";
-			String metadataUri = doc.entityIdGenerator.uriNamespace + "metadata/";
+			String nifUri = doc.entityIdGenerator.uriNamespace + "/nif/";
+			String metadataUri = doc.entityIdGenerator.uriNamespace + "/metadata/";
 			DocRdfGenerator rdfGnerator = new NIFAnnotationGenerator(nifUri, doc,
 					new RelationGenerator(metadataUri, doc));
 

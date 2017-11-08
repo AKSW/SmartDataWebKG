@@ -52,7 +52,6 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
 	        // set text index
 	        builderContext.beginIndex(0);
 	        builderContext.endIndex(text.length());
-	        
 	        builderContext.mention(text);
 	
 	        NIFBean beanContext = new NIFBean(builderContext);

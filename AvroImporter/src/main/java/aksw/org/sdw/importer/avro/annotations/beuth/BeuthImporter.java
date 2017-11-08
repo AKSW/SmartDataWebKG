@@ -159,7 +159,7 @@ public class BeuthImporter implements RelationMentionImporter {
 				de.dfki.lt.tap.Document dfkiDoc = reader.next();
 				{
 					String docId = dfkiDoc.getId();
-					DfkiDocumentAdapter currentDoc  = new DfkiDocumentAdapter();
+					DfkiDocumentAdapter currentDoc  = new DfkiDocumentAdapter("test");
 					currentDoc.addData(dfkiDoc, currentDoc);
 					currentDoc.id = docId;	
 //					BeuthDocumentAdapter currentDoc = new BeuthDocumentAdapter(BeuthImporter.namespacePrefix, docId);

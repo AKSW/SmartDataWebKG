@@ -63,7 +63,7 @@ public class Dfki2SdwKgMapper {
 		typeMappings.put("buyer", Arrays.asList("http://www.w3.org/ns/org#Organization",
 				"http://dbpedia.org/ontology/Organisation"));
 		typeMappings.put("financial-event", Collections.singleton("http://corp.dbpedia.org/ontology#FinancialEvent"));
-		typeMappings.put("event_type", Collections.singleton("http://corpdbpedia.org/ontology#EventType"));
+		typeMappings.put("event_type", Collections.singleton("http://corp.dbpedia.org/ontology#EventType"));
 
 		//Siemens
 		typeMappings.put("company_acquirer", Arrays.asList("http://dbpedia.org/ontology/Organisation",

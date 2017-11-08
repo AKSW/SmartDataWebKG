@@ -20,13 +20,14 @@ public class DfkiImporter implements RelationMentionImporter {
 	/** path to the input file */
 	final String filePath;
 	
-	
+	final String namespacePrefix;
 	/**
 	 * 
 	 * @param inputFileName	name of the input file
 	 */
-	public DfkiImporter(final String inputFileName) {
+	public DfkiImporter(final String inputFileName, String namespacePrefix) {
 		this.filePath = inputFileName;
+		this.namespacePrefix = namespacePrefix;
 	}
 
 	@Override
@@ -54,7 +55,7 @@ public Map<String, Document> getRelationshipMentions() {
 				String docId = dfkiDoc.getId();
 				DfkiDocumentAdapter currentDoc = (DfkiDocumentAdapter) documentMap.get(docId);
 				if (null == currentDoc) {
-					currentDoc = new DfkiDocumentAdapter();
+					currentDoc = new DfkiDocumentAdapter(namespacePrefix);
 					currentDoc.addData(dfkiDoc, currentDoc);
 					currentDoc.id = docId;
 					
@@ -112,7 +113,7 @@ public Iterator<Map.Entry<String, Document>> getRelationshipMentionIterator() {
 				de.dfki.lt.tap.Document dfkiDoc = reader.next();
 				{
 					String docId = dfkiDoc.getId();
-					DfkiDocumentAdapter currentDoc  = new DfkiDocumentAdapter();
+					DfkiDocumentAdapter currentDoc  = new DfkiDocumentAdapter(namespacePrefix);
 						currentDoc.addData(dfkiDoc, currentDoc);
 						currentDoc.id = docId;				
 						return new AbstractMap.SimpleEntry<String, Document>(docId, currentDoc)

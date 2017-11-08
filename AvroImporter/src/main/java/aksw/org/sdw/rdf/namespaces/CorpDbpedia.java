@@ -56,8 +56,8 @@ public class CorpDbpedia {
 	
 	/** nary relation */
 	public static final String relation = prefixOntology+"Relation";
-	public static final String relationMember = prefixOntology+"hasRelationMember";
-	
+	public static final String hasRelationMember = prefixOntology+"hasRelationMember";
+
 	/** FinancialEvnet */
 	public static final String hasFinancialEvent = prefixOntology+"hasFinancialEvent";
 	public static final String hasEventType = prefixOntology+"hasEventType";
@@ -92,5 +92,15 @@ public class CorpDbpedia {
 	 */
 	
 	public static final String prefixAnnotator = prefix+"annotator";
+
+	/** MemberRoleResource **/
+	public static final String memberRoleResource = prefixOntology+"MemberRoleResource";
+	public static final String relationMemberPosition = prefixOntology+"RelationMemberPosition";
+	public static final String relationMemberRole = prefixOntology+"RelationMemberRole";
+	public static final String relationMember = prefixOntology+"RelationMember";
+	public static final String relationMemberMentioned = prefixOntology+"RelationMemberMentioned";
+
+	/** **/
+	public static final String placeHolder = prefix+"placeholder/";
 	
 }
