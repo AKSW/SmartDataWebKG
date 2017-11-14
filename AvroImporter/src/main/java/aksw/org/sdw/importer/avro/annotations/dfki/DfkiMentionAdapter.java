@@ -42,7 +42,7 @@ public class DfkiMentionAdapter extends Mention implements DataImportAdapter<org
 		((DfkiSpanAdapter) this.span).addData_internal(conceptMention.getSpan(), document);
 		
 		Dfki2SdwKgMapper.addEntityTypeMapping(conceptMention.getType(), this.types);
-				
+
 		List<de.dfki.lt.tap.Provenance> dfkiProvenances = conceptMention.getProvenance();
 		if (null != dfkiProvenances && false == dfkiProvenances.isEmpty()) {
 			for (de.dfki.lt.tap.Provenance dfkiProvenance : dfkiProvenances) {
@@ -67,9 +67,8 @@ public class DfkiMentionAdapter extends Mention implements DataImportAdapter<org
 		
 		this.span = new DfkiSpanAdapter();
 		((DfkiSpanAdapter) this.span).addData_internal(relationMention.getSpan(), document);
-		
-		//Dfki2SdwKgMapper.addEntityTypeMapping(relationMention.getType(), this.types);
-				
+//		Dfki2SdwKgMapper.addEntityTypeMapping(relationMention.getName().toLowerCase(), this.types);
+
 		List<de.dfki.lt.tap.Provenance> dfkiProvenances = relationMention.getProvenance();
 		if (null != dfkiProvenances && false == dfkiProvenances.isEmpty()) {
 			for (de.dfki.lt.tap.Provenance dfkiProvenance : dfkiProvenances) {

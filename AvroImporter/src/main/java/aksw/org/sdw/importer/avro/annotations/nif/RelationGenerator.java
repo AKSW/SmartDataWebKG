@@ -17,6 +17,7 @@ import aksw.org.sdw.importer.avro.annotations.ids.UniqueIdGenerator;
 import org.apache.jena.atlas.lib.IRILib;
 import org.apache.jena.base.Sys;
 import org.apache.jena.datatypes.RDFDatatype;
+import org.apache.jena.datatypes.xsd.XSDDatatype;
 import org.apache.jena.iri.IRIFactory;
 import org.apache.jena.query.Dataset;
 import org.apache.jena.rdf.model.*;
@@ -50,6 +51,8 @@ public class RelationGenerator extends DocRdfGenerator {
 
 	/** input document */
 	final Document document;
+
+	final Map<String, String> prefixMap = new HashMap<String,String>();
 
 	/** relation function map */
 	final Map<String, Function<ModelData, Integer>> relationFunctionMap = new HashMap<>();
@@ -106,6 +109,8 @@ public class RelationGenerator extends DocRdfGenerator {
 	public RelationGenerator(final String graphName, final Document document, final DocRdfGenerator relationGenerator) {
 		super(graphName, relationGenerator);
 		this.document = document;
+
+		prefixMap.put("dbc", "http://corp.dbpedia.org/ontology");
 	}
 
 	private Dataset dataset = null;
@@ -173,8 +178,8 @@ public class RelationGenerator extends DocRdfGenerator {
 		for (RelationMention relationMention : document.relationMentions) {
 			
 			//System.out.println(relationMention.relation.types+" "+relationMention.entities.keySet());
-			Model relationModel = this.createNewModel();
-			Model metadataModel = this.createNewModel();
+			Model relationModel = this.createNewModel(); // Model 1
+			Model metadataModel = this.createNewModel(); // Model 2
 
 			boolean exceptThis = false;
 			if(relationMention.relation.types.contains("CompanyFinancialEvent")) exceptThis = true;
@@ -190,7 +195,7 @@ public class RelationGenerator extends DocRdfGenerator {
 
 			String uniqueId = this.document.entityIdGenerator.getUniqueId();
 			// TODO solve /#
-			String relationMetadataUri = RDFHelpers.createValidIRIfromBase(document.id, this.graphName);// ID uniqueId;
+			String relationMetadataUri = RDFHelpers.createValidIRIfromBase(document.id, this.graphName.substring(0,this.graphName.length()-1));// ID uniqueId;
 			relationMention.generatedUri = relationMetadataUri;
 			relationMention.generatedId = uniqueId; // ID
 
@@ -198,7 +203,7 @@ public class RelationGenerator extends DocRdfGenerator {
 
 			for (String relationType : relationMention.relation.types) {
 
-				Model binaryModel = ModelFactory.createDefaultModel();
+				Model binaryModel = this.createNewModel(); // Model 3
 				AtomicReference<String> tripleId = new AtomicReference<String>();
 				this.createRelationTriple(relationType, relationMention, binaryModel, tripleId);
 				if ( "" != tripleId.toString() ) {
@@ -206,6 +211,7 @@ public class RelationGenerator extends DocRdfGenerator {
 					Resource r = ResourceFactory.createResource(tripleId.toString());
 					RDFNode rMuri = metadataModel.createResource(relationMention.relation.generatedUri);
 					metadataModel.add(r,p,rMuri);
+//					binaryModel.write(System.out, "TURTLE");
 				}
 
 				ModelData rawModelData = new ModelData();
@@ -218,12 +224,13 @@ public class RelationGenerator extends DocRdfGenerator {
 			this.createRelationTriple(RelationGenerator.HandleEntityTypes, relationMention, relationModel, null);
 
 			dataset.addNamedModel(relationMetadataUri, relationModel);
-
+//			relationModel.write(System.out,"TURTLE");
 
 
 			this.createRelationTriple(RelationGenerator.HandleProvenance, relationMention, metadataModel, null);
 			if (false == metadataModel.isEmpty()) {
 				dataset.addNamedModel(this.graphName, metadataModel);
+//				metadataModel.write(System.out, "TURTLE");
 			}
 		}
 
@@ -345,6 +352,7 @@ public class RelationGenerator extends DocRdfGenerator {
 	}
 
 	protected int handleHeadquarters(final ModelData argument) {
+		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
 		Objects.requireNonNull(argument);
 
 		RelationMention relationMention = argument.relationMention;
@@ -369,6 +377,7 @@ public class RelationGenerator extends DocRdfGenerator {
 	}
 
 	protected int handleOrganizationLeadership(final ModelData argument) {
+		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
 		Objects.requireNonNull(argument);
 
 		String leftEntity = argument.relationMention.entities.get("person").generatedUri;
@@ -383,8 +392,6 @@ public class RelationGenerator extends DocRdfGenerator {
 	protected int handleRawRelationship(final ModelData arg) {
 		Objects.requireNonNull(arg);
 
-//		    <http://corp.dbpedia.org/extract/it02/dfki/####docid###::CompanyFinancialEvent::###docid###::GE::734::736::###docid###::earnings report::739::754-__memberRole__02>
-
 		RelationMention rm = arg.relationMention;
 		Model m = arg.model;
 		
@@ -398,20 +405,21 @@ public class RelationGenerator extends DocRdfGenerator {
 		int memberPosition = 1;
 		for (String key : rm.entities.keySet()) {
 			Mention mem = rm.entities.get(key);
-			RDFNode member = arg.model.createResource(mem.generatedUri);
 			String suffix = "__memberRole__"+String.format("%03d", memberPosition);
+			RDFNode member = arg.model.createResource(rm.relation.generatedUri+suffix);
 			this.addStatement(rm.relation.generatedUri, CorpDbpedia.hasRelationMember , member, arg.model);
 
 			// a  dbc:MemberRoleResource;
-			this.addStatement(mem.generatedUri+suffix, RDF.type.getURI(),arg.model.createResource(CorpDbpedia.memberRoleResource), arg.model);
+			this.addStatement(member.toString(), RDF.type.getURI(),arg.model.createResource(CorpDbpedia.memberRoleResource), arg.model);
 			// :memberPosition
-			this.addStatementWithLiteral(mem.generatedUri+suffix, CorpDbpedia.relationMemberPosition,memberPosition,null, arg.model);
+			this.addStatementWithLiteral(member.toString(), CorpDbpedia.relationMemberPosition,String.valueOf(memberPosition), XSDDatatype.XSDnonNegativeInteger, arg.model);
 			// :memberRole
-			this.addStatement(mem.generatedUri+suffix, CorpDbpedia.relationMemberRole,arg.model.createLiteral(key,document.langCode),arg.model);
+			this.addStatement(member.toString(), CorpDbpedia.relationMemberRole,arg.model.createLiteral(key,document.langCode),arg.model);
 			// :member
-			this.addStatement(mem.generatedUri+suffix, CorpDbpedia.relationMember,arg.model.createResource(mem.generatedUri),arg.model);
+			this.addStatement(member.toString(), CorpDbpedia.relationMember,arg.model.createResource(mem.generatedUri),arg.model);
 			// :mentioned  ## link to concept mention
-			this.addStatement(mem.generatedUri+suffix, CorpDbpedia.relationMemberMentioned,arg.model.createResource(rm.relation.generatedUri),arg.model);
+			String mentionedMember = document.id+"/#offset_"+rm.entities.get(key).span.start+"_"+rm.entities.get(key).span.end;
+			this.addStatement(member.toString(), CorpDbpedia.relationMemberMentioned,arg.model.createResource(mentionedMember),arg.model);
 
 			memberPosition++;
 		}
@@ -420,6 +428,7 @@ public class RelationGenerator extends DocRdfGenerator {
 	}
 
 	protected int handleCompanyFinancialEvent(final ModelData argument) {
+		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
 
 		Objects.requireNonNull(argument);
 		
@@ -432,9 +441,6 @@ public class RelationGenerator extends DocRdfGenerator {
 		} catch ( Exception e ) {
 			return 0;
 		}
-
-		// TODO prefix for tripleID
-		argument.tripleId.set(UUID.randomUUID().toString());
 
 		RDFNode event = argument.model.createResource(leftEntityString);
 		this.addStatement(rightEntityString, CorpDbpedia.hasFinancialEvent, event, argument.model);
@@ -451,6 +457,7 @@ public class RelationGenerator extends DocRdfGenerator {
 	}
 
 	protected int handleCompanyRelationship(final ModelData argument) {
+		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
 		Objects.requireNonNull(argument);
 
 		String leftEntityString = argument.relationMention.entities.get("parent").generatedUri;
@@ -467,6 +474,7 @@ public class RelationGenerator extends DocRdfGenerator {
 	}
 
 	protected int handleSpinOff(final ModelData argument) {
+		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
 		Objects.requireNonNull(argument);
 
 		String leftEntityString = argument.relationMention.entities.get("parent").generatedUri;
@@ -484,6 +492,7 @@ public class RelationGenerator extends DocRdfGenerator {
 	}
 
 	protected int handleCompanyProject(final ModelData argument) {
+		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
 		Objects.requireNonNull(argument);
 		
 		String leftEntityString = argument.relationMention.entities.get("company").generatedUri;
@@ -501,6 +510,7 @@ public class RelationGenerator extends DocRdfGenerator {
 	}
 
 	protected int handleDisaster(final ModelData argument) {
+		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
 		Objects.requireNonNull(argument);
 		String leftEntityString;
 		String rightEntityString;
@@ -521,6 +531,7 @@ public class RelationGenerator extends DocRdfGenerator {
 	}
 
 	protected int handleCompanyIndustry(final ModelData argument) {
+		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
 		Objects.requireNonNull(argument);
 
 		String leftEntityString = argument.relationMention.entities.get("company").generatedUri;
@@ -537,6 +548,7 @@ public class RelationGenerator extends DocRdfGenerator {
 	}
 
 	protected int handleAcquisition(final ModelData argument) {
+		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
 		Objects.requireNonNull(argument);
 		RelationMention relationMention = argument.relationMention;
 
@@ -562,6 +574,7 @@ public class RelationGenerator extends DocRdfGenerator {
 	}
 
 	protected  int handleCompanyCustomer( final ModelData argument ) {
+		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
 		Objects.requireNonNull(argument);
 		RelationMention relationMention = argument.relationMention;
 

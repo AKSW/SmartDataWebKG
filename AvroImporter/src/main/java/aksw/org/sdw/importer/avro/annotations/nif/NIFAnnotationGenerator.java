@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import aksw.org.sdw.rdf.namespaces.CorpDbpedia;
 import org.apache.jena.query.Dataset;
 import org.apache.jena.rdf.model.Model;
 import org.nlp2rdf.NIF;
@@ -80,11 +81,16 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
             builderMention.taIdentRef(conceptMention.generatedUri);
         	
         	List<String> typesMention = new ArrayList<String>();
-        	for (String type : conceptMention.types) {
-        		typesMention.add(type);
-        	}
+        	if ( conceptMention.mentionType == Mention.MentionType.RELATION) {
+				for (String type : conceptMention.types) {
+					typesMention.add(CorpDbpedia.prefixOntology+type);
+				}
+			} else {
+				for (String type : conceptMention.types) {
+					typesMention.add(type);
+				}
+			}
         	builderMention.types(typesMention);
-        	
         	builderMention.context(this.document.id, conceptMention.span.start, conceptMention.span.end);
         	if (null != conceptMention.text) {
         		builderMention.mention(conceptMention.text);
@@ -113,11 +119,11 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
 
             NIFBean bean = new NIFBean(builderMention);
             result.add(bean);
-        }
+		}
         
         NIF nif21 = new NIF21(result);
-        
-        // add new annotations
+
+		// add new annotations
         Model nifModel = nif21.getModel();  
         
         dataset.addNamedModel(this.graphName, nifModel);

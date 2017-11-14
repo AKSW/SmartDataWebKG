@@ -31,6 +31,8 @@ public class Main {
 		BEUTH, DFKI, SIEMENS
 	};
 
+	static boolean disablePrefix = false;
+
 	public static void main(String[] args) throws IOException {
 		// String b[] =
 		// {"/home/kilt/Desktop/johannes-kilt/SDW/iter02/1.avro","/home/kilt/Desktop/johannes-kilt/SDW/iter02/1-b.csv"};
@@ -53,6 +55,7 @@ public class Main {
 		options.addOption("o", "out", true, "output folder directory");
 		options.addOption("d", "dir", true, "convert directory to avro");
 		options.addOption("i","iterationPrefix", true, "name of iteration cycle");
+		options.addOption("d","disablePrefixes", true, "output without @prefix");
 
 		CommandLine commandLine = null;
 		CommandLineParser parser = new BasicParser();
@@ -85,6 +88,10 @@ public class Main {
 			} else {
 				formatter.printHelp("avroimporter", options);
 				System.exit(1);
+			}
+
+			if( commandLine.hasOption("d")) {
+				disablePrefix = true;
 			}
 
 		} catch (ParseException e) {
@@ -162,8 +169,8 @@ public class Main {
 			for (int i = 10 - countString.length(); i >= 0; --i) {
 				leadingZero += "0";
 			}
-			if (count>1) break;
-			
+//			Only one file for test
+//			if (count>1) break;
 
 			leadingZero += countString;
 
@@ -189,8 +196,9 @@ public class Main {
 					new RelationGenerator(metadataUri, doc));
 
 
-
+			if(disablePrefix)
 			rdfGnerator.writeRdfDataAsTrig(outputStream);
+			else rdfGnerator.writeRdfDataAsTrigWithPrefix(outputStream);
 		}
 		
 		System.out.println("missingMappingsDFKI:###"+Dfki2SdwKgMapper.missingMappings.toString());

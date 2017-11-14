@@ -18,14 +18,18 @@ public class Dfki2SdwKgMapper {
 	static final public Map<String, AtomicInteger> missingMappings = new HashMap<>();
 	static final private Map<String, Collection<String>> getTypeMappings() {
 		Map<String, Collection<String>> typeMappings = new HashMap<>();
-		
+
+		// RELATION
+//		typeMappings.put("companyfinancialevent", Collections.singleton("http://corp.dbepdia.org/ontolotgy#CompanyFinancialEvent"));
+
+
 		typeMappings.put("organization", Arrays.asList("http://www.w3.org/ns/org#Organization",
 										"http://dbpedia.org/ontology/Organisation"));
 		typeMappings.put("company", Arrays.asList("http://dbpedia.org/ontology/Organisation",
 									"http://www.w3.org/ns/org#FormalOrganization",
 									"http://corp.dbpedia.org/ontology#Company")); /// TODO: CHECK
 		typeMappings.put("person", Collections.singleton("http://dbpedia.org/ontology/Person/"));
-		typeMappings.put("location", Collections.singleton("http://dbpedia.org/ontology/Place"));
+			typeMappings.put("location", Collections.singleton("http://dbpedia.org/ontology/Place"));
 		typeMappings.put("product", Collections.singleton("http://corp.dbpedia.org/ontology#Product")); // DONE
 		typeMappings.put("headquarter", Arrays.asList(W3COrg.site, "http://dbpedia.org/ontology/headquarter"));
 		typeMappings.put("parent", Collections.singleton("dbpedia.org/ontology/parentCompany"));
