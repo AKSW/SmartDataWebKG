@@ -170,7 +170,7 @@ public class Main {
 //			if (count<329 ) continue;
 //			if (count>329 ) break;
 
-			doc.uri = baseUri;
+			if(baseUri != null) doc.uri = baseUri;
 			String countString = Integer.toString(count);
 
 			String leadingZero = "";
