@@ -1,14 +1,10 @@
 package aksw.org.sdw.importer.avro.annotations.nif;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.DatasetFactory;
 import org.apache.jena.rdf.model.Model;
