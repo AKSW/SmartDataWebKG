@@ -2,6 +2,7 @@ package aksw.org.sdw.importer.avro.annotations.dfki;
 
 import java.util.List;
 
+import aksw.org.sdw.importer.avro.annotations.maps.MapHandler;
 import aksw.org.sdw.importer.avro.annotations.nif.RDFHelpers;
 import org.apache.avro.specific.SpecificRecordBase;
 
@@ -40,8 +41,14 @@ public class DfkiMentionAdapter extends Mention implements DataImportAdapter<org
 
 		this.span = new DfkiSpanAdapter();
 		((DfkiSpanAdapter) this.span).addData_internal(conceptMention.getSpan(), document);
-		
-		Dfki2SdwKgMapper.addEntityTypeMapping(conceptMention.getType(), this.types);
+
+		if(MapHandler.functionMap.containsKey(conceptMention.getType())) {
+			this.types.add(MapHandler.functionMap.get(conceptMention.getType()).apply(conceptMention.getNormalizedValue()));
+		} else {
+			// only type
+			Dfki2SdwKgMapper.addEntityTypeMapping(conceptMention.getType(), this.types);
+		}
+
 
 		List<de.dfki.lt.tap.Provenance> dfkiProvenances = conceptMention.getProvenance();
 		if (null != dfkiProvenances && false == dfkiProvenances.isEmpty()) {

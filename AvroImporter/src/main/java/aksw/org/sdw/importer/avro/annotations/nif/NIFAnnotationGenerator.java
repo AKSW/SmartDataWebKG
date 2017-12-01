@@ -29,14 +29,16 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
 	
 	/** input document */
 	final Document document;
+	final String baseUri;
 	
-	public NIFAnnotationGenerator(final String graphName, final Document document) {
-		this((String) null, document, (DocRdfGenerator) null);
-	}
+//	public NIFAnnotationGenerator(final String graphName, final Document document) {
+//		this((String) null, document, (DocRdfGenerator) null, (String) null);
+//	}
 	
 	public NIFAnnotationGenerator(final String graphName, final Document document, final DocRdfGenerator relationGenerator) {
 		super(graphName, relationGenerator);
 		this.document = document;
+		this.baseUri = document.uri;
 	}
 	
 	protected Dataset addToRdfData_internal(final Dataset dataset) {
@@ -47,9 +49,8 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
         String text = this.document.text;
         if (null != text) {
 
-	        builderContext.context(this.document.id, 0, text.length());
+			builderContext.context(baseUri, 0, text.length());
 	        builderContext.nifType(NIFType.CONTEXT);
-	        
 	        // set text index
 	        builderContext.beginIndex(0);
 	        builderContext.endIndex(text.length());
@@ -59,9 +60,9 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
 	
 	        result.add(beanContext);
         } else {
-        	builderContext.context(this.document.id, 0, 0);
+        	builderContext.context(baseUri, 0, 0);
 	        builderContext.nifType(NIFType.CONTEXT);
-	        
+
 	        // set text index
 	        builderContext.beginIndex(0);
 	        builderContext.endIndex(0);
@@ -81,17 +82,23 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
             builderMention.taIdentRef(conceptMention.generatedUri);
         	
         	List<String> typesMention = new ArrayList<String>();
-        	if ( conceptMention.mentionType == Mention.MentionType.RELATION) {
+
+//			if ( conceptMention.types.contains("http://UNMAPPED.ER/financial-event")) {
+//				System.out.println(conceptMention.types);
+//			}
+			if ( conceptMention.mentionType == Mention.MentionType.RELATION) {
 				for (String type : conceptMention.types) {
 					typesMention.add(CorpDbpedia.prefixOntology+type);
 				}
 			} else {
-				for (String type : conceptMention.types) {
+				for (String type : conceptMention.types)
+				{
+//					if(!type.startsWith("http://UNMAPPED.ER/")) typesMention.add(type);
 					typesMention.add(type);
 				}
 			}
         	builderMention.types(typesMention);
-        	builderMention.context(this.document.id, conceptMention.span.start, conceptMention.span.end);
+        	builderMention.context(baseUri, conceptMention.span.start, conceptMention.span.end);
         	if (null != conceptMention.text) {
         		builderMention.mention(conceptMention.text);
         	} else if (null != conceptMention.textNormalized) {

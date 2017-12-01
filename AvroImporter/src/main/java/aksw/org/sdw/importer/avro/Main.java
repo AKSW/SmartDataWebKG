@@ -32,6 +32,7 @@ public class Main {
 	};
 
 	static boolean disablePrefix = false;
+	static String baseUri = "default";
 
 	public static void main(String[] args) throws IOException {
 		// String b[] =
@@ -43,7 +44,8 @@ public class Main {
 		String inputDir = null;
 		String outputDirectoryPath = null;
 		String namespacePrefix = null;
-		
+
+
 		System.out.println("SDW Crawled Data Importer");
 
 		HelpFormatter formatter = new HelpFormatter();
@@ -55,7 +57,8 @@ public class Main {
 		options.addOption("o", "out", true, "output folder directory");
 		options.addOption("d", "dir", true, "convert directory to avro");
 		options.addOption("i","iterationPrefix", true, "name of iteration cycle");
-		options.addOption("d","disablePrefixes", true, "output without @prefix");
+		options.addOption("c","disablePrefixes", false, "output without @prefix");
+		options.addOption("b","baseUri", true, "baseUri");
 
 		CommandLine commandLine = null;
 		CommandLineParser parser = new BasicParser();
@@ -83,6 +86,7 @@ public class Main {
 				}
 				filePath = commandLine.getOptionValue("p");
 				inputDir = commandLine.getOptionValue("d");
+				if( commandLine.hasOption("b")) baseUri = commandLine.getOptionValue("b");
 				outputDirectoryPath = commandLine.getOptionValue("o");
 				namespacePrefix = "http://corp.dbpedia.org/extract/"+commandLine.getOptionValue("i")+"/"+inputType.toString().toLowerCase();
 			} else {
@@ -90,7 +94,7 @@ public class Main {
 				System.exit(1);
 			}
 
-			if( commandLine.hasOption("d")) {
+			if( commandLine.hasOption("c")) {
 				disablePrefix = true;
 			}
 
@@ -161,16 +165,20 @@ public class Main {
 //		for (Document doc : foundDocs.values()) {
 	//for "streaming" conversion
 		for ( Map.Entry<String, Document> entry : importer.getRelationshipMentionIterable()) {
-			Document doc =entry.getValue(); 
+			Document doc =entry.getValue();
+			++count;
+//			if (count<329 ) continue;
+//			if (count>329 ) break;
 
+			doc.uri = baseUri;
 			String countString = Integer.toString(count);
 
 			String leadingZero = "";
 			for (int i = 10 - countString.length(); i >= 0; --i) {
 				leadingZero += "0";
 			}
-//			Only one file for test
-//			if (count>1) break;
+//			Only x files for test
+
 
 			leadingZero += countString;
 
@@ -180,7 +188,7 @@ public class Main {
 			
 			Level info_level = Level.INFO;
 			Logger.getGlobal().log(info_level,	"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"+"\n"+
-												++count + ": Doc ID: " + doc.id +"\n"+
+					 count + ": Doc ID: " + doc.id +"\n"+
 												"Number of concept mentions: " + doc.conceptMentions.size() +"\n"+
 												"Number of relationship mentions: " + doc.relationMentions.size());
 			
@@ -202,6 +210,7 @@ public class Main {
 		}
 		
 		System.out.println("missingMappingsDFKI:###"+Dfki2SdwKgMapper.missingMappings.toString());
+		System.out.println("Misc " +RelationGenerator.missingR);
 		System.out.println("missingRelations:###"+RelationGenerator.missingRelations.toString());
 		System.out.println("nary-Relations:###"+RelationGenerator.strangeRelations.toString());
 		System.out.println("Number of documents: " + count); 

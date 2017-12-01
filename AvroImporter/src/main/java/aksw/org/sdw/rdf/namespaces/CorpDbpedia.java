@@ -1,7 +1,5 @@
 package  aksw.org.sdw.rdf.namespaces;
 
-import java.util.Collections;
-
 public class CorpDbpedia {
 	
 	public static final String prefix = "http://corp.dbpedia.org/";
@@ -9,9 +7,13 @@ public class CorpDbpedia {
 	public static final String prefixResource = prefix + "resource/";
 	
 	public static final String prefixOntology = prefix + "ontology#";
-	
+
+	/** classes **/
 	public static final String company = prefixOntology + "Company";
-	
+	public static final String disaster = prefixOntology + "Disaster";
+	public static final String financialEvent = prefixOntology + "FinancialEvent";
+
+
 	/** company status */
 	
 	public static final String companyStatus = prefixOntology + "orgStatus";	
@@ -99,6 +101,8 @@ public class CorpDbpedia {
 	public static final String relationMemberRole = prefixOntology+"RelationMemberRole";
 	public static final String relationMember = prefixOntology+"RelationMember";
 	public static final String relationMemberMentioned = prefixOntology+"RelationMemberMentioned";
+
+	public static final String hasFounder= prefixOntology+"hasFounder";
 
 	/** **/
 	public static final String placeHolder = prefix+"placeholder/";

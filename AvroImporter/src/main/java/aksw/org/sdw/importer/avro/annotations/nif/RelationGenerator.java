@@ -1,10 +1,7 @@
 package aksw.org.sdw.importer.avro.annotations.nif;
 
 import java.security.MessageDigest;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -13,6 +10,7 @@ import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import aksw.org.sdw.importer.avro.annotations.dfki.Dfki2SdwKgMapper;
 import aksw.org.sdw.importer.avro.annotations.ids.UniqueIdGenerator;
 import org.apache.jena.atlas.lib.IRILib;
 import org.apache.jena.base.Sys;
@@ -64,6 +62,7 @@ public class RelationGenerator extends DocRdfGenerator {
 
 	static final public Map<String, AtomicInteger> missingRelations = new HashMap<>();
 	static final public Map<String, AtomicInteger> strangeRelations = new HashMap<>();
+	static final public Map<String, AtomicInteger> missingR = new HashMap<>();
 
 	final static String HandleEntityLabels = "HandleEntityLabels";
 	final static String HandleEntityTypes = "HandleEntityTypes";
@@ -85,6 +84,8 @@ public class RelationGenerator extends DocRdfGenerator {
 	final static String Acquisition = "Acquisition";
 	final static String CompanyCustomer = "CompanyCustomer";
 
+	final static String CompanyFoundation = "CompanyFoundation";
+
 	public RelationGenerator(final String graphName, final Document document) {
 		this(graphName, document, (DocRdfGenerator) null);
 
@@ -104,6 +105,7 @@ public class RelationGenerator extends DocRdfGenerator {
 		relationFunctionMap.put(RelationGenerator.CompanyIndustry, this::handleCompanyIndustry);
 		relationFunctionMap.put(RelationGenerator.CompanyCustomer, this::handleCompanyCustomer);
 		relationFunctionMap.put(RelationGenerator.Acquisition,	this::handleAcquisition);
+		relationFunctionMap.put(RelationGenerator.CompanyFoundation,	this::handleCompanyFoundation);
 	}
 
 	public RelationGenerator(final String graphName, final Document document, final DocRdfGenerator relationGenerator) {
@@ -150,6 +152,14 @@ public class RelationGenerator extends DocRdfGenerator {
 		}
 	}
 
+	static public void recordTypes(String relation) {
+		AtomicInteger count = missingR.get(relation);
+		if (count != null)
+			count.incrementAndGet();
+		else
+			missingR.put(relation, new AtomicInteger(1));
+	}
+
 	static public void recordUnmappedRelations(String sourcetype) {
 		AtomicInteger count = missingRelations.get(sourcetype);
 		if (count != null)
@@ -176,15 +186,15 @@ public class RelationGenerator extends DocRdfGenerator {
 		}
 
 		for (RelationMention relationMention : document.relationMentions) {
-			
-			//System.out.println(relationMention.relation.types+" "+relationMention.entities.keySet());
+
 			Model relationModel = this.createNewModel(); // Model 1
 			Model metadataModel = this.createNewModel(); // Model 2
 
 			boolean exceptThis = false;
 			if(relationMention.relation.types.contains("CompanyFinancialEvent")) exceptThis = true;
 			
-			if (2 != relationMention.entities.size() ) { //&& !exceptThis) {
+			if (2 != relationMention.entities.size() && !exceptThis) {
+//			if(true) {
 				Level level = Level.WARNING;
 				Logger.getGlobal().log(level,
 						"Received nary relation of degree (" + relationMention.entities.size() + ") with entities: "
@@ -203,17 +213,18 @@ public class RelationGenerator extends DocRdfGenerator {
 
 			for (String relationType : relationMention.relation.types) {
 
+				// binary relation
 				Model binaryModel = this.createNewModel(); // Model 3
-				AtomicReference<String> tripleId = new AtomicReference<String>();
+				AtomicReference<String> tripleId = new AtomicReference<String>("");
 				this.createRelationTriple(relationType, relationMention, binaryModel, tripleId);
 				if ( "" != tripleId.toString() ) {
 					dataset.addNamedModel(tripleId.toString(), binaryModel);
 					Resource r = ResourceFactory.createResource(tripleId.toString());
 					RDFNode rMuri = metadataModel.createResource(relationMention.relation.generatedUri);
 					metadataModel.add(r,p,rMuri);
-//					binaryModel.write(System.out, "TURTLE");
 				}
 
+				// raw relation
 				ModelData rawModelData = new ModelData();
 				rawModelData.model = relationModel;
 				rawModelData.relationMention = relationMention;
@@ -256,7 +267,8 @@ public class RelationGenerator extends DocRdfGenerator {
 	 * @return
 	 */
 	protected int handleCompanyTechnology(ModelData argument) {
-		
+		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
+
 		Objects.requireNonNull(argument);
 		RelationMention relationMention = argument.relationMention;
 
@@ -287,6 +299,29 @@ public class RelationGenerator extends DocRdfGenerator {
 		return 0;
 	}
 
+	protected int handleCompanyFoundation(ModelData argument) {
+		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
+
+		Objects.requireNonNull(argument);
+		RelationMention relationMention = argument.relationMention;
+
+		Mention company = relationMention.entities.get("company");
+		Mention founder = relationMention.entities.get("founder");
+
+		if (null == company || null == founder) {
+			Logger.getGlobal().log(Level.WARNING, "Failed Relation CompanyTechnology: " + relationMention.entities );
+			return 0;
+		}
+
+		String leftEntity = company.generatedUri;
+		String rightEntity = founder.generatedUri;
+
+		RDFNode object = argument.model.createResource(rightEntity);
+		this.addStatement(leftEntity, CorpDbpedia.hasFounder, object, argument.model);
+
+		return 0;
+	}
+
 	protected int handleLabel(final ModelData argument) {
 		Objects.requireNonNull(argument);
 
@@ -304,16 +339,16 @@ public class RelationGenerator extends DocRdfGenerator {
 		return 0;
 	}
 
-	protected int handleTypes(final ModelData argument) { // check whether it is still correct after changing entities
-														  // from list to MAP
+	protected int handleTypes(final ModelData argument) {
 		Objects.requireNonNull(argument);
 
 		Model relationModel = argument.model;
 
+
 		for (Mention entity : argument.relationMention.entities.values()) {
 			// add type triples
+			if (Dfki2SdwKgMapper.datatypeMapping.values().containsAll(entity.types)) continue;
 			for (String type : entity.types) {
-
 				RDFNode object = relationModel.createResource(type);
 				this.addStatement(entity.generatedUri, RDF.type.getURI(), object, relationModel);
 			}
@@ -370,7 +405,7 @@ public class RelationGenerator extends DocRdfGenerator {
 		this.addStatement(organisationUri, CorpDbpedia.hasHeadquarterSite, locationUri, relationModel);
 
 		String locationLabel = (null != headquarter.text) ? headquarter.text : headquarter.textNormalized;
-		RDFNode addressLiteral = relationModel.createTypedLiteral(locationLabel, this.document.langCode);
+		RDFNode addressLiteral = relationModel.createLiteral(locationLabel, this.document.langCode);
 		this.addStatement(headquarter.generatedUri, W3COrg.siteAddress, addressLiteral, relationModel);
 
 		return 0;
@@ -394,7 +429,7 @@ public class RelationGenerator extends DocRdfGenerator {
 
 		RelationMention rm = arg.relationMention;
 		Model m = arg.model;
-		
+
 		RDFNode object = arg.model.createResource(CorpDbpedia.prefixOntology+"RawRelationMention");//+rm.relation.textNormalized);
 		
 		this.addStatement(rm.relation.generatedUri, RDF.type.getURI() , object, arg.model);
@@ -418,7 +453,9 @@ public class RelationGenerator extends DocRdfGenerator {
 			// :member
 			this.addStatement(member.toString(), CorpDbpedia.relationMember,arg.model.createResource(mem.generatedUri),arg.model);
 			// :mentioned  ## link to concept mention
-			String mentionedMember = document.id+"/#offset_"+rm.entities.get(key).span.start+"_"+rm.entities.get(key).span.end;
+			int offset_beginn = rm.entities.get(key).span.start;
+			int offset_end = rm.entities.get(key).span.end;
+			String mentionedMember = new Formatter().format("%s#offset_%d_%d",document.uri,offset_beginn,offset_end).toString();
 			this.addStatement(member.toString(), CorpDbpedia.relationMemberMentioned,arg.model.createResource(mentionedMember),arg.model);
 
 			memberPosition++;
@@ -443,12 +480,13 @@ public class RelationGenerator extends DocRdfGenerator {
 		}
 
 		RDFNode event = argument.model.createResource(leftEntityString);
-		this.addStatement(rightEntityString, CorpDbpedia.hasFinancialEvent, event, argument.model);
+		this.addStatement(rightEntityString, CorpDbpedia.hasFinancialEvent, event , argument.model);
 		try {
 			dateString = argument.relationMention.entities.get("date").textNormalized;
 //			System.out.println("DATE FOUND");
 			//DONE
-			this.addStatementWithLiteral(leftEntityString, CorpDbpedia.hasDate, dateString, RDF.dtLangString, argument.model);
+			RDFNode literal = argument.model.createLiteral(dateString, this.document.langCode);
+			this.addStatement(leftEntityString, CorpDbpedia.hasDate, literal, argument.model);
 		} catch( Exception e) {
 //			System.out.println("DATE ERROR");
 			return 0;
@@ -622,7 +660,7 @@ public class RelationGenerator extends DocRdfGenerator {
 		Property predicate = model.createProperty(predicateUri);
 
 		if(null == datatype) model.addLiteral(subject,predicate,lex);
-		else model.add(subject, predicate, (String )lex, datatype);
+		else model.add(subject, predicate, (String) lex, datatype);
 	}
 
 	private String generateTripleId(String triple ) {

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.DatasetFactory;
 import org.apache.jena.rdf.model.Model;
@@ -16,6 +17,7 @@ import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
 import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.rio.RDFParseException;
 import org.eclipse.rdf4j.rio.RDFParser;
 import org.eclipse.rdf4j.rio.RDFWriter;
 import org.eclipse.rdf4j.rio.Rio;
@@ -84,9 +86,10 @@ public abstract class DocRdfGenerator	 {
 				rdfStreamWriter.handleStatement(st);
 			}
 			rdfStreamWriter.endRDF();
-		} catch (Exception e) {
-			e.printStackTrace();
-
+		} catch (RDFParseException rpe) {
+			rpe.printStackTrace();
+		}catch (IOException ioe) {
+			ioe.printStackTrace();
 		}
 	}
 	
