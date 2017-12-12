@@ -1,13 +1,11 @@
 package aksw.org.sdw.importer.avro.annotations.dfki;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import aksw.org.sdw.importer.avro.annotations.DataImportAdapter;
 import aksw.org.sdw.importer.avro.annotations.Document;
 import aksw.org.sdw.importer.avro.annotations.Mention;
+import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 import de.dfki.lt.tap.RelationArgument;
 
 /**
@@ -31,7 +29,11 @@ public class DfkiDocumentAdapter extends Document implements DataImportAdapter<d
 		}
 		
 		if (null == this.text) {
-			this.text = dfkiDocument.getText();
+//			this.text = dfkiDocument.getText();
+			Map<String, String> map = dfkiDocument.getRelationMentions().get(0).getAttributes();
+
+			this.text = map.get("prefix") +map.get("exact") + map.get("suffix");
+
 		}
 		if ( null == this.uri ) {
 			this.uri = dfkiDocument.getUri();

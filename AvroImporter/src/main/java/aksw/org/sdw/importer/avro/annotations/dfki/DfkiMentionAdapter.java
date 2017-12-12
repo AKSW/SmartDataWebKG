@@ -61,8 +61,8 @@ public class DfkiMentionAdapter extends Mention implements DataImportAdapter<org
 			}
 		}
 
-		this.generatedId = conceptMention.getId(); // ID document.entityIdGenerator.addUniqueId(this);
-		this.generatedUri = RDFHelpers.createValidIRIfromBase(conceptMention.getId(),document.uriNamespace);
+		this.generatedId = document.entityIdGenerator.addUniqueId(this); // conceptMention.getId(); //
+		this.generatedUri = RDFHelpers.createValidIRIfromBase(this.generatedId,document.uriNamespace);
 		document.conceptMentions.add(this);
 		this.mentionType=mentionType.ENTITY;
 	}
@@ -87,8 +87,8 @@ public class DfkiMentionAdapter extends Mention implements DataImportAdapter<org
 			}
 		}
 		
-		this.generatedId = relationMention.getId();// ID document.entityIdGenerator.addUniqueId(this);
-		this.generatedUri = RDFHelpers.createValidIRIfromBase(relationMention.getId(),document.uriNamespace);
+		this.generatedId = document.entityIdGenerator.addUniqueId(this); // relationMention.getId();// ID
+		this.generatedUri = RDFHelpers.createValidIRIfromBase(this.generatedId,document.uriNamespace);
 		document.conceptMentions.add(this);
 		this.mentionType=mentionType.RELATION;
 	}

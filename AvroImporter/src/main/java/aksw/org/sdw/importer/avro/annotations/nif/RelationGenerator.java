@@ -205,7 +205,7 @@ public class RelationGenerator extends DocRdfGenerator {
 
 			String uniqueId = this.document.entityIdGenerator.getUniqueId();
 			// TODO solve /#
-			String relationMetadataUri = RDFHelpers.createValidIRIfromBase(document.id, this.graphName.substring(0,this.graphName.length()-1));// ID uniqueId;
+			String relationMetadataUri = RDFHelpers.createValidIRIfromBase(uniqueId, this.graphName.substring(0,this.graphName.length()-1));// ID uniqueId;
 			relationMention.generatedUri = relationMetadataUri;
 			relationMention.generatedId = uniqueId; // ID
 

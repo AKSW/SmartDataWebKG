@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,7 +33,7 @@ public class Main {
 	};
 
 	static boolean disablePrefix = false;
-	static String baseUri = "default";
+	static String baseUri = null;
 
 	public static void main(String[] args) throws IOException {
 		// String b[] =
@@ -170,7 +171,8 @@ public class Main {
 //			if (count<329 ) continue;
 //			if (count>329 ) break;
 
-			if(baseUri != null) doc.uri = baseUri;
+//			if(baseUri != null)
+				doc.uri = "http://corp.dbpedia.org/siemens_doc_"+UUID.randomUUID().toString()+"/";
 			String countString = Integer.toString(count);
 
 			String leadingZero = "";
