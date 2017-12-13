@@ -1,10 +1,6 @@
 package aksw.org.sdw.importer.avro.annotations;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import aksw.org.sdw.importer.avro.annotations.ids.EntityIdGenerator;
@@ -16,6 +12,8 @@ public class Document extends Annotation {
 	
 	public String uri;	
 	public String signature;
+
+	public String date;
 
 	public String title;
 	

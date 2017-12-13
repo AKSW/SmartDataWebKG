@@ -1,12 +1,15 @@
 package aksw.org.sdw.importer.avro.annotations.nif;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.util.*;
+import java.util.logging.Logger;
 
+import aksw.org.sdw.importer.avro.annotations.GlobalConfig;
 import aksw.org.sdw.rdf.namespaces.CorpDbpedia;
 import org.apache.jena.query.Dataset;
-import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.*;
 import org.nlp2rdf.NIF;
 import org.nlp2rdf.bean.NIFBean;
 import org.nlp2rdf.bean.NIFType;
@@ -30,6 +33,7 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
 	/** input document */
 	final Document document;
 	final String baseUri;
+	final String nifid;
 	
 //	public NIFAnnotationGenerator(final String graphName, final Document document) {
 //		this((String) null, document, (DocRdfGenerator) null, (String) null);
@@ -39,11 +43,29 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
 		super(graphName, relationGenerator);
 		this.document = document;
 		this.baseUri = document.uri;
+		this.nifid = UUID.randomUUID().toString();
+	}
+
+	class HashedBean {
+		public String beanUri;
+		public String beanHash;
+
+		HashedBean(String bean, String hash) {
+			this.beanUri = bean;
+			this.beanHash = hash;
+		}
 	}
 	
 	protected Dataset addToRdfData_internal(final Dataset dataset) {
 		List<NIFBean> result = new ArrayList<>();
 
+//		String contextUri = null;
+
+//		Model result = ModelFactory.createDefaultModel();
+
+		Map<String, String> beanUriHash = new HashMap<>();
+
+		List<HashedBean> hashedBeans = new ArrayList<>();
         NIFBean.NIFBeanBuilder builderContext = new NIFBean.NIFBeanBuilder();
         
         String text = this.document.text;
@@ -59,6 +81,8 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
 	        NIFBean beanContext = new NIFBean(builderContext);
 	
 	        result.add(beanContext);
+//	        contextUri =  new Formatter().format("%s#offset_%d_%d",document.uri,0,text.length()).toString();
+//	        result.add(new NIF21(Arrays.asList(beanContext)).getModel());
         } else {
         	builderContext.context(baseUri, 0, 0);
 	        builderContext.nifType(NIFType.CONTEXT);
@@ -72,10 +96,13 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
 	        NIFBean beanContext = new NIFBean(builderContext);
 	
 	        result.add(beanContext);
+//			contextUri =  new Formatter().format("%s#offset_%d_%d",document.uri,0,0).toString();
+//			result.add(new NIF21(Arrays.asList(beanContext)).getModel());
         }
         
         for (Mention conceptMention : this.document.conceptMentions) {
-        	
+
+        	List<NIFBean> conceptBeanList = new ArrayList<>();
             NIFBean.NIFBeanBuilder builderMention = new NIFBean.NIFBeanBuilder();
             builderMention.nifType(NIFType.ENTITY);
             
@@ -111,13 +138,16 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
         	// add provenance information
         	Iterator<Provenance> provenanceIt = conceptMention.provenanceSet.iterator();
 
+			String hashedNif = GlobalConfig.getInstance().makeNifHash(conceptMention, document);
+
+			String beanUri = new Formatter().format("%s#offset_%d_%d",document.uri,conceptMention.span.start,conceptMention.span.end).toString();
         	//ANNOTATOR
         	if( !provenanceIt.hasNext() ) builderMention.annotator(RDFHelpers.createValidIRIfromBase("default","http://corp.dbpedia.org/annotator"));
         	while (provenanceIt.hasNext()) {
         		Provenance provenance = provenanceIt.next();
         		if (null != provenance.annotator) {
         			builderMention.annotator( RDFHelpers.createValidIRIfromBase(provenance.annotator ,"http://corp.dbpedia.org/annotator"));
-        			builderMention.score((double) provenance.score);
+        			if( -1.0f != provenance.score ) builderMention.score((double) provenance.score);
         			break;
         		} else {
         			continue;
@@ -125,16 +155,35 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
         	}
 
             NIFBean bean = new NIFBean(builderMention);
-            result.add(bean);
+        	beanUriHash.put(beanUri, hashedNif);
+//			beanUriHash.add(new HashedBean(beanUri, hashedNif));
+        	result.add(bean);
 		}
-        
-        NIF nif21 = new NIF21(result);
 
-		// add new annotations
-        Model nifModel = nif21.getModel();  
-        
-        dataset.addNamedModel(this.graphName, nifModel);
-        nifModel.close();
+
+        NIF nif21 = new NIF21(result);
+        Model nifModel = nif21.getModel();
+        Model outModel = ModelFactory.createDefaultModel();
+
+//		Logger.getGlobal().info(beanUriHash.keySet().toString());
+		StmtIterator iter = nifModel.listStatements();
+		while(iter.hasNext()) {
+			Statement stmt = iter.nextStatement();
+
+			Resource s = stmt.getSubject();
+			Property p = stmt.getPredicate();
+			RDFNode o = stmt.getObject();
+//			Logger.getGlobal().info(s.getURI());
+			if(beanUriHash.keySet().contains(s.getURI())) {
+				outModel.add(ResourceFactory.createResource(s.getURI() + "?lid=" + beanUriHash.get(s.getURI())), p, o);
+			} else {
+				outModel.add(s, p, o);
+			}
+		}
+
+        dataset.addNamedModel(this.graphName, outModel);
+		nifModel.close();
+        outModel.close();
         
         return dataset;
 	}

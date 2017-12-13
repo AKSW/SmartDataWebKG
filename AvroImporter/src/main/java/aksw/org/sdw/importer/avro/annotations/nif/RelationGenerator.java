@@ -10,6 +10,7 @@ import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import aksw.org.sdw.importer.avro.annotations.*;
 import aksw.org.sdw.importer.avro.annotations.dfki.Dfki2SdwKgMapper;
 import aksw.org.sdw.importer.avro.annotations.ids.UniqueIdGenerator;
 import org.apache.jena.atlas.lib.IRILib;
@@ -28,10 +29,6 @@ import org.apache.xerces.impl.io.MalformedByteSequenceException;
 import org.apache.xerces.stax.events.StartElementImpl;
 import org.nlp2rdf.nif21.NIF21Format;
 
-import aksw.org.sdw.importer.avro.annotations.Document;
-import aksw.org.sdw.importer.avro.annotations.Mention;
-import aksw.org.sdw.importer.avro.annotations.Provenance;
-import aksw.org.sdw.importer.avro.annotations.RelationMention;
 import aksw.org.sdw.rdf.namespaces.CorpDbpedia;
 import aksw.org.sdw.rdf.namespaces.RdfDataTypes;
 import aksw.org.sdw.rdf.namespaces.W3COrg;
@@ -205,9 +202,12 @@ public class RelationGenerator extends DocRdfGenerator {
 
 			String uniqueId = this.document.entityIdGenerator.getUniqueId();
 			// TODO solve /#
-			String relationMetadataUri = RDFHelpers.createValidIRIfromBase(document.id, this.graphName.substring(0,this.graphName.length()-1));// ID uniqueId;
-			relationMention.generatedUri = relationMetadataUri;
-			relationMention.generatedId = uniqueId; // ID
+			// ID
+			relationMention.generatedId = ( "" == document.id || null == document.id ) ?
+					uniqueId :
+					document.id;
+			relationMention.generatedUri = RDFHelpers.createValidIRIfromBase(relationMention.generatedId, this.graphName.substring(0,this.graphName.length()-1));
+//			String relationMetadataUri = relationMention.generatedUri;
 
 			Property p = ResourceFactory.createProperty(CorpDbpedia.prefixOntology+"hasRelationMention");
 
@@ -234,7 +234,7 @@ public class RelationGenerator extends DocRdfGenerator {
 			this.createRelationTriple(RelationGenerator.HandleEntityLabels, relationMention, relationModel, null);
 			this.createRelationTriple(RelationGenerator.HandleEntityTypes, relationMention, relationModel, null);
 
-			dataset.addNamedModel(relationMetadataUri, relationModel);
+			dataset.addNamedModel(relationMention.generatedUri, relationModel);
 //			relationModel.write(System.out,"TURTLE");
 
 
@@ -381,6 +381,15 @@ public class RelationGenerator extends DocRdfGenerator {
 				RDFNode sourceObject = metadataModel.createResource(provenance.source);
 				this.addStatement(uriString, W3CProvenance.hadPrimarySource, sourceObject, metadataModel);
 			}
+
+			if ( null != this.document.date ) {
+				this.addStatementWithLiteral(uriString, CorpDbpedia.hasDate,this.document.date, XSDDatatype.XSDdateTime , metadataModel);
+			}
+
+			if ( null != this.document.docType ) {
+				RDFNode docTypeliteral = metadataModel.createLiteral(this.document.docType.toString(), document.langCode);
+				this.addStatement(uriString, CorpDbpedia.hasDocType, docTypeliteral, metadataModel);
+			}
 		}
 
 		return 0;
@@ -437,6 +446,14 @@ public class RelationGenerator extends DocRdfGenerator {
 		RDFNode label = arg.model.createLiteral(rm.relation.textNormalized, document.langCode);
 		this.addStatement(rm.relation.generatedUri, RDFS.label.getURI(), label, arg.model);
 
+		String attrTo = GlobalConfig.getInstance().getWasAttributedTo();
+
+		RDFNode attributedTo = arg.model.createResource(CorpDbpedia.prefix+"crawler/"+attrTo);
+		this.addStatement(rm.relation.generatedUri, "http://www.w3.org/ns/prov#wasAttributedTo", attributedTo, arg.model);
+
+//		RDFNode attributedLabel = arg.model.createLiteral(attrTo, this.document.langCode);
+//		this.addStatement(CorpDbpedia.prefix+"crawler/"+attrTo, RDFS.label.getURI(), attributedLabel,arg.model);
+
 		int memberPosition = 1;
 		for (String key : rm.entities.keySet()) {
 			Mention mem = rm.entities.get(key);
@@ -456,6 +473,10 @@ public class RelationGenerator extends DocRdfGenerator {
 			int offset_beginn = rm.entities.get(key).span.start;
 			int offset_end = rm.entities.get(key).span.end;
 			String mentionedMember = new Formatter().format("%s#offset_%d_%d",document.uri,offset_beginn,offset_end).toString();
+
+//			rm.entities.get(key).provenanceSet
+			mentionedMember += "?lid="+GlobalConfig.getInstance()
+					.makeNifHash(rm.entities.get(key), document);
 			this.addStatement(member.toString(), CorpDbpedia.relationMemberMentioned,arg.model.createResource(mentionedMember),arg.model);
 
 			memberPosition++;
@@ -617,10 +638,11 @@ public class RelationGenerator extends DocRdfGenerator {
 		RelationMention relationMention = argument.relationMention;
 
 		//Kaeufer
-		Mention customer = relationMention.entities.get("company_customer");
+		Mention customer = relationMention.entities.get("customer");
 		//Anbieter
-		Mention provider = relationMention.entities.get("company_provider");
+		Mention provider = relationMention.entities.get("company");
 
+		if( customer == null || provider == null ) return 0;
 		String leftEntityString = provider.generatedUri;
 		String rightEntityString = customer.generatedUri;
 
@@ -673,4 +695,6 @@ public class RelationGenerator extends DocRdfGenerator {
 		}
 		return hashed;
 	}
+
+
 }

@@ -76,6 +76,7 @@ public abstract class DocRdfGenerator	 {
 			rdfStreamWriter.handleNamespace("dbco", "http://corp.dbpedia.org/ontology#");
 			rdfStreamWriter.handleNamespace("xsd", "http://www.w3.org/2001/XMLSchema#");
 			rdfStreamWriter.handleNamespace("nif", "http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#");
+			rdfStreamWriter.handleNamespace("prov", "http://www.w3.org/ns/prov#");
 
 			while (it.hasNext()) {
 				Statement st = it.next();

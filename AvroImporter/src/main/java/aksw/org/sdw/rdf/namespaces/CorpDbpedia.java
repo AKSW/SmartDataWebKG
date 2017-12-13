@@ -103,6 +103,7 @@ public class CorpDbpedia {
 	public static final String relationMemberMentioned = prefixOntology+"RelationMemberMentioned";
 
 	public static final String hasFounder= prefixOntology+"hasFounder";
+	public static final String hasDocType= prefixOntology+"hasDocType";
 
 	/** **/
 	public static final String placeHolder = prefix+"placeholder/";

@@ -9,7 +9,7 @@ public class DfkiProvenanceAdapter extends Provenance implements DataImportAdapt
 	@Override
 	public void addData_internal(de.dfki.lt.tap.Provenance provenance, Document document) {
 		this.license = provenance.getLicense();
-		this.score = (null == provenance.getScore() ? 0.0f : provenance.getScore());
+		this.score = (null == provenance.getScore() ? -1.0f : provenance.getScore());
 		this.annotator = provenance.getAnnotator();		
 		
 	}

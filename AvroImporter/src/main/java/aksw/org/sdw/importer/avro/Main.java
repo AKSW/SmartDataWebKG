@@ -5,9 +5,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import aksw.org.sdw.importer.avro.annotations.GlobalConfig;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -18,7 +20,7 @@ import org.apache.commons.cli.ParseException;
 import aksw.org.sdw.importer.avro.annotations.Document;
 import aksw.org.sdw.importer.avro.annotations.RelationMention;
 import aksw.org.sdw.importer.avro.annotations.RelationMentionImporter;
-import aksw.org.sdw.importer.avro.annotations.beuth.BeuthImporter;
+//import aksw.org.sdw.importer.avro.annotations.beuth.BeuthImporter;
 import aksw.org.sdw.importer.avro.annotations.dfki.Dfki2SdwKgMapper;
 import aksw.org.sdw.importer.avro.annotations.dfki.DfkiImporter;
 import aksw.org.sdw.importer.avro.annotations.nif.DocRdfGenerator;
@@ -32,7 +34,8 @@ public class Main {
 	};
 
 	static boolean disablePrefix = false;
-	static String baseUri = "default";
+	static boolean rOnly = false;
+	static String baseUri = null;
 
 	public static void main(String[] args) throws IOException {
 		// String b[] =
@@ -58,7 +61,8 @@ public class Main {
 		options.addOption("d", "dir", true, "convert directory to avro");
 		options.addOption("i","iterationPrefix", true, "name of iteration cycle");
 		options.addOption("c","disablePrefixes", false, "output without @prefix");
-		options.addOption("b","baseUri", true, "baseUri");
+		options.addOption("r","relationsOnly", false, "generate rdf for relations only");
+		options.addOption("b","baseUri", true, "baseUri for documents");
 
 		CommandLine commandLine = null;
 		CommandLineParser parser = new BasicParser();
@@ -84,6 +88,7 @@ public class Main {
 				} else {
 					formatter.printHelp("avroimporter", options);
 				}
+				GlobalConfig.getInstance().setWasAttributedTo(str_type);
 				filePath = commandLine.getOptionValue("p");
 				inputDir = commandLine.getOptionValue("d");
 				if( commandLine.hasOption("b")) baseUri = commandLine.getOptionValue("b");
@@ -93,9 +98,14 @@ public class Main {
 				formatter.printHelp("avroimporter", options);
 				System.exit(1);
 			}
-
 			if( commandLine.hasOption("c")) {
 				disablePrefix = true;
+			}
+			if( commandLine.hasOption("r")) {
+				rOnly = true;
+			}
+			if( commandLine.hasOption("b")) {
+				baseUri = commandLine.getOptionValue("b");
 			}
 
 		} catch (ParseException e) {
@@ -108,7 +118,7 @@ public class Main {
 		if (false == outputDirectory.exists() && false == outputDirectory.mkdirs()) {
 			System.err.println("Was not able to create directories: " + outputDirectoryPath);
 		}
-		
+
 		// for file ?
 		if(!commandLine.hasOption('d')) {
 			System.out.println("ConvertFile");
@@ -130,7 +140,6 @@ public class Main {
 				}
 			}
 		}
-		
 	}
 	
 	public static void forFile(InputType inputType, String filePath, String outputDirectoryPath, String namespacePrefix) throws IOException{
@@ -138,15 +147,15 @@ public class Main {
 		String filePrefix;
 		//TODO all compatible with dfki?
 		if (InputType.BEUTH == inputType) {
-			importer = new DfkiImporter(filePath, namespacePrefix);
+			importer = new DfkiImporter(filePath, namespacePrefix, rOnly);
 			filePrefix = "beuth";
 		} 
 		else if (InputType.DFKI == inputType) {
-			importer = new DfkiImporter(filePath, namespacePrefix);
+			importer = new DfkiImporter(filePath, namespacePrefix, rOnly);
 			filePrefix = "dfki";
 		}
 		else if (InputType.SIEMENS == inputType) {
-			importer = new DfkiImporter(filePath, namespacePrefix);
+			importer = new DfkiImporter(filePath, namespacePrefix, rOnly);
 			filePrefix = "siemens";
 		}
 		else {
@@ -170,7 +179,9 @@ public class Main {
 //			if (count<329 ) continue;
 //			if (count>329 ) break;
 
-			if(baseUri != null) doc.uri = baseUri;
+			GlobalConfig.getInstance().setNifid(UUID.randomUUID().toString());
+
+			if(baseUri != null) doc.uri = baseUri.endsWith("/") ? baseUri : baseUri+"/";
 			String countString = Integer.toString(count);
 
 			String leadingZero = "";

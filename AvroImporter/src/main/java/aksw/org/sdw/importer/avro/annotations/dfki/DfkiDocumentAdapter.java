@@ -19,9 +19,12 @@ import de.dfki.lt.tap.RelationArgument;
 public class DfkiDocumentAdapter extends Document implements DataImportAdapter<de.dfki.lt.tap.Document> {
 	
 	//final static String namespacePrefix = "http://corp.dbpedia.org/extract/it02/dfki/";
+
+	final boolean rOnly;
 	
-	public DfkiDocumentAdapter(String namespacePrefix) {
+	public DfkiDocumentAdapter(String namespacePrefix, boolean rOnly) {
 		super(namespacePrefix);
+		this.rOnly = rOnly;
 	}
 	
 	@Override
@@ -34,7 +37,15 @@ public class DfkiDocumentAdapter extends Document implements DataImportAdapter<d
 			this.text = dfkiDocument.getText();
 		}
 		if ( null == this.uri ) {
-			this.uri = dfkiDocument.getUri();
+			this.uri = dfkiDocument.getUri().endsWith("/") ? dfkiDocument.getUri() : dfkiDocument.getUri()+"/";
+		}
+
+		if (null == this.docType && dfkiDocument.getDocType() != null ) {
+			this.docType = DocTypes.valueOf(dfkiDocument.getDocType().toString());
+		}
+
+		if ( null == this.date ) {
+			this.date = dfkiDocument.getDate();
 		}
 		
 		//check for provenance
@@ -67,16 +78,18 @@ public class DfkiDocumentAdapter extends Document implements DataImportAdapter<d
 			}
 		}
 
-		// check for named entities/concepts
-		List<de.dfki.lt.tap.ConceptMention> dfkiConceptMentions = dfkiDocument.getConceptMentions();
-		if (null != dfkiConceptMentions && false == dfkiConceptMentions.isEmpty()) {
-			for (de.dfki.lt.tap.ConceptMention dfkiConceptMention : dfkiConceptMentions) {
+		if(!rOnly) {
+			// check for named entities/concepts
+			List<de.dfki.lt.tap.ConceptMention> dfkiConceptMentions = dfkiDocument.getConceptMentions();
+			if (null != dfkiConceptMentions && false == dfkiConceptMentions.isEmpty()) {
+				for (de.dfki.lt.tap.ConceptMention dfkiConceptMention : dfkiConceptMentions) {
 
-				if(conceptsInRelations.contains(dfkiConceptMention.getId())) continue;
+					if(conceptsInRelations.contains(dfkiConceptMention.getId())) continue;
 
-				DfkiMentionAdapter dfkiEntity = new DfkiMentionAdapter();
-				dfkiEntity.addData_internal(dfkiConceptMention, this);
-				this.conceptMentions.add(dfkiEntity);
+					DfkiMentionAdapter dfkiEntity = new DfkiMentionAdapter();
+					dfkiEntity.addData_internal(dfkiConceptMention, this);
+					this.conceptMentions.add(dfkiEntity);
+				}
 			}
 		}
 	}
