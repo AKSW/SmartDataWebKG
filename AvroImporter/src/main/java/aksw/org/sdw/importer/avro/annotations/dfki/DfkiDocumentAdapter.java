@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import aksw.org.sdw.importer.avro.annotations.DataImportAdapter;
 import aksw.org.sdw.importer.avro.annotations.Document;
@@ -37,7 +38,11 @@ public class DfkiDocumentAdapter extends Document implements DataImportAdapter<d
 			this.text = dfkiDocument.getText();
 		}
 		if ( null == this.uri ) {
-			this.uri = dfkiDocument.getUri().endsWith("/") ? dfkiDocument.getUri() : dfkiDocument.getUri()+"/";
+			try {
+				this.uri = dfkiDocument.getUri().endsWith("/") ? dfkiDocument.getUri() : dfkiDocument.getUri() + "/";
+			} catch (NullPointerException npe ) {
+				Logger.getGlobal().warning("no document uri found");
+			}
 		}
 
 		if (null == this.docType && dfkiDocument.getDocType() != null ) {
