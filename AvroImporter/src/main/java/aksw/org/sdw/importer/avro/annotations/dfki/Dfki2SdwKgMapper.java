@@ -61,8 +61,8 @@ public class Dfki2SdwKgMapper {
 		typeMappings.put( "child", Arrays.asList( org+"Organization", dbo+"Organisation" ));
 		typeMappings.put( "company", Arrays.asList( dbo+"Company" ));
 		typeMappings.put( "customer", Arrays.asList( org+"Organization", dbo+"Organisation" ));
-		typeMappings.put( "financial-event", Arrays.asList("dbco:FinancialEvent"));
-		typeMappings.put( "event_type", Arrays.asList("dbco:FinancialEvent"));
+		typeMappings.put( "financial-event", Arrays.asList(dbco+"FinancialEvent"));
+		typeMappings.put( "event_type", Arrays.asList(dbco+"FinancialEvent"));
 		typeMappings.put( "parent", Arrays.asList( org+"Organization", dbo+"Organisation" ));
 
 		// SIEMENS

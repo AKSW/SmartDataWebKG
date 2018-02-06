@@ -1,5 +1,8 @@
 package aksw.org.sdw.importer.avro.annotations;
 
+import org.apache.jena.rdf.model.Model;
+import org.eclipse.rdf4j.model.ModelFactory;
+
 import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -11,6 +14,7 @@ public class GlobalConfig {
 
     private static GlobalConfig instance = null;
 
+    private Model model = org.apache.jena.rdf.model.ModelFactory.createDefaultModel();
     private String nifid = null;
     private String wasAttributedTo = null;
 
@@ -83,4 +87,32 @@ public class GlobalConfig {
 //        }
 //        return hashed;
 //    }
+
+    public String globalFactHash(String s, String p, String o) {
+
+        //  sha256Hash(List(subject,predicate,value,lada).flatMap(Option(_)).mkString(","))
+        return null;
+    }
+
+    public String sha256Hash(String text) {
+        String ret = "";
+        try {
+            ret = String.format("%064x", new java.math.BigInteger(1, MessageDigest.getInstance("SHA-256").digest(text.getBytes())));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+    public void addModel(Model m) {
+        model.add(m);
+    }
+
+    public void resetModel() {
+        model = org.apache.jena.rdf.model.ModelFactory.createDefaultModel();
+    }
+
+    public Model getModel() {
+        return model;
+    }
 }

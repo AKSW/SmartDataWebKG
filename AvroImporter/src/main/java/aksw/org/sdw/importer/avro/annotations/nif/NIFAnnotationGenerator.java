@@ -8,11 +8,13 @@ import java.util.logging.Logger;
 
 import aksw.org.sdw.importer.avro.annotations.GlobalConfig;
 import aksw.org.sdw.rdf.namespaces.CorpDbpedia;
+import org.apache.jena.datatypes.xsd.XSDDatatype;
 import org.apache.jena.query.Dataset;
 import org.apache.jena.rdf.model.*;
 import org.nlp2rdf.NIF;
 import org.nlp2rdf.bean.NIFBean;
 import org.nlp2rdf.bean.NIFType;
+import org.nlp2rdf.nif21.NIF21Format;
 import org.nlp2rdf.nif21.impl.NIF21;
 
 import com.github.jsonldjava.core.RDFDatasetUtils;
@@ -59,7 +61,7 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
 	protected Dataset addToRdfData_internal(final Dataset dataset) {
 		List<NIFBean> result = new ArrayList<>();
 
-//		String contextUri = null;
+		String contextUri = null;
 
 //		Model result = ModelFactory.createDefaultModel();
 
@@ -81,7 +83,7 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
 	        NIFBean beanContext = new NIFBean(builderContext);
 	
 	        result.add(beanContext);
-//	        contextUri =  new Formatter().format("%s#offset_%d_%d",document.uri,0,text.length()).toString();
+	        contextUri =  new Formatter().format("%s#offset_%d_%d",document.uri,0,text.length()).toString();
 //	        result.add(new NIF21(Arrays.asList(beanContext)).getModel());
         } else {
         	builderContext.context(baseUri, 0, 0);
@@ -96,10 +98,10 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
 	        NIFBean beanContext = new NIFBean(builderContext);
 	
 	        result.add(beanContext);
-//			contextUri =  new Formatter().format("%s#offset_%d_%d",document.uri,0,0).toString();
+			contextUri =  new Formatter().format("%s#offset_%d_%d",document.uri,0,0).toString();
 //			result.add(new NIF21(Arrays.asList(beanContext)).getModel());
         }
-        
+
         for (Mention conceptMention : this.document.conceptMentions) {
 
         	List<NIFBean> conceptBeanList = new ArrayList<>();
@@ -138,7 +140,10 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
         	// add provenance information
         	Iterator<Provenance> provenanceIt = conceptMention.provenanceSet.iterator();
 
-			String hashedNif = GlobalConfig.getInstance().makeNifHash(conceptMention, document);
+//			String hashedNif = GlobalConfig.getInstance().makeNifHash(conceptMention, document);
+			String hashedNif = new Formatter().format("%s#offset_%d_%d",document.uri+"?lid="+GlobalConfig.getInstance()
+					.makeNifHash(conceptMention, document),conceptMention.span.start,conceptMention.span.end).toString();
+
 
 			String beanUri = new Formatter().format("%s#offset_%d_%d",document.uri,conceptMention.span.start,conceptMention.span.end).toString();
         	//ANNOTATOR
@@ -175,11 +180,18 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
 			RDFNode o = stmt.getObject();
 //			Logger.getGlobal().info(s.getURI());
 			if(beanUriHash.keySet().contains(s.getURI())) {
-				outModel.add(ResourceFactory.createResource(s.getURI() + "?lid=" + beanUriHash.get(s.getURI())), p, o);
+
+
+
+				outModel.add(ResourceFactory.createResource(beanUriHash.get(s.getURI())), p, o);
+//				outModel.add(ResourceFactory.createResource(s.getURI() + "?lid=" + beanUriHash.get(s.getURI())), p, o);
 			} else {
 				outModel.add(s, p, o);
 			}
 		}
+
+		//DocAttributes
+		outModel.add(addContextInformation(contextUri,document));
 
         dataset.addNamedModel(this.graphName, outModel);
 		nifModel.close();
@@ -188,4 +200,29 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
         return dataset;
 	}
 
+	public static Model addContextInformation(String uri, Document doc) {
+		Model m = ModelFactory.createDefaultModel();
+
+		Resource subject = m.createResource(uri);
+
+//		date, language, doctype, dct:title, provenance, confidence
+		if( null != doc.date)
+			m.add(subject, m.createProperty(CorpDbpedia.hasDate),doc.date.toString(), XSDDatatype.XSDdateTime);
+		if( null != doc.docType)
+			m.add(subject, m.createProperty(CorpDbpedia.hasDocType),m.createLiteral(doc.docType.toString(), doc.langCode));
+		if( null != doc.langCode)
+			m.add(subject, m.createProperty("http://purl.org/dc/terms/language"),m.createLiteral(doc.langCode));
+		if( null != doc.title)
+			m.add(subject, m.createProperty("http://purl.org/dc/terms/title"), m.createLiteral(doc.title, doc.langCode));
+
+		for(Provenance p : doc.provenanceSet) {
+			if( null != p.annotator) {
+				RDFNode annotaorObject = m.createResource(RDFHelpers.createValidIRIfromBase(p.annotator,"http://corp.dbpedia.org/annotator"));
+				m.add(subject, m.createProperty(NIF21Format.RDF_PROPERTY_ANNOTATOR), annotaorObject);
+				m.add(subject, m.createProperty(NIF21Format.RDF_PROPERTY_CONFIDENCE), m.createTypedLiteral(p.score, XSDDatatype.XSDfloat));
+			}
+		}
+
+		return m;
+	}
 }

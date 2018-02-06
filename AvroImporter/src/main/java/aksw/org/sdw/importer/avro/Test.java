@@ -26,6 +26,7 @@ public class Test {
         System.out.println(new Formatter().format("%s#offset_%d_%d","NEW",21,25).toString());
 
 
+
 //        String filename = "/home/vehnem/workspace/files_avroconv/rdf/it02/wopref/doc_dfki_00000000097.trig";
 //
 //        java.util.ArrayList myList = new ArrayList();

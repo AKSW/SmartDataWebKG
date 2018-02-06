@@ -52,6 +52,10 @@ public class DfkiDocumentAdapter extends Document implements DataImportAdapter<d
 		if ( null == this.date ) {
 			this.date = dfkiDocument.getDate();
 		}
+
+		if ( null == this.title ) {
+			this.title = dfkiDocument.getTitle();
+		}
 		
 		//check for provenance
 		List<de.dfki.lt.tap.Provenance> dfkiDocProvenanceList = dfkiDocument.getProvenance();

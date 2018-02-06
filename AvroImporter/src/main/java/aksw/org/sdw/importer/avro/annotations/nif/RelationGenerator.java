@@ -219,6 +219,7 @@ public class RelationGenerator extends DocRdfGenerator {
 				this.createRelationTriple(relationType, relationMention, binaryModel, tripleId);
 				if ( "" != tripleId.toString() ) {
 					dataset.addNamedModel(tripleId.toString(), binaryModel);
+					GlobalConfig.getInstance().addModel(binaryModel);
 					Resource r = ResourceFactory.createResource(tripleId.toString());
 					RDFNode rMuri = metadataModel.createResource(relationMention.relation.generatedUri);
 					metadataModel.add(r,p,rMuri);
@@ -238,7 +239,7 @@ public class RelationGenerator extends DocRdfGenerator {
 //			relationModel.write(System.out,"TURTLE");
 
 
-			this.createRelationTriple(RelationGenerator.HandleProvenance, relationMention, metadataModel, null);
+//			this.createRelationTriple(RelationGenerator.HandleProvenance, relationMention, metadataModel, null);
 			if (false == metadataModel.isEmpty()) {
 				dataset.addNamedModel(this.graphName, metadataModel);
 //				metadataModel.write(System.out, "TURTLE");
@@ -472,11 +473,12 @@ public class RelationGenerator extends DocRdfGenerator {
 			// :mentioned  ## link to concept mention
 			int offset_beginn = rm.entities.get(key).span.start;
 			int offset_end = rm.entities.get(key).span.end;
-			String mentionedMember = new Formatter().format("%s#offset_%d_%d",document.uri,offset_beginn,offset_end).toString();
-
+			String mentionedMember = new Formatter().format("%s#offset_%d_%d",document.uri+"?lid="+GlobalConfig.getInstance()
+					.makeNifHash(rm.entities.get(key), document),offset_beginn,offset_end).toString();
+//			String mentionedMember = new Formatter().format("%s#offset_%d_%d",document.uri,offset_beginn,offset_end).toString();
 //			rm.entities.get(key).provenanceSet
-			mentionedMember += "?lid="+GlobalConfig.getInstance()
-					.makeNifHash(rm.entities.get(key), document);
+//			mentionedMember += "?lid="+GlobalConfig.getInstance()
+//					.makeNifHash(rm.entities.get(key), document);
 			this.addStatement(member.toString(), CorpDbpedia.relationMemberMentioned,arg.model.createResource(mentionedMember),arg.model);
 
 			memberPosition++;

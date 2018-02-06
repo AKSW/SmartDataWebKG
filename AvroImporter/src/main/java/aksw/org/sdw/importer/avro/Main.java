@@ -1,9 +1,8 @@
 package aksw.org.sdw.importer.avro;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
+import java.sql.Statement;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -26,6 +25,13 @@ import aksw.org.sdw.importer.avro.annotations.dfki.DfkiImporter;
 import aksw.org.sdw.importer.avro.annotations.nif.DocRdfGenerator;
 import aksw.org.sdw.importer.avro.annotations.nif.NIFAnnotationGenerator;
 import aksw.org.sdw.importer.avro.annotations.nif.RelationGenerator;
+import org.apache.jena.base.Sys;
+import org.apache.jena.datatypes.xsd.XSDDatatype;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.StmtIterator;
+
+import javax.xml.bind.annotation.XmlElementDecl;
 
 public class Main {
 
@@ -36,6 +42,15 @@ public class Main {
 	static boolean disablePrefix = false;
 	static boolean rOnly = false;
 	static String baseUri = null;
+
+	static FileWriter fw = null;
+	static {
+		try {
+			fw = new FileWriter(new File("SemanticRelations.nt"));
+		} catch (IOException ioe) {
+			Logger.getGlobal().warning("cant write seperate file");
+		}
+	}
 
 	public static void main(String[] args) throws IOException {
 		// String b[] =
@@ -218,7 +233,29 @@ public class Main {
 			if(disablePrefix)
 			rdfGnerator.writeRdfDataAsTrig(outputStream);
 			else rdfGnerator.writeRdfDataAsTrigWithPrefix(outputStream);
+
+//			Model mm = ModelFactory.createDefaultModel();
+//			mm.add(mm.createResource("http://test.de/n1/"),mm.createProperty("http://test.de/prop/"),mm.createTypedLiteral(100.0f, XSDDatatype.XSDfloat));
+//			GlobalConfig.getInstance().addModel(mm);
+
+			StmtIterator stmtIterator = GlobalConfig.getInstance().getModel().listStatements();
+
+			while(stmtIterator.hasNext()) {
+				org.apache.jena.rdf.model.Statement statement = stmtIterator.nextStatement();
+				String s = "<"+statement.asTriple().getSubject().getURI()+">";
+				String p = "<"+statement.asTriple().getPredicate().getURI()+">";
+				String o = "";
+				if ( statement.asTriple().getObject().isLiteral()) {
+					o = "\""+statement.asTriple().getObject().getLiteral().getLexicalForm()+"\"^^<"+statement.asTriple().getObject().getLiteral().getDatatypeURI()+">";
+				} else {
+					o = "<"+statement.asTriple().getObject().getURI()+">";
+				}
+				fw.write(s+" "+p+" "+o+" .\n");
+			}
+			fw.flush();
+			GlobalConfig.getInstance().resetModel();
 		}
+		fw.close();
 		
 		System.out.println("missingMappingsDFKI:###"+Dfki2SdwKgMapper.missingMappings.toString());
 		System.out.println("Misc " +RelationGenerator.missingR);
