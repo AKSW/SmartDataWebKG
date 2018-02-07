@@ -44,13 +44,13 @@ public class Main {
 	static String baseUri = null;
 
 	static FileWriter fw = null;
-	static {
-		try {
-			fw = new FileWriter(new File("SemanticRelations.nt"));
-		} catch (IOException ioe) {
-			Logger.getGlobal().warning("cant write seperate file");
-		}
-	}
+//	static {
+//		try {
+//			fw = new FileWriter(new File("semantic-relations-.nt"));
+//		} catch (IOException ioe) {
+//			Logger.getGlobal().warning("cant write seperate file");
+//		}
+//	}
 
 	public static void main(String[] args) throws IOException {
 		// String b[] =
@@ -78,6 +78,7 @@ public class Main {
 		options.addOption("c","disablePrefixes", false, "output without @prefix");
 		options.addOption("r","relationsOnly", false, "generate rdf for relations only");
 		options.addOption("b","baseUri", true, "baseUri for documents");
+		options.addOption(null,"extract-smr", true, "folder for extraction of semantic relations");
 
 		CommandLine commandLine = null;
 		CommandLineParser parser = new BasicParser();
@@ -109,6 +110,7 @@ public class Main {
 				if( commandLine.hasOption("b")) baseUri = commandLine.getOptionValue("b");
 				outputDirectoryPath = commandLine.getOptionValue("o");
 				namespacePrefix = "http://corp.dbpedia.org/extract/"+commandLine.getOptionValue("i")+"/"+inputType.toString().toLowerCase();
+				if( commandLine.hasOption("extract-smr")) GlobalConfig.getInstance().setSmrDir(commandLine.getOptionValue("extract-smr"));
 			} else {
 				formatter.printHelp("avroimporter", options);
 				System.exit(1);
@@ -156,8 +158,24 @@ public class Main {
 			}
 		}
 	}
+
+	public static void initFw(String avrofile) throws IOException {
+		String smrFile = "smr"+avrofile.replaceAll("[/. ]","_");
+		fw = new FileWriter(new File(GlobalConfig.getInstance().getSmrDir()+"/"+smrFile+".nt"));
+	}
 	
 	public static void forFile(InputType inputType, String filePath, String outputDirectoryPath, String namespacePrefix) throws IOException{
+
+		boolean writeSmr = false;
+		if(null != GlobalConfig.getInstance().getSmrDir()) {
+			writeSmr = true;
+			try {
+				initFw(filePath);
+			} catch (IOException ioe ) {
+				writeSmr = false;
+				ioe.printStackTrace();
+			}
+		}
 		RelationMentionImporter importer;
 		String filePrefix;
 		//TODO all compatible with dfki?
@@ -240,22 +258,25 @@ public class Main {
 
 			StmtIterator stmtIterator = GlobalConfig.getInstance().getModel().listStatements();
 
-			while(stmtIterator.hasNext()) {
-				org.apache.jena.rdf.model.Statement statement = stmtIterator.nextStatement();
-				String s = "<"+statement.asTriple().getSubject().getURI()+">";
-				String p = "<"+statement.asTriple().getPredicate().getURI()+">";
-				String o = "";
-				if ( statement.asTriple().getObject().isLiteral()) {
-					o = "\""+statement.asTriple().getObject().getLiteral().getLexicalForm()+"\"^^<"+statement.asTriple().getObject().getLiteral().getDatatypeURI()+">";
-				} else {
-					o = "<"+statement.asTriple().getObject().getURI()+">";
+			if( writeSmr ) {
+				while (stmtIterator.hasNext()) {
+					org.apache.jena.rdf.model.Statement statement = stmtIterator.nextStatement();
+					String s = "<" + statement.asTriple().getSubject().getURI() + ">";
+					String p = "<" + statement.asTriple().getPredicate().getURI() + ">";
+					String o = "";
+					if (statement.asTriple().getObject().isLiteral()) {
+						o = "\"" + statement.asTriple().getObject().getLiteral().getLexicalForm() + "\"^^<" + statement.asTriple().getObject().getLiteral().getDatatypeURI() + ">";
+					} else {
+						o = "<" + statement.asTriple().getObject().getURI() + ">";
+					}
+					fw.write(s + " " + p + " " + o + " .\n");
 				}
-				fw.write(s+" "+p+" "+o+" .\n");
+				fw.flush();
+				GlobalConfig.getInstance().resetModel();
 			}
-			fw.flush();
-			GlobalConfig.getInstance().resetModel();
+			System.exit(1);
 		}
-		fw.close();
+		if( writeSmr ) fw.close();
 		
 		System.out.println("missingMappingsDFKI:###"+Dfki2SdwKgMapper.missingMappings.toString());
 		System.out.println("Misc " +RelationGenerator.missingR);

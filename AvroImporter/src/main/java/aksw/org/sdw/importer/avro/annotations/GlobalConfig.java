@@ -1,13 +1,14 @@
 package aksw.org.sdw.importer.avro.annotations;
 
+import org.apache.jena.base.Sys;
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.RDFNode;
 import org.eclipse.rdf4j.model.ModelFactory;
+import org.eclipse.rdf4j.model.Statement;
 
+import java.math.BigInteger;
 import java.security.MessageDigest;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class GlobalConfig {
 
@@ -88,20 +89,48 @@ public class GlobalConfig {
 //        return hashed;
 //    }
 
-    public String globalFactHash(String s, String p, String o) {
+    public String globalFactHash(String subject, String predicate, RDFNode object) {
 
-        //  sha256Hash(List(subject,predicate,value,lada).flatMap(Option(_)).mkString(","))
-        return null;
+        String value;
+        String lada = "";
+
+        String subjHash = sha256Hash(subject);
+        String predHash = sha256Hash(predicate);
+
+        if( object.isURIResource() ) {
+            value = object.asResource().getURI();
+        } else {
+            value = object.asLiteral().getLexicalForm();
+            lada = object.asLiteral().getLanguage();
+            if( "".equals(lada) ) lada = object.asLiteral().getDatatypeURI();
+        }
+
+        String objHash = sha256Hash(value);
+        String ladaHash = sha256Hash(lada);
+
+        //  SCALA : sha256Hash(List(subject,predicate,value,lada).flatMap(Option(_)).mkString(","))
+        List<String> list = Arrays.asList(subjHash,predHash,objHash,ladaHash);
+        return sha256Hash(String.join(",",list));
     }
 
     public String sha256Hash(String text) {
-        String ret = "";
+        String ret = null;
         try {
             ret = String.format("%064x", new java.math.BigInteger(1, MessageDigest.getInstance("SHA-256").digest(text.getBytes())));
         } catch (Exception e) {
             e.printStackTrace();
         }
         return ret;
+    }
+
+    public String smrDir = null;
+
+    public String getSmrDir() {
+        return smrDir;
+    }
+
+    public void setSmrDir(String changeto) {
+        smrDir = changeto;
     }
 
     public void addModel(Model m) {

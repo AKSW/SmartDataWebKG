@@ -488,7 +488,7 @@ public class RelationGenerator extends DocRdfGenerator {
 	}
 
 	protected int handleCompanyFinancialEvent(final ModelData argument) {
-		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
+		//argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
 
 		Objects.requireNonNull(argument);
 		
@@ -503,7 +503,12 @@ public class RelationGenerator extends DocRdfGenerator {
 		}
 
 		RDFNode event = argument.model.createResource(leftEntityString);
+
+		// SMR Triple
 		this.addStatement(rightEntityString, CorpDbpedia.hasFinancialEvent, event , argument.model);
+		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+
+		GlobalConfig.getInstance().globalFactHash(rightEntityString, CorpDbpedia.hasFinancialEvent,event));
+
 		try {
 			dateString = argument.relationMention.entities.get("date").textNormalized;
 //			System.out.println("DATE FOUND");
@@ -530,7 +535,6 @@ public class RelationGenerator extends DocRdfGenerator {
 
 		RDFNode parentCompany = argument.model.createResource(leftEntityString);
 		this.addStatement(rightEntityString, W3COrg.subOrganizationOf, parentCompany, argument.model);
-
 		return 0;
 	}
 
