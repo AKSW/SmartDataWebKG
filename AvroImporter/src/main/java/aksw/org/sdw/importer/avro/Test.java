@@ -42,14 +42,14 @@ public class Test {
         RDFNode obj4 = m.createTypedLiteral("", XSDBaseStringType.XSDstring);
 
 
-        System.out.println("## LanguageBased");
-        GlobalConfig.getInstance().globalFactHash(subject,predicate,obj1);
-        System.out.println("## TypedLiteral");
-        GlobalConfig.getInstance().globalFactHash(subject,predicate,obj2);
-        System.out.println("## Resource");
-        GlobalConfig.getInstance().globalFactHash(subject,predicate,obj3);
-        System.out.println("## EmptyString");
-        GlobalConfig.getInstance().globalFactHash(subject,predicate,obj4);
+//        System.out.println("## LanguageBased");
+//        GlobalConfig.getInstance().globalFactHash(subject,predicate,obj1);
+//        System.out.println("## TypedLiteral");
+//        GlobalConfig.getInstance().globalFactHash(subject,predicate,obj2);
+//        System.out.println("## Resource");
+//        GlobalConfig.getInstance().globalFactHash(subject,predicate,obj3);
+//        System.out.println("## EmptyString");
+//        System.out.println(GlobalConfig.getInstance().globalFactHash(subject,predicate,obj4));
 
 //        System.out.println("s "+subject);
 //        System.out.println("sh "+subjHash);

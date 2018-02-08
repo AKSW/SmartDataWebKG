@@ -9,6 +9,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import aksw.org.sdw.importer.avro.annotations.GlobalConfig;
+import aksw.org.sdw.importer.avro.annotations.nif.RDFHelpers;
+import aksw.org.sdw.rdf.namespaces.CorpDbpedia;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -41,8 +43,7 @@ public class Main {
 
 	static boolean disablePrefix = false;
 	static boolean rOnly = false;
-	static String baseUri = null;
-
+	static String iterationPrefix = null;
 	static FileWriter fw = null;
 //	static {
 //		try {
@@ -63,7 +64,6 @@ public class Main {
 		String outputDirectoryPath = null;
 		String namespacePrefix = null;
 
-
 		System.out.println("SDW Crawled Data Importer");
 
 		HelpFormatter formatter = new HelpFormatter();
@@ -74,11 +74,11 @@ public class Main {
 		options.addOption("t", "type", true, "input type [BEUTH|DFKI|SIEMENS]");
 		options.addOption("o", "out", true, "output folder directory");
 		options.addOption("d", "dir", true, "convert directory to avro");
-		options.addOption("i","iterationPrefix", true, "name of iteration cycle");
-		options.addOption("c","disablePrefixes", false, "output without @prefix");
-		options.addOption("r","relationsOnly", false, "generate rdf for relations only");
-		options.addOption("b","baseUri", true, "baseUri for documents");
+		options.addOption("i","iteration-prefix", true, "name of iteration cycle");
+		options.addOption("c","disable-prefixes", false, "output without @prefix");
+		options.addOption(null,"relations-only", false, "generate rdf for relations only");
 		options.addOption(null,"extract-smr", true, "folder for extraction of semantic relations");
+//		options.addOption("b","baseUri", true, "baseUri for documents");
 
 		CommandLine commandLine = null;
 		CommandLineParser parser = new BasicParser();
@@ -107,9 +107,9 @@ public class Main {
 				GlobalConfig.getInstance().setWasAttributedTo(str_type);
 				filePath = commandLine.getOptionValue("p");
 				inputDir = commandLine.getOptionValue("d");
-				if( commandLine.hasOption("b")) baseUri = commandLine.getOptionValue("b");
 				outputDirectoryPath = commandLine.getOptionValue("o");
-				namespacePrefix = "http://corp.dbpedia.org/extract/"+commandLine.getOptionValue("i")+"/"+inputType.toString().toLowerCase();
+				iterationPrefix = commandLine.getOptionValue("i");
+				namespacePrefix = "http://corp.dbpedia.org/extract/"+iterationPrefix+"/"+inputType.toString().toLowerCase();
 				if( commandLine.hasOption("extract-smr")) GlobalConfig.getInstance().setSmrDir(commandLine.getOptionValue("extract-smr"));
 			} else {
 				formatter.printHelp("avroimporter", options);
@@ -118,12 +118,12 @@ public class Main {
 			if( commandLine.hasOption("c")) {
 				disablePrefix = true;
 			}
-			if( commandLine.hasOption("r")) {
+			if( commandLine.hasOption("relations-only")) {
 				rOnly = true;
 			}
-			if( commandLine.hasOption("b")) {
-				baseUri = commandLine.getOptionValue("b");
-			}
+//			if( commandLine.hasOption("b")) {
+//				baseUri = commandLine.getOptionValue("b");
+//			}
 
 		} catch (ParseException e) {
 			formatter.printHelp("avroimporter", options);
@@ -214,20 +214,18 @@ public class Main {
 
 			GlobalConfig.getInstance().setNifid(UUID.randomUUID().toString());
 
-			if(baseUri != null) doc.uri = baseUri.endsWith("/") ? baseUri : baseUri+"/";
+			String defaultDocUri = RDFHelpers.createValidIRIfromBase(doc.id,CorpDbpedia.prefix+"crawl/"+iterationPrefix+"/"+inputType.toString().toLowerCase());
+			if ("" == doc.uri || null == doc.uri ) doc.uri = defaultDocUri;
 			String countString = Integer.toString(count);
 
 			String leadingZero = "";
 			for (int i = 10 - countString.length(); i >= 0; --i) {
 				leadingZero += "0";
 			}
-//			Only x files for test
-
 
 			leadingZero += countString;
 
 			String outputFile = outputDirectoryPath + "/doc_" + filePrefix + "_" + leadingZero + ".trig";
-			//System.out.println(outputFile);
 			OutputStream outputStream = new FileOutputStream(new File(outputFile));
 			
 			Level info_level = Level.INFO;
@@ -252,10 +250,6 @@ public class Main {
 			rdfGnerator.writeRdfDataAsTrig(outputStream);
 			else rdfGnerator.writeRdfDataAsTrigWithPrefix(outputStream);
 
-//			Model mm = ModelFactory.createDefaultModel();
-//			mm.add(mm.createResource("http://test.de/n1/"),mm.createProperty("http://test.de/prop/"),mm.createTypedLiteral(100.0f, XSDDatatype.XSDfloat));
-//			GlobalConfig.getInstance().addModel(mm);
-
 			StmtIterator stmtIterator = GlobalConfig.getInstance().getModel().listStatements();
 
 			if( writeSmr ) {
@@ -274,7 +268,7 @@ public class Main {
 				fw.flush();
 				GlobalConfig.getInstance().resetModel();
 			}
-			System.exit(1);
+//			System.exit(1);
 		}
 		if( writeSmr ) fw.close();
 		
@@ -282,7 +276,6 @@ public class Main {
 		System.out.println("Misc " +RelationGenerator.missingR);
 		System.out.println("missingRelations:###"+RelationGenerator.missingRelations.toString());
 		System.out.println("nary-Relations:###"+RelationGenerator.strangeRelations.toString());
-		System.out.println("Number of documents: " + count); 
-
+		System.out.println("Number of documents: " + count);
 	}
 }

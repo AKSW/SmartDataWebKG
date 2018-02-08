@@ -89,39 +89,39 @@ public class GlobalConfig {
 //        return hashed;
 //    }
 
-    public String globalFactHash(String subject, String predicate, RDFNode object) {
-
-        String value;
-        String lada = "";
-
-        String subjHash = sha256Hash(subject);
-        String predHash = sha256Hash(predicate);
-
-        if( object.isURIResource() ) {
-            value = object.asResource().getURI();
-        } else {
-            value = object.asLiteral().getLexicalForm();
-            lada = object.asLiteral().getLanguage();
-            if( "".equals(lada) ) lada = object.asLiteral().getDatatypeURI();
-        }
-
-        String objHash = sha256Hash(value);
-        String ladaHash = sha256Hash(lada);
-
-        //  SCALA : sha256Hash(List(subject,predicate,value,lada).flatMap(Option(_)).mkString(","))
-        List<String> list = Arrays.asList(subjHash,predHash,objHash,ladaHash);
-        return sha256Hash(String.join(",",list));
-    }
-
-    public String sha256Hash(String text) {
-        String ret = null;
-        try {
-            ret = String.format("%064x", new java.math.BigInteger(1, MessageDigest.getInstance("SHA-256").digest(text.getBytes())));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ret;
-    }
+//    public String globalFactHash(String subject, String predicate, RDFNode object) {
+//
+//        String value;
+//        String lada = "";
+//
+//        String subjHash = sha256Hash(subject);
+//        String predHash = sha256Hash(predicate);
+//
+//        if( object.isURIResource() ) {
+//            value = object.asResource().getURI();
+//        } else {
+//            value = object.asLiteral().getLexicalForm();
+//            lada = object.asLiteral().getLanguage();
+//            if( "".equals(lada) ) lada = object.asLiteral().getDatatypeURI();
+//        }
+//
+//        String objHash = sha256Hash(value);
+//        String ladaHash = sha256Hash(lada);
+//
+//        //  SCALA : sha256Hash(List(subject,predicate,value,lada).flatMap(Option(_)).mkString(","))
+//        List<String> list = Arrays.asList(subjHash,predHash,objHash,ladaHash);
+//        return sha256Hash(String.join(",",list));
+//    }
+//
+//    public String sha256Hash(String text) {
+//        String ret = null;
+//        try {
+//            ret = String.format("%064x", new java.math.BigInteger(1, MessageDigest.getInstance("SHA-256").digest(text.getBytes())));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return ret;
+//    }
 
     public String smrDir = null;
 

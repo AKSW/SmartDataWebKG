@@ -4,15 +4,19 @@ import java.security.MessageDigest;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import aksw.org.sdw.importer.avro.annotations.*;
 import aksw.org.sdw.importer.avro.annotations.dfki.Dfki2SdwKgMapper;
 import aksw.org.sdw.importer.avro.annotations.ids.UniqueIdGenerator;
+import com.sun.org.apache.regexp.internal.RE;
+import org.apache.avro.JsonProperties;
 import org.apache.jena.atlas.lib.IRILib;
 import org.apache.jena.base.Sys;
 import org.apache.jena.datatypes.RDFDatatype;
@@ -33,6 +37,8 @@ import aksw.org.sdw.rdf.namespaces.CorpDbpedia;
 import aksw.org.sdw.rdf.namespaces.RdfDataTypes;
 import aksw.org.sdw.rdf.namespaces.W3COrg;
 import aksw.org.sdw.rdf.namespaces.W3CProvenance;
+
+import javax.jws.WebParam;
 
 /**
  * This class can be used to add actual graph data of extracted relationships.
@@ -95,7 +101,6 @@ public class RelationGenerator extends DocRdfGenerator {
 		relationFunctionMap.put(RelationGenerator.CompanyHeadquarters, this::handleHeadquarters);
 		relationFunctionMap.put(RelationGenerator.OrganizationLeadership, this::handleOrganizationLeadership);
 		relationFunctionMap.put(RelationGenerator.CompanyRelationship, this::handleCompanyRelationship);
-
 		relationFunctionMap.put(RelationGenerator.SpinOff, this::handleSpinOff);
 		relationFunctionMap.put(RelationGenerator.CompanyProject, this::handleCompanyProject);
 		relationFunctionMap.put(RelationGenerator.Disaster, this::handleDisaster);
@@ -122,7 +127,7 @@ public class RelationGenerator extends DocRdfGenerator {
 	 *            value' for this relation
 	 */
 	protected void createRelationTriple(final String relationType, final RelationMention relationMention,
-			final Model model, final AtomicReference<String> tripleId) {
+			final Model model) {
 		Objects.requireNonNull(relationType, "No relation type name passed in");
 		Objects.requireNonNull(model, "Model is null");
 
@@ -134,7 +139,6 @@ public class RelationGenerator extends DocRdfGenerator {
 		input.model = model;
 		input.relationMention = relationMention;
 		input.count = (null == counter) ? tmpCount.getAndIncrement() : counter.getAndIncrement();
-		input.tripleId = tripleId;
 
 		Function<ModelData, Integer> methodReference = this.relationFunctionMap.get(relationType);
 
@@ -174,6 +178,11 @@ public class RelationGenerator extends DocRdfGenerator {
 			strangeRelations.put(sourcetype, new AtomicInteger(1));
 	}
 
+    /**
+     * TODO
+     * @param dset
+     * @return
+     */
 	protected Dataset addToRdfData_internal(final Dataset dset) {
 
 		this.dataset = dset;
@@ -215,15 +224,25 @@ public class RelationGenerator extends DocRdfGenerator {
 
 				// binary relation
 				Model binaryModel = this.createNewModel(); // Model 3
-				AtomicReference<String> tripleId = new AtomicReference<String>("");
-				this.createRelationTriple(relationType, relationMention, binaryModel, tripleId);
-				if ( "" != tripleId.toString() ) {
-					dataset.addNamedModel(tripleId.toString(), binaryModel);
+				this.createRelationTriple(relationType, relationMention, binaryModel);
+				StmtIterator stmtIterator = binaryModel.listStatements();
+				while(stmtIterator.hasNext()) {
+
+					Statement statement = stmtIterator.nextStatement();
+					String subj = statement.getSubject().getURI();
+					String pred = statement.getPredicate().getURI();
+					RDFNode obj = statement.getObject();
+
+					String gfHashUri = this.graphName.substring(0,this.graphName.length()-1)+"#"+globalFactHash(subj,pred,obj);
+					dataset.addNamedModel(gfHashUri, ModelFactory.createDefaultModel().add(statement));
 					GlobalConfig.getInstance().addModel(binaryModel);
-					Resource r = ResourceFactory.createResource(tripleId.toString());
+					Resource r = ResourceFactory.createResource(gfHashUri);
 					RDFNode rMuri = metadataModel.createResource(relationMention.relation.generatedUri);
 					metadataModel.add(r,p,rMuri);
 				}
+
+//				argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+
+//						globalFactHash(organisationUri, CorpDbpedia.hasHeadquarterSite, locationUri));
 
 				// raw relation
 				ModelData rawModelData = new ModelData();
@@ -232,8 +251,8 @@ public class RelationGenerator extends DocRdfGenerator {
 				this.handleRawRelationship(rawModelData);
 			}
 
-			this.createRelationTriple(RelationGenerator.HandleEntityLabels, relationMention, relationModel, null);
-			this.createRelationTriple(RelationGenerator.HandleEntityTypes, relationMention, relationModel, null);
+			this.createRelationTriple(RelationGenerator.HandleEntityLabels, relationMention, relationModel);
+			this.createRelationTriple(RelationGenerator.HandleEntityTypes, relationMention, relationModel);
 
 			dataset.addNamedModel(relationMention.generatedUri, relationModel);
 //			relationModel.write(System.out,"TURTLE");
@@ -257,72 +276,14 @@ public class RelationGenerator extends DocRdfGenerator {
 		/** relation of concern */
 		RelationMention relationMention;
 		/** triple Id */
-		AtomicReference<String> tripleId;
+//		AtomicReference<String> tripleId;
 	}
 
-	/**
-	 * This method can be used to create relationships for companies which provide a
-	 * technology
-	 * 
-	 * @param argument
-	 * @return
-	 */
-	protected int handleCompanyTechnology(ModelData argument) {
-		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
-
-		Objects.requireNonNull(argument);
-		RelationMention relationMention = argument.relationMention;
-
-		Mention organisation = relationMention.entities.get("company");
-		Mention product = relationMention.entities.get("product");
-		// for beuth
-		if (null == product)
-			product = relationMention.entities.get("sensor");
-		
-		try {
-			String str = relationMention.entities.get("type").generatedUri;
-			//System.out.println("type "+str);
-		} catch( Exception e ) {
-			
-		}
-
-		if (null == product || null == organisation) {
-			Logger.getGlobal().log(Level.WARNING, "Failed Relation CompanyTechnology: " + relationMention.entities );
-			return 0;
-		}
-
-		String leftEntity = organisation.generatedUri;
-		String rightEntity = product.generatedUri;
-
-		RDFNode object = argument.model.createResource(rightEntity);
-		this.addStatement(leftEntity, CorpDbpedia.providesProduct, object, argument.model);
-
-		return 0;
-	}
-
-	protected int handleCompanyFoundation(ModelData argument) {
-		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
-
-		Objects.requireNonNull(argument);
-		RelationMention relationMention = argument.relationMention;
-
-		Mention company = relationMention.entities.get("company");
-		Mention founder = relationMention.entities.get("founder");
-
-		if (null == company || null == founder) {
-			Logger.getGlobal().log(Level.WARNING, "Failed Relation CompanyTechnology: " + relationMention.entities );
-			return 0;
-		}
-
-		String leftEntity = company.generatedUri;
-		String rightEntity = founder.generatedUri;
-
-		RDFNode object = argument.model.createResource(rightEntity);
-		this.addStatement(leftEntity, CorpDbpedia.hasFounder, object, argument.model);
-
-		return 0;
-	}
-
+    /**
+     * TODO
+     * @param argument
+     * @return
+     */
 	protected int handleLabel(final ModelData argument) {
 		Objects.requireNonNull(argument);
 
@@ -334,6 +295,7 @@ public class RelationGenerator extends DocRdfGenerator {
 			if (null != leftLabel) {
 				RDFNode object = relationModel.createLiteral(leftLabel, this.document.langCode);
 				this.addStatement(entity.generatedUri, RDFS.label.getURI(), object, relationModel);
+				GlobalConfig.getInstance().getModel().add(relationModel.createResource(entity.generatedUri), relationModel.createProperty(RDFS.label.getURI()),object);
 			}
 		}
 
@@ -352,12 +314,18 @@ public class RelationGenerator extends DocRdfGenerator {
 			for (String type : entity.types) {
 				RDFNode object = relationModel.createResource(type);
 				this.addStatement(entity.generatedUri, RDF.type.getURI(), object, relationModel);
+				GlobalConfig.getInstance().getModel().add(relationModel.createResource(entity.generatedUri), relationModel.createProperty(RDF.type.getURI()), object);
 			}
 		}
 
 		return 0;
 	}
 
+    /**
+     * TODO
+     * @param argument
+     * @return
+     */
 	protected int handleProvenance(final ModelData argument) {
 		Objects.requireNonNull(argument);
 
@@ -396,44 +364,11 @@ public class RelationGenerator extends DocRdfGenerator {
 		return 0;
 	}
 
-	protected int handleHeadquarters(final ModelData argument) {
-		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
-		Objects.requireNonNull(argument);
-
-		RelationMention relationMention = argument.relationMention;
-		Model relationModel = argument.model;
-
-
-		Mention organisation = relationMention.entities.get("company");
-		Mention headquarter = relationMention.entities.get("headquarter");
-
-		String organisationUri = organisation.generatedUri;
-
-		// String locationUriString = headquarter.generatedUri + "/site" +
-
-		RDFNode locationUri = relationModel.createResource(headquarter.generatedUri);
-		this.addStatement(organisationUri, CorpDbpedia.hasHeadquarterSite, locationUri, relationModel);
-
-		String locationLabel = (null != headquarter.text) ? headquarter.text : headquarter.textNormalized;
-		RDFNode addressLiteral = relationModel.createLiteral(locationLabel, this.document.langCode);
-		this.addStatement(headquarter.generatedUri, W3COrg.siteAddress, addressLiteral, relationModel);
-
-		return 0;
-	}
-
-	protected int handleOrganizationLeadership(final ModelData argument) {
-		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
-		Objects.requireNonNull(argument);
-
-		String leftEntity = argument.relationMention.entities.get("person").generatedUri;
-		String rightEntity = argument.relationMention.entities.get("organization").generatedUri;
-
-		RDFNode object = argument.model.createResource(rightEntity);
-		this.addStatement(leftEntity, W3COrg.headOf, object, argument.model);
-
-		return 0;
-	}
-
+    /**
+     * TODO
+     * @param arg
+     * @return
+     */
 	protected int handleRawRelationship(final ModelData arg) {
 		Objects.requireNonNull(arg);
 
@@ -487,180 +422,270 @@ public class RelationGenerator extends DocRdfGenerator {
 		return 0;
 	}
 
+	/**
+	 * This method can be used to create relationships for companies which provide a
+	 * technology
+	 *
+	 * @param argument
+	 * @return
+	 */
+	protected int handleCompanyTechnology(ModelData argument) {
+        Objects.requireNonNull(argument);
+        boolean failure = this.addSemanticRelation("company",CorpDbpedia.providesProduct,"product",argument);
+        if (!failure) this.addSemanticRelation("company",CorpDbpedia.providesProduct,"sensor",argument);
+        return 0;
+	}
+
+    /**
+     * TODO
+     * @param argument
+     * @return
+     */
+	protected int handleCompanyFoundation(ModelData argument) {
+        Objects.requireNonNull(argument);
+        try {
+            // keys: company, founder
+            String leftEntityUri = argument.relationMention.entities.get("company").generatedUri;
+            String rightEntityUri = argument.relationMention.entities.get("founder").generatedUri;
+            // hasFounder
+            RDFNode object = argument.model.createResource(rightEntityUri);
+            this.addStatement(leftEntityUri, CorpDbpedia.hasFounder, object, argument.model);
+       } catch ( NullPointerException npe ) {
+            logSemanticRelationNullPointer(argument);
+       }
+		return 0;
+	}
+
+    /**
+     * TODO
+     * @param argument
+     * @return
+     */
+	protected int handleHeadquarters(final ModelData argument) {
+		Objects.requireNonNull(argument);
+        try {
+            String leftEntityUri = argument.relationMention.entities.get("company").generatedUri;
+            String rightEntityUri = argument.relationMention.entities.get("headquarter").generatedUri;
+            // hasHeadquarterSite
+            RDFNode rightEntity = argument.model.createResource(rightEntityUri);
+            this.addStatement(leftEntityUri, CorpDbpedia.hasHeadquarterSite, rightEntity, argument.model);
+            // siteAddress
+            String locationLabel = (null != argument.relationMention.entities.get("headquarter").text) ?
+                    argument.relationMention.entities.get("headquarter").text :
+                    argument.relationMention.entities.get("headquarter").textNormalized;
+            RDFNode addressLiteral = argument.model.createLiteral(locationLabel, this.document.langCode);
+            this.addStatement(rightEntityUri, W3COrg.siteAddress, addressLiteral, argument.model);
+        } catch ( NullPointerException npe ) {
+            logSemanticRelationNullPointer(argument);
+        }
+		return 0;
+	}
+
+    /**
+     * TODO
+     * @param argument
+     * @return
+     */
+	protected int handleOrganizationLeadership(final ModelData argument) {
+		Objects.requireNonNull(argument);
+        try {
+            // keys: person, organization
+			String leftEntityUri = argument.relationMention.entities.get("person").generatedUri;
+			String rightEntityUri = argument.relationMention.entities.get("organization").generatedUri;
+			// headOf
+            RDFNode object = argument.model.createResource(rightEntityUri);
+            this.addStatement(leftEntityUri, W3COrg.headOf, object, argument.model);
+		} catch (NullPointerException npe ) {
+            logSemanticRelationNullPointer(argument);
+		}
+		return 0;
+	}
+
+    /**
+     * TODO
+     * @param argument
+     * @return
+     */
 	protected int handleCompanyFinancialEvent(final ModelData argument) {
-		//argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
-
 		Objects.requireNonNull(argument);
-		
-		String leftEntityString;
-		String rightEntityString;
-		String dateString;
-		try { 
-			leftEntityString = argument.relationMention.entities.get("event_type").generatedUri;
-			rightEntityString = argument.relationMention.entities.get("company").generatedUri;
-		} catch ( Exception e ) {
-			return 0;
-		}
-
-		RDFNode event = argument.model.createResource(leftEntityString);
-
-		// SMR Triple
-		this.addStatement(rightEntityString, CorpDbpedia.hasFinancialEvent, event , argument.model);
-		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+
-		GlobalConfig.getInstance().globalFactHash(rightEntityString, CorpDbpedia.hasFinancialEvent,event));
-
 		try {
-			dateString = argument.relationMention.entities.get("date").textNormalized;
-//			System.out.println("DATE FOUND");
-			//DONE
-			RDFNode literal = argument.model.createLiteral(dateString, this.document.langCode);
-			this.addStatement(leftEntityString, CorpDbpedia.hasDate, literal, argument.model);
-		} catch( Exception e) {
-//			System.out.println("DATE ERROR");
-			return 0;
+		    // keys: event_type, company
+			String leftEntityUri = argument.relationMention.entities.get("event_type").generatedUri;
+			String rightEntityUri = argument.relationMention.entities.get("company").generatedUri;
+			// hasFinancialEvent
+            RDFNode event = argument.model.createResource(leftEntityUri);
+            this.addStatement(rightEntityUri, CorpDbpedia.hasFinancialEvent, event , argument.model);
+            // hasDATE ?
+            try {
+                String dateString = argument.relationMention.entities.get("date").textNormalized;
+                RDFNode literal = argument.model.createLiteral(dateString, this.document.langCode);
+                this.addStatement(leftEntityUri, CorpDbpedia.hasDate, literal, argument.model);
+            } catch( Exception e) {
+                return 0;
+            }
+		} catch ( NullPointerException npe ) {
+            logSemanticRelationNullPointer(argument);
 		}
 		return 0;
 	}
 
+    /**
+     * TODO
+     * @param argument
+     * @return
+     */
 	protected int handleCompanyRelationship(final ModelData argument) {
-		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
 		Objects.requireNonNull(argument);
-
-		String leftEntityString = argument.relationMention.entities.get("parent").generatedUri;
-
-		String rightEntityString = argument.relationMention.entities.get("child").generatedUri;
-
-		RDFNode childCompany = argument.model.createResource(rightEntityString);
-		this.addStatement(leftEntityString, W3COrg.hasSubOrganization, childCompany, argument.model);
-
-		RDFNode parentCompany = argument.model.createResource(leftEntityString);
-		this.addStatement(rightEntityString, W3COrg.subOrganizationOf, parentCompany, argument.model);
-		return 0;
-	}
-
-	protected int handleSpinOff(final ModelData argument) {
-		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
-		Objects.requireNonNull(argument);
-
-		String leftEntityString = argument.relationMention.entities.get("parent").generatedUri;
-		String rightEntityString = argument.relationMention.entities.get("child").generatedUri;
-
-		// DONE: hasSpinOff and isSpinOff
-		RDFNode childCompany = argument.model.createResource(rightEntityString);
-		this.addStatement(leftEntityString, CorpDbpedia.hasSpinOff, childCompany, argument.model);
-
-		RDFNode parentCompany = argument.model.createResource(leftEntityString);
-		this.addStatement(rightEntityString, CorpDbpedia.isSpinOff, parentCompany, argument.model);
-
-		// keys: parent, child
-		return 0;
-	}
-
-	protected int handleCompanyProject(final ModelData argument) {
-		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
-		Objects.requireNonNull(argument);
-		
-		String leftEntityString = argument.relationMention.entities.get("company").generatedUri;
-		String rightEntityString = argument.relationMention.entities.get("project").generatedUri;
-
-		// DONE: COMPANY x PROJECT
-		RDFNode project = argument.model.createResource(rightEntityString);
-		this.addStatement(leftEntityString, CorpDbpedia.hasProject, project, argument.model);
-
-		RDFNode company = argument.model.createResource(leftEntityString);
-		this.addStatement(rightEntityString, CorpDbpedia.isProjectOf, company, argument.model);
-
-		// keys: project, company
-		return 0;
-	}
-
-	protected int handleDisaster(final ModelData argument) {
-		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
-		Objects.requireNonNull(argument);
-		String leftEntityString;
-		String rightEntityString;
 		try {
-			leftEntityString = argument.relationMention.entities.get("location").generatedUri;
-			rightEntityString = argument.relationMention.entities.get("type").generatedUri;
-			
-		} catch(Exception e) {
+			String leftEntityUri= argument.relationMention.entities.get("parent").generatedUri;
+			String rightEntityUri = argument.relationMention.entities.get("child").generatedUri;
+			// hasSubOrganization
+			RDFNode childCompany = argument.model.createResource(rightEntityUri);
+			this.addStatement(leftEntityUri, W3COrg.hasSubOrganization, childCompany, argument.model);
+			// subOrganuzationOf
+			RDFNode parentCompany = argument.model.createResource(leftEntityUri);
+			this.addStatement(rightEntityUri, W3COrg.subOrganizationOf, parentCompany, argument.model);
+		} catch (NullPointerException npe ) {
+            logSemanticRelationNullPointer(argument);
 			return 0;
 		}
-		
-		// DONE: check relation
-		RDFNode type = argument.model.createResource(rightEntityString);
-		this.addStatement(leftEntityString, CorpDbpedia.hasDisaster, type, argument.model);
-
-		// keys: location, type
 		return 0;
 	}
 
+    /**
+     * TODO
+     * @param argument
+     * @return
+     */
+	protected int handleSpinOff(final ModelData argument) {
+		Objects.requireNonNull(argument);
+		try {
+			// keys: parent, child
+			String leftEntityUri = argument.relationMention.entities.get("parent").generatedUri;
+			String rightEntityUri= argument.relationMention.entities.get("child").generatedUri;
+			// hasSpinOff
+			RDFNode childCompany = argument.model.createResource(rightEntityUri);
+			this.addStatement(leftEntityUri, CorpDbpedia.hasSpinOff, childCompany, argument.model);
+			// isSpinOff
+			RDFNode parentCompany = argument.model.createResource(leftEntityUri);
+			this.addStatement(rightEntityUri, CorpDbpedia.isSpinOff, parentCompany, argument.model);
+		} catch (NullPointerException npe) {
+            logSemanticRelationNullPointer(argument);
+		}
+		return 0;
+	}
+
+    /**
+     * TODO
+     * @param argument
+     * @return
+     */
+	protected int handleCompanyProject(final ModelData argument) {
+		Objects.requireNonNull(argument);
+		try {
+            // keys: project, company
+            String leftEntityUri = argument.relationMention.entities.get("company").generatedUri;
+            String rightEntityUri = argument.relationMention.entities.get("project").generatedUri;
+            // hasProject
+            RDFNode project = argument.model.createResource(rightEntityUri);
+            this.addStatement(leftEntityUri, CorpDbpedia.hasProject, project, argument.model);
+            // isProjectOf
+            RDFNode company = argument.model.createResource(leftEntityUri);
+            this.addStatement(rightEntityUri, CorpDbpedia.isProjectOf, company, argument.model);
+        } catch ( NullPointerException npe ) {
+            logSemanticRelationNullPointer(argument);
+        }
+		return 0;
+	}
+
+    /**
+     * TODO
+     * @param argument
+     * @return
+     */
+	protected int handleDisaster(final ModelData argument) {
+		Objects.requireNonNull(argument);
+//		this.addSemanticRelation("location",CorpDbpedia.hasDisaster,"type",argument);
+		try {
+            // keys: location, type
+			String leftEntityUri = argument.relationMention.entities.get("location").generatedUri;
+			String rightEntityUri = argument.relationMention.entities.get("type").generatedUri;
+			// hasDisaster
+            RDFNode type = argument.model.createResource(rightEntityUri);
+            this.addStatement(leftEntityUri, CorpDbpedia.hasDisaster, type, argument.model);
+		} catch (NullPointerException npe) {
+            logSemanticRelationNullPointer(argument);
+		}
+		return 0;
+	}
+
+    /**
+     * TODO
+     * @param argument
+     * @return
+     */
 	protected int handleCompanyIndustry(final ModelData argument) {
-		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
 		Objects.requireNonNull(argument);
-
-		String leftEntityString = argument.relationMention.entities.get("company").generatedUri;
-		String rightEntityString = argument.relationMention.entities.get("industry").generatedUri;
-
-		RDFNode industry = argument.model.createResource(rightEntityString);
-		this.addStatement(leftEntityString, CorpDbpedia.industry, industry, argument.model);
-
-//		RDFNode parentCompany = argument.model.createResource(leftEntityString);
-//		this.addStatement(rightEntityString, CorpDbpedia.prefixOntology+"isSpinOff", parentCompany, argument.model);
-
-		// keys: company, industry http://corp.dbpedia.org/ontology#orgCategory
-		return 0;
+//		this.addSemanticRelation("company",CorpDbpedia.industry, "industry", argument );
+        try {
+            // keys: company, industry
+            String leftEntityUri = argument.relationMention.entities.get("company").generatedUri;
+            String rightEntityUri = argument.relationMention.entities.get("industry").generatedUri;
+            // industry
+            RDFNode rightEntity = argument.model.createResource(rightEntityUri);
+            this.addStatement(leftEntityUri, CorpDbpedia.industry, rightEntity, argument.model);
+        } catch (NullPointerException npe ) {
+            logSemanticRelationNullPointer(argument);
+        }
+        return 0;
 	}
 
+    /**
+     * keys: acquired, buyer and fix for siemensdata company_acquirer, company_beingacquired
+     * @param argument
+     * @return
+     */
 	protected int handleAcquisition(final ModelData argument) {
-		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
 		Objects.requireNonNull(argument);
-		RelationMention relationMention = argument.relationMention;
-
-		Mention acquired = argument.relationMention.entities.get("acquired");
-		if ( null == acquired )
-			acquired = relationMention.entities.get("company_beingacquired");
-		Mention buyer = relationMention.entities.get("buyer");
-		if ( null == buyer )
-			buyer = relationMention.entities.get("company_acquirer");
-
-		String leftEntityString = buyer.generatedUri;
-		String rightEntityString = acquired.generatedUri;
-
-		// DONE: COMPANY x COMPANY
-		RDFNode childCompany = argument.model.createResource(rightEntityString);
-		this.addStatement(leftEntityString, CorpDbpedia.acquired, childCompany, argument.model);
-
-		RDFNode parentCompany = argument.model.createResource(leftEntityString);
-		this.addStatement(rightEntityString, CorpDbpedia.acquiredBy, parentCompany, argument.model);
-
-		// keys: acquired, buyer
+        // acquired
+        boolean next = this.addSemanticRelation("acquired",CorpDbpedia.acquiredBy,"buyer",argument);
+        if( !next ) this.addSemanticRelation("company_beingacquired",CorpDbpedia.acquiredBy,"company_acquirer",argument);
+        // acquiredBy
+        boolean next2 = this.addSemanticRelation("buyer",CorpDbpedia.acquired,"acquired",argument);
+        if( !next2 ) this.addSemanticRelation("company_acquirer",CorpDbpedia.acquired,"company_beingacquired",argument);
 		return 0;
 	}
 
+    /**
+     * TODO
+     * @param argument
+     * @return
+     */
 	protected  int handleCompanyCustomer( final ModelData argument ) {
-		argument.tripleId.set(this.graphName.substring(0,this.graphName.length()-1)+"#"+UUID.randomUUID().toString());
 		Objects.requireNonNull(argument);
-		RelationMention relationMention = argument.relationMention;
-
-		//Kaeufer
-		Mention customer = relationMention.entities.get("customer");
-		//Anbieter
-		Mention provider = relationMention.entities.get("company");
-
-		if( customer == null || provider == null ) return 0;
-		String leftEntityString = provider.generatedUri;
-		String rightEntityString = customer.generatedUri;
-
-		RDFNode customerCompany = argument.model.createResource(rightEntityString);
-		this.addStatement(leftEntityString, CorpDbpedia.customer, customerCompany, argument.model);
-
-		RDFNode providerCompany = argument.model.createResource(leftEntityString);
-		this.addStatement(rightEntityString, CorpDbpedia.customerOf, providerCompany, argument.model);
-
+		try {
+		    // keys: company, customer
+            String leftEntityUri = argument.relationMention.entities.get("company").generatedUri;
+            String rightEntityUri = argument.relationMention.entities.get("customer").generatedUri;
+            // customer
+            RDFNode rightEntity = argument.model.createResource(rightEntityUri);
+            this.addStatement(leftEntityUri, CorpDbpedia.customer, rightEntity, argument.model);
+            // customerof
+            RDFNode leftEntity = argument.model.createResource(leftEntityUri);
+    		this.addStatement(rightEntityUri, CorpDbpedia.customerOf, leftEntity, argument.model);
+        } catch (NullPointerException npe ) {
+		    logSemanticRelationNullPointer(argument);
+        }
 		return 0;
 	}
 
+    /**
+     * TODO
+     * @param subjectUri
+     * @param predicateUri
+     * @param rdfNode
+     * @param model
+     */
 	protected void addStatement(final String subjectUri, final String predicateUri, final RDFNode rdfNode,
 			final Model model) {
 		Objects.requireNonNull(subjectUri);
@@ -670,18 +695,24 @@ public class RelationGenerator extends DocRdfGenerator {
 
 		Resource subject = model.createResource(subjectUri);
 		Property predicate = model.createProperty(predicateUri);
-		RDFNode object = rdfNode;
 
-		Statement statement = new StatementImpl(subject, predicate, object);
+		Statement statement = new StatementImpl(subject, predicate, rdfNode);
 		model.add(statement);
 	}
-	
+
+    /**
+     * TODO
+     * @param subjectUri
+     * @param predicateUri
+     * @param lex
+     * @param datatype
+     * @param model
+     */
 	protected void addStatementWithLiteral(final String subjectUri, final String predicateUri, Object lex, final RDFDatatype datatype,
 			final Model model) {
 		Objects.requireNonNull(subjectUri);
 		Objects.requireNonNull(predicateUri);
 		Objects.requireNonNull(lex);
-		//Objects.requireNonNull(datatype);
 		Objects.requireNonNull(model);
 
 		Resource subject = model.createResource(subjectUri);
@@ -691,16 +722,83 @@ public class RelationGenerator extends DocRdfGenerator {
 		else model.add(subject, predicate, (String) lex, datatype);
 	}
 
-	private String generateTripleId(String triple ) {
-		String hashed = null;
-		try {
-			hashed = String.format("%064x", new java.math.BigInteger(1, MessageDigest.getInstance("SHA-256").digest(triple.getBytes("UTF-8"))));
-		} catch ( Exception e ) {
-			e.printStackTrace();
-			System.exit(0);
+    /**
+     * TODO
+     * @param subject
+     * @param predicate
+     * @param object
+     * @return
+     */
+	public static String globalFactHash(String subject, String predicate, RDFNode object) {
+
+		String value;
+		String lada = "";
+
+		String subjHash = sha256Hash(subject);
+		String predHash = sha256Hash(predicate);
+
+		if( object.isURIResource() ) {
+			value = object.asResource().getURI();
+		} else {
+			value = object.asLiteral().getLexicalForm();
+			lada = object.asLiteral().getLanguage();
+			if( "".equals(lada) ) lada = object.asLiteral().getDatatypeURI();
 		}
-		return hashed;
+
+		String objHash = sha256Hash(value);
+		String ladaHash = sha256Hash(lada);
+
+		//  SCALA : sha256Hash(List(subject,predicate,value,lada).flatMap(Option(_)).mkString(","))
+		List<String> list = Arrays.asList(subjHash,predHash,objHash,ladaHash);
+		return sha256Hash(String.join(",",list));
 	}
 
+    /**
+     * TODO
+     * @param text
+     * @return
+     */
+	public static String sha256Hash(String text) {
+		String ret = null;
+		try {
+			ret = String.format("%064x", new java.math.BigInteger(1, MessageDigest.getInstance("SHA-256").digest(text.getBytes())));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ret;
+	}
 
+    /**
+     * Could be used to simplify addStatement for semantic relations,
+     * but is incomplete no case for typed literal at the moment
+     * @param leftEntityName
+     * @param predicate
+     * @param rightEntityName
+     * @param argument
+     * @return wasaddable
+     */
+    public boolean addSemanticRelation(String leftEntityName, String predicate, String rightEntityName, final ModelData argument) {
+        try {
+            String leftEntityUri = argument.relationMention.entities.get(leftEntityName).generatedUri;
+            String rightEntityUri = argument.relationMention.entities.get(rightEntityName).generatedUri;
+            // hasFinancialEvent
+            RDFNode object = argument.model.createResource(leftEntityUri);
+            this.addStatement(leftEntityUri, predicate, object, argument.model);
+
+        } catch (NullPointerException npe ) {
+            logSemanticRelationNullPointer(argument);
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * TODO
+     * @param argument
+     */
+    public void logSemanticRelationNullPointer(ModelData argument) {
+        String relationName = argument.relationMention.relation.text;
+        if ( relationName == null ) relationName = argument.relationMention.relation.textNormalized;
+        Logger.getGlobal().log(Level.WARNING, "Failed to map relation "+relationName+": " + argument.relationMention.entities.keySet() );
+    }
 }

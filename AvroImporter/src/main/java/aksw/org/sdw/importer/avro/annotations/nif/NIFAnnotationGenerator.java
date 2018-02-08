@@ -35,7 +35,7 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
 	/** input document */
 	final Document document;
 	final String baseUri;
-	final String nifid;
+//	final String nifid;
 	
 //	public NIFAnnotationGenerator(final String graphName, final Document document) {
 //		this((String) null, document, (DocRdfGenerator) null, (String) null);
@@ -45,7 +45,7 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
 		super(graphName, relationGenerator);
 		this.document = document;
 		this.baseUri = document.uri;
-		this.nifid = UUID.randomUUID().toString();
+//		this.nifid = UUID.randomUUID().toString();
 	}
 
 	class HashedBean {
