@@ -29,6 +29,7 @@ import aksw.org.sdw.importer.avro.annotations.nif.NIFAnnotationGenerator;
 import aksw.org.sdw.importer.avro.annotations.nif.RelationGenerator;
 import org.apache.jena.base.Sys;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
+import org.apache.jena.graph.Node;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.StmtIterator;
@@ -249,6 +250,7 @@ public class Main {
 			if(disablePrefix)
 			rdfGnerator.writeRdfDataAsTrig(outputStream);
 			else rdfGnerator.writeRdfDataAsTrigWithPrefix(outputStream);
+			outputStream.close();
 
 			StmtIterator stmtIterator = GlobalConfig.getInstance().getModel().listStatements();
 
@@ -258,10 +260,16 @@ public class Main {
 					String s = "<" + statement.asTriple().getSubject().getURI() + ">";
 					String p = "<" + statement.asTriple().getPredicate().getURI() + ">";
 					String o = "";
-					if (statement.asTriple().getObject().isLiteral()) {
-						o = "\"" + statement.asTriple().getObject().getLiteral().getLexicalForm() + "\"^^<" + statement.asTriple().getObject().getLiteral().getDatatypeURI() + ">";
+					Node object = statement.asTriple().getObject();
+					if (object.isLiteral()) {
+						o = "\"" + object.getLiteral().getLexicalForm() + "\"^^<" + object.getLiteral().getDatatypeURI() + ">";
+					} else if (object.isURI()){
+						o = "<" + object.getURI() + ">";
 					} else {
-						o = "<" + statement.asTriple().getObject().getURI() + ">";
+						if ( object.isVariable() ) Logger.getGlobal().warning("## isVariable "+object.toString());
+						if ( object.isConcrete() ) Logger.getGlobal().warning("## isConcrete "+object.toString());
+						if ( object.isBlank() ) Logger.getGlobal().warning("## isBlank "+object.toString());
+						continue;
 					}
 					fw.write(s + " " + p + " " + o + " .\n");
 				}
