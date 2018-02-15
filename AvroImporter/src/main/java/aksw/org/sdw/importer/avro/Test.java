@@ -21,9 +21,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.Formatter;
-import java.util.Iterator;
+import java.util.*;
 
 public class Test {
     public static void main(String[] args) {
@@ -41,6 +39,14 @@ public class Test {
         RDFNode obj3 = m.createResource("http://dbpedia.org/resource/300");
         RDFNode obj4 = m.createTypedLiteral("", XSDBaseStringType.XSDstring);
 
+        Set<String> set = new HashSet<>();
+        set.add(null);
+        set.add("Lol");
+        set.removeAll(Collections.singleton(null));
+
+        for ( String s : set ) {
+            System.out.println(s);
+        }
 
 //        System.out.println("## LanguageBased");
 //        GlobalConfig.getInstance().globalFactHash(subject,predicate,obj1);

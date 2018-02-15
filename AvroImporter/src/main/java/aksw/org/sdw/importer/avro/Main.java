@@ -161,8 +161,13 @@ public class Main {
 	}
 
 	public static void initFw(String avrofile) throws IOException {
+		String smrDirPath = GlobalConfig.getInstance().getSmrDir();
+		File outputDirectory = new File(smrDirPath);
+		if (false == outputDirectory.exists() && false == outputDirectory.mkdirs()) {
+			System.err.println("Was not able to create directories: " + smrDirPath);
+		}
 		String smrFile = "smr"+avrofile.replaceAll("[/. ]","_");
-		fw = new FileWriter(new File(GlobalConfig.getInstance().getSmrDir()+"/"+smrFile+".nt"));
+		fw = new FileWriter(new File(smrDirPath+"/"+smrFile+".nt"));
 	}
 	
 	public static void forFile(InputType inputType, String filePath, String outputDirectoryPath, String namespacePrefix) throws IOException{
