@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import aksw.org.sdw.importer.avro.annotations.*;
 import aksw.org.sdw.importer.avro.annotations.dfki.Dfki2SdwKgMapper;
 import aksw.org.sdw.importer.avro.annotations.ids.UniqueIdGenerator;
+import aksw.org.sdw.rdf.namespaces.*;
 import com.sun.org.apache.regexp.internal.RE;
 import org.apache.avro.JsonProperties;
 import org.apache.jena.atlas.lib.IRILib;
@@ -32,11 +33,6 @@ import org.apache.velocity.runtime.directive.Foreach;
 import org.apache.xerces.impl.io.MalformedByteSequenceException;
 import org.apache.xerces.stax.events.StartElementImpl;
 import org.nlp2rdf.nif21.NIF21Format;
-
-import aksw.org.sdw.rdf.namespaces.CorpDbpedia;
-import aksw.org.sdw.rdf.namespaces.RdfDataTypes;
-import aksw.org.sdw.rdf.namespaces.W3COrg;
-import aksw.org.sdw.rdf.namespaces.W3CProvenance;
 
 import javax.jws.WebParam;
 
@@ -294,8 +290,10 @@ public class RelationGenerator extends DocRdfGenerator {
 			String leftLabel = (null == entity.text) ? entity.textNormalized : entity.text;
 			if (null != leftLabel) {
 				RDFNode object = relationModel.createLiteral(leftLabel, this.document.langCode);
-				this.addStatement(entity.generatedUri, RDFS.label.getURI(), object, relationModel);
-				GlobalConfig.getInstance().getModel().add(relationModel.createResource(entity.generatedUri), relationModel.createProperty(RDFS.label.getURI()),object);
+
+				String predicate = (document.refids.containsValue(entity.generatedUri)) ? SKOS.altLabel : RDFS.label.getURI();
+				this.addStatement(entity.generatedUri, predicate, object, relationModel);
+				GlobalConfig.getInstance().getModel().add(relationModel.createResource(entity.generatedUri), relationModel.createProperty(predicate),object);
 			}
 		}
 

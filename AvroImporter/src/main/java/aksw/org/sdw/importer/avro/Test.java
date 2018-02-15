@@ -30,23 +30,26 @@ public class Test {
 //
 //        System.out.println(new Formatter().format("%s#offset_%d_%d","NEW",21,25).toString());
 
-        Model m = ModelFactory.createDefaultModel();
+        Map<String, String > map = new HashMap<>();
 
-        String subject = "http://dbpedia.org/resource/100";
-        String predicate = "http://dbpedia.org/predicate/200";
-        RDFNode obj1 = m.createLiteral("LanguageBased","en");
-        RDFNode obj2 = m.createTypedLiteral(100.0f, XSDDatatype.XSDfloat);
-        RDFNode obj3 = m.createResource("http://dbpedia.org/resource/300");
-        RDFNode obj4 = m.createTypedLiteral("", XSDBaseStringType.XSDstring);
-
-        Set<String> set = new HashSet<>();
-        set.add(null);
-        set.add("Lol");
-        set.removeAll(Collections.singleton(null));
-
-        for ( String s : set ) {
-            System.out.println(s);
-        }
+        System.out.println(map.get("b"));
+//        Model m = ModelFactory.createDefaultModel();
+//
+//        String subject = "http://dbpedia.org/resource/100";
+//        String predicate = "http://dbpedia.org/predicate/200";
+//        RDFNode obj1 = m.createLiteral("LanguageBased","en");
+//        RDFNode obj2 = m.createTypedLiteral(100.0f, XSDDatatype.XSDfloat);
+//        RDFNode obj3 = m.createResource("http://dbpedia.org/resource/300");
+//        RDFNode obj4 = m.createTypedLiteral("", XSDBaseStringType.XSDstring);
+//
+//        Set<String> set = new HashSet<>();
+//        set.add(null);
+//        set.add("Lol");
+//        set.removeAll(Collections.singleton(null));
+//
+//        for ( String s : set ) {
+//            System.out.println(s);
+//        }
 
 //        System.out.println("## LanguageBased");
 //        GlobalConfig.getInstance().globalFactHash(subject,predicate,obj1);

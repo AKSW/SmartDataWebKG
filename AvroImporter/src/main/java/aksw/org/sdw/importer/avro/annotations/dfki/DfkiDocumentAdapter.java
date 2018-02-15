@@ -1,15 +1,13 @@
 package aksw.org.sdw.importer.avro.annotations.dfki;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 
 import aksw.org.sdw.importer.avro.annotations.DataImportAdapter;
 import aksw.org.sdw.importer.avro.annotations.Document;
 import aksw.org.sdw.importer.avro.annotations.Mention;
 import de.dfki.lt.tap.RelationArgument;
+import org.apache.jena.base.Sys;
 
 /**
  * This class can be used to create new SDW KG Documents from DFKI input documents
@@ -56,6 +54,14 @@ public class DfkiDocumentAdapter extends Document implements DataImportAdapter<d
 		if ( null == this.title ) {
 			this.title = dfkiDocument.getTitle();
 		}
+
+		for( de.dfki.lt.tap.ConceptMention dfkiCon : dfkiDocument.getConceptMentions()) {
+
+			if( "false".equals(dfkiCon.getAttributes().get("gkg_nil_entity"))) {
+				this.refids.put(dfkiCon.getId(),
+						dfkiCon.getRefids().iterator().next().get("value").toString());
+			}
+		}
 		
 		//check for provenance
 		List<de.dfki.lt.tap.Provenance> dfkiDocProvenanceList = dfkiDocument.getProvenance();
@@ -93,7 +99,9 @@ public class DfkiDocumentAdapter extends Document implements DataImportAdapter<d
 			if (null != dfkiConceptMentions && false == dfkiConceptMentions.isEmpty()) {
 				for (de.dfki.lt.tap.ConceptMention dfkiConceptMention : dfkiConceptMentions) {
 
-					if(conceptsInRelations.contains(dfkiConceptMention.getId())) continue;
+					if(conceptsInRelations.contains(dfkiConceptMention.getId()))  {
+						continue;
+					}
 
 					DfkiMentionAdapter dfkiEntity = new DfkiMentionAdapter();
 					dfkiEntity.addData_internal(dfkiConceptMention, this);

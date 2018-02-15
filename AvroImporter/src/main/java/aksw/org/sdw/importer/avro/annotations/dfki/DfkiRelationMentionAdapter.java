@@ -39,6 +39,10 @@ public class DfkiRelationMentionAdapter extends RelationMention implements DataI
 
 					String role = relationArgument.getRole().toLowerCase();
 
+					if(document.refids.containsKey(conceptMention.id)) {
+						conceptMention.generatedUri=document.refids.get(conceptMention.id);
+					}
+
 					// TODO here this should be the name of the relation not the
 					Dfki2SdwKgMapper.addEntityTypeMapping(role, conceptMention.types);
 

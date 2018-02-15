@@ -16,7 +16,7 @@ public class Document extends Annotation {
 	public String date;
 
 	public String title;
-	
+
 	public Set<RelationMention> relationMentions = new LinkedHashSet<>();
 	public Set<Mention> conceptMentions = new LinkedHashSet<>();
 	
@@ -34,7 +34,7 @@ public class Document extends Annotation {
 //	
 //	public List<de.dfki.lt.tap.Annotation> annotations;
 //	public List<de.dfki.lt.tap.Provenance> provenance;
-	public Map<String, String> refids;
+	public Map<String, String> refids = new HashMap<>();
 
 //	public Map<java.lang.String,java.lang.String> attributes;
 	
