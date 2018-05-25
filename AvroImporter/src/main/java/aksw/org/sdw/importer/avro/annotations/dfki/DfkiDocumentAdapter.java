@@ -5,7 +5,9 @@ import java.util.logging.Logger;
 
 import aksw.org.sdw.importer.avro.annotations.DataImportAdapter;
 import aksw.org.sdw.importer.avro.annotations.Document;
+import aksw.org.sdw.importer.avro.annotations.GlobalConfig;
 import aksw.org.sdw.importer.avro.annotations.Mention;
+import aksw.org.sdw.nel.Spotlight;
 import de.dfki.lt.tap.RelationArgument;
 import org.apache.jena.base.Sys;
 
@@ -60,6 +62,12 @@ public class DfkiDocumentAdapter extends Document implements DataImportAdapter<d
 			if( "false".equals(dfkiCon.getAttributes().get("gkg_nil_entity"))) {
 				this.refids.put(dfkiCon.getId(),
 						dfkiCon.getRefids().iterator().next().get("value").toString());
+			} else {
+				String link = GlobalConfig.getInstance().link(dfkiCon.getNormalizedValue());
+				if( "" != link ) {
+//					System.out.println(dfkiCon.getNormalizedValue()+" "+link);
+					this.refids.put(dfkiCon.getId(),link);
+				}
 			}
 		}
 		

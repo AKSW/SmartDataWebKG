@@ -107,9 +107,11 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
         	List<NIFBean> conceptBeanList = new ArrayList<>();
             NIFBean.NIFBeanBuilder builderMention = new NIFBean.NIFBeanBuilder();
             builderMention.nifType(NIFType.ENTITY);
-            
+
+//            String taIdentRef = (document.refids.containsKey(conceptMention.id)) ? document.refids.get(conceptMention.id) : conceptMention.generatedUri;
             builderMention.taIdentRef(conceptMention.generatedUri);
-        	
+//            builderMention.taIdentRef(taIdentRef);
+
         	List<String> typesMention = new ArrayList<String>();
 
 //			if ( conceptMention.types.contains("http://UNMAPPED.ER/financial-event")) {
@@ -126,8 +128,15 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
 					typesMention.add(type);
 				}
 			}
+
+//			String hashedNif = new Formatter().format("%s#offset_%d_%d",document.uri+"?lid="+GlobalConfig.getInstance()
+//					.makeNifHash(conceptMention, document),conceptMention.span.start,conceptMention.span.end).toString();
+
         	builderMention.types(typesMention);
-        	builderMention.context(baseUri, conceptMention.span.start, conceptMention.span.end);
+//        	builderMention.context(baseUri, conceptMention.span.start, conceptMention.span.end);
+        	builderMention.context(document.uri+"?lid="+GlobalConfig.getInstance().makeNifHash(conceptMention, document),
+					conceptMention.span.start,
+					conceptMention.span.end);
         	if (null != conceptMention.text) {
         		builderMention.mention(conceptMention.text);
         	} else if (null != conceptMention.textNormalized) {
@@ -141,8 +150,10 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
         	Iterator<Provenance> provenanceIt = conceptMention.provenanceSet.iterator();
 
 //			String hashedNif = GlobalConfig.getInstance().makeNifHash(conceptMention, document);
-			String hashedNif = new Formatter().format("%s#offset_%d_%d",document.uri+"?lid="+GlobalConfig.getInstance()
-					.makeNifHash(conceptMention, document),conceptMention.span.start,conceptMention.span.end).toString();
+//			String hashedNif = new Formatter().format("%s#offset_%d_%d",document.uri+"?lid="+GlobalConfig.getInstance()
+//					.makeNifHash(conceptMention, document),conceptMention.span.start,conceptMention.span.end).toString();
+
+//			System.out.println(conceptMention.textNormalized+" "+hashedNif);
 
 
 			String beanUri = new Formatter().format("%s#offset_%d_%d",document.uri,conceptMention.span.start,conceptMention.span.end).toString();
@@ -160,7 +171,7 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
         	}
 
             NIFBean bean = new NIFBean(builderMention);
-        	beanUriHash.put(beanUri, hashedNif);
+//        	beanUriHash.put(beanUri, hashedNif);
 //			beanUriHash.add(new HashedBean(beanUri, hashedNif));
         	result.add(bean);
 		}
@@ -171,31 +182,31 @@ public class NIFAnnotationGenerator extends DocRdfGenerator {
         Model outModel = ModelFactory.createDefaultModel();
 
 //		Logger.getGlobal().info(beanUriHash.keySet().toString());
-		StmtIterator iter = nifModel.listStatements();
-		while(iter.hasNext()) {
-			Statement stmt = iter.nextStatement();
+//		StmtIterator iter = nifModel.listStatements();
+//		while(iter.hasNext()) {
+//			Statement stmt = iter.nextStatement();
+//			System.out.println(stmt);
+//			Resource s = stmt.getSubject();
+//			Property p = stmt.getPredicate();
+//			RDFNode o = stmt.getObject();
+////			Logger.getGlobal().info(s.getURI());
+//			if(beanUriHash.keySet().contains(s.getURI())) {
+//				outModel.add(ResourceFactory.createResource(beanUriHash.get(s.getURI())), p, o);
+////				outModel.add(ResourceFactory.createResource(s.getURI() + "?lid=" + beanUriHash.get(s.getURI())), p, o);
+//			} else {
+//				outModel.add(s, p, o);
+//			}
+//		}
 
-			Resource s = stmt.getSubject();
-			Property p = stmt.getPredicate();
-			RDFNode o = stmt.getObject();
-//			Logger.getGlobal().info(s.getURI());
-			if(beanUriHash.keySet().contains(s.getURI())) {
-
-
-
-				outModel.add(ResourceFactory.createResource(beanUriHash.get(s.getURI())), p, o);
-//				outModel.add(ResourceFactory.createResource(s.getURI() + "?lid=" + beanUriHash.get(s.getURI())), p, o);
-			} else {
-				outModel.add(s, p, o);
-			}
-		}
-
+//		outModel.write(System.out,"N-Triples");
 		//DocAttributes
-		outModel.add(addContextInformation(contextUri,document));
+		nifModel.add(addContextInformation(contextUri,document));
+//		outModel.add(addContextInformation(contextUri,document));
 
-        dataset.addNamedModel(this.graphName, outModel);
+        dataset.addNamedModel(this.graphName, nifModel);
+//        dataset.addNamedModel(this.graphName, outModel);
 		nifModel.close();
-        outModel.close();
+//        outModel.close();
         
         return dataset;
 	}

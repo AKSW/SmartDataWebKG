@@ -67,6 +67,9 @@ public class DfkiMentionAdapter extends Mention implements DataImportAdapter<org
 				document.entityIdGenerator.addUniqueId(this):
 				conceptMention.getId();
 		this.generatedUri = RDFHelpers.createValidIRIfromBase(this.generatedId,document.uriNamespace);
+		if(document.refids.containsKey(conceptMention.getId())) {
+			this.generatedUri=document.refids.get(conceptMention.getId());
+		}
 		document.conceptMentions.add(this);
 		this.mentionType=mentionType.ENTITY;
 	}

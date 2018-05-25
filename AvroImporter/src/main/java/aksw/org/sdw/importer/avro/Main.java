@@ -79,6 +79,7 @@ public class Main {
 		options.addOption("c","disable-prefixes", false, "output without @prefix");
 		options.addOption(null,"relations-only", false, "generate rdf for relations only");
 		options.addOption(null,"extract-smr", true, "folder for extraction of semantic relations");
+		options.addOption(null,"spotlight", true, "spotlight host addr");
 //		options.addOption("b","baseUri", true, "baseUri for documents");
 
 		CommandLine commandLine = null;
@@ -112,6 +113,7 @@ public class Main {
 				iterationPrefix = commandLine.getOptionValue("i");
 				namespacePrefix = "http://corp.dbpedia.org/extract/"+iterationPrefix+"/"+inputType.toString().toLowerCase();
 				if( commandLine.hasOption("extract-smr")) GlobalConfig.getInstance().setSmrDir(commandLine.getOptionValue("extract-smr"));
+				if( commandLine.hasOption("spotlight")) GlobalConfig.getInstance().setSpotlight(commandLine.getOptionValue("spotlight"));
 			} else {
 				formatter.printHelp("avroimporter", options);
 				System.exit(1);
@@ -212,12 +214,14 @@ public class Main {
 //
 //		for (Document doc : foundDocs.values()) {
 	//for "streaming" conversion
+        long start = System.currentTimeMillis();
+
 		for ( Map.Entry<String, Document> entry : importer.getRelationshipMentionIterable()) {
+
 			Document doc =entry.getValue();
 			++count;
-//			if (count<329 ) continue;
-//			if (count>329 ) break;
-
+//			if (count<1597 ) continue;
+//			if (count>1599 ) break;
 			GlobalConfig.getInstance().setNifid(UUID.randomUUID().toString());
 
 			String defaultDocUri = RDFHelpers.createValidIRIfromBase(doc.id,CorpDbpedia.prefix+"crawl/"+iterationPrefix+"/"+inputType.toString().toLowerCase());
@@ -284,6 +288,8 @@ public class Main {
 //			System.exit(1);
 		}
 		if( writeSmr ) fw.close();
+        long end = System.currentTimeMillis();
+        Logger.getGlobal().info("Took : " + ((end - start) / 1000)+" seconds");
 		
 		System.out.println("missingMappingsDFKI:###"+Dfki2SdwKgMapper.missingMappings.toString());
 		System.out.println("Misc " +RelationGenerator.missingR);

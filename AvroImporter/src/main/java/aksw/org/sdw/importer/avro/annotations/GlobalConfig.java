@@ -1,5 +1,9 @@
 package aksw.org.sdw.importer.avro.annotations;
 
+import aksw.org.sdw.nel.Spotlight;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import org.apache.jena.base.Sys;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.RDFNode;
@@ -9,6 +13,7 @@ import org.eclipse.rdf4j.model.Statement;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class GlobalConfig {
 
@@ -25,6 +30,9 @@ public class GlobalConfig {
         }
         return instance;
     }
+
+    public Spotlight spotlight;
+    private LoadingCache<String, String> linkCache;
 
     public String getNifid() {
         return nifid;
@@ -54,6 +62,7 @@ public class GlobalConfig {
     public String makeNifHash(Mention mention, Document document) {
         String hashsum = "";
         try {
+
             hashsum += String.format("%064x", new java.math.BigInteger(1, MessageDigest.getInstance("SHA-256").digest(mention.textNormalized.getBytes())));
             hashsum += String.format("%064x", new java.math.BigInteger(1, MessageDigest.getInstance("SHA-256").digest(String.valueOf(mention.span.start).getBytes())));
             hashsum += String.format("%064x", new java.math.BigInteger(1, MessageDigest.getInstance("SHA-256").digest(String.valueOf(mention.span.end).getBytes())));
@@ -72,6 +81,7 @@ public class GlobalConfig {
         } catch (Exception e) {
             e.printStackTrace();
         }
+//        System.out.println("anchor "+mention.textNormalized+" hashsum "+hashsum);
         return hashsum;
     }
 //    public String makeNifHash(Set<Provenance> provenanceSet, String docid) {
@@ -123,6 +133,13 @@ public class GlobalConfig {
 //        return ret;
 //    }
 
+    public String link(String label) {
+//        if(spotlight != null) {
+//            return linkCache.getUnchecked(label);
+//        } else return "";
+        return "";
+    }
+
     public String smrDir = null;
 
     public String getSmrDir() {
@@ -131,6 +148,19 @@ public class GlobalConfig {
 
     public void setSmrDir(String changeto) {
         smrDir = changeto;
+    }
+
+    public void setSpotlight(String url) {
+        spotlight = new Spotlight(url);
+        linkCache = CacheBuilder.newBuilder()
+                .maximumSize(50000)
+                .expireAfterWrite(10, TimeUnit.MINUTES)
+                .build(
+                        new CacheLoader<String, String>() {
+                            public String load(String key) {
+                                return spotlight.getLink(key);
+                            }
+                        });
     }
 
     public void addModel(Model m) {

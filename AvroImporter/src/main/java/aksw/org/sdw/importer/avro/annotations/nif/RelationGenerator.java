@@ -406,7 +406,8 @@ public class RelationGenerator extends DocRdfGenerator {
 			// :mentioned  ## link to concept mention
 			int offset_beginn = rm.entities.get(key).span.start;
 			int offset_end = rm.entities.get(key).span.end;
-			String mentionedMember = new Formatter().format("%s#offset_%d_%d",document.uri+"?lid="+GlobalConfig.getInstance()
+			// additional slach between "?lid?=" and "#offset"
+			String mentionedMember = new Formatter().format("%s/#offset_%d_%d",document.uri+"?lid="+GlobalConfig.getInstance()
 					.makeNifHash(rm.entities.get(key), document),offset_beginn,offset_end).toString();
 //			String mentionedMember = new Formatter().format("%s#offset_%d_%d",document.uri,offset_beginn,offset_end).toString();
 //			rm.entities.get(key).provenanceSet
