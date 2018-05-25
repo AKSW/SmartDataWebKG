@@ -134,10 +134,9 @@ public class GlobalConfig {
 //    }
 
     public String link(String label) {
-//        if(spotlight != null) {
-//            return linkCache.getUnchecked(label);
-//        } else return "";
-        return "";
+        if(spotlight != null) {
+            return linkCache.getUnchecked(label);
+        } else return "";
     }
 
     public String smrDir = null;
